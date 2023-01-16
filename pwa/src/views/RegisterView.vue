@@ -20,7 +20,8 @@
                       <linearGradient x1="88.638%" y1="29.267%" x2="22.42%" y2="100%" id="logo-b">
                         <stop stop-color="#38BDF8" stop-opacity="0" offset="0%" />
                         <stop stop-color="#38BDF8" offset="100%" />
-                      </linearGradient>
+                      </linearGradient> 
+                      
                     </defs>
                     <rect fill="#6366F1" width="32" height="32" rx="16" />
                     <path d="M18.277.16C26.035 1.267 32 7.938 32 16c0 8.837-7.163 16-16 16a15.937 15.937 0 01-10.426-3.863L18.277.161z" fill="#4F46E5" />
