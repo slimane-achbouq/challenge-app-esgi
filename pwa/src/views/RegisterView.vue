@@ -1,12 +1,12 @@
 <template>
     <main class="bg-white">
-  
+
       <div class="relative flex">
-  
+
         <!-- Content -->
         <div class="w-full md:w-1/2">
           <div class="min-h-screen h-full flex flex-col after:flex-1">
-  
+
             <div class="flex-1">
               <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
                 <!-- Logo -->
@@ -20,8 +20,7 @@
                       <linearGradient x1="88.638%" y1="29.267%" x2="22.42%" y2="100%" id="logo-b">
                         <stop stop-color="#38BDF8" stop-opacity="0" offset="0%" />
                         <stop stop-color="#38BDF8" offset="100%" />
-                      </linearGradient> 
-                      
+                      </linearGradient>
                     </defs>
                     <rect fill="#6366F1" width="32" height="32" rx="16" />
                     <path d="M18.277.16C26.035 1.267 32 7.938 32 16c0 8.837-7.163 16-16 16a15.937 15.937 0 01-10.426-3.863L18.277.161z" fill="#4F46E5" />
@@ -30,8 +29,8 @@
                   </svg>
                 </router-link>
               </div>
-            </div>          
-  
+            </div>
+
             <div class="max-w-sm mx-auto px-4 py-8">
               <h1 class="text-3xl text-slate-800 font-bold mb-6">Create your Account ✨</h1>
               <!-- Form -->
@@ -75,23 +74,23 @@
                 </div>
               </div>
             </div>
-  
+
           </div>
         </div>
-  
+
         <!-- Image -->
         <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
           <img class="object-cover object-center w-full h-full" src="../images/auth-image.jpg" width="760" height="1024" alt="Authentication" />
           <img class="absolute top-1/4 left-0 -translate-x-1/2 ml-8 hidden lg:block" src="../images/auth-decoration.png" width="218" height="224" alt="Authentication decoration" />
         </div>
-  
+
       </div>
-  
+
     </main>
   </template>
-  
+
   <script>
-  
+
   export default {
   }
   </script>
