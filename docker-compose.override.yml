@@ -19,17 +19,14 @@ services:
       - host.docker.internal:host-gateway
 
   pwa:
-    build:
-      context: ./pwa
+    image: node:lts
     volumes:
       - ./pwa:/srv/app
-    environment:
-      API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://caddy
-      API_PLATFORM_CREATE_CLIENT_OUTPUT: .
-      # On Linux, you may want to comment the following line for improved performance
-      WATCHPACK_POLLING: 'true'
+    working_dir: /srv/app
     ports:
       - '5173:5173'
+    command: yarn host
+    tty: true
 
   caddy:
     volumes:
@@ -37,17 +34,17 @@ services:
       - ./api/docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
     environment:
       MERCURE_EXTRA_DIRECTIVES: demo
-
-###> doctrine/doctrine-bundle ###
+  
+  ###> doctrine/doctrine-bundle ###
   database:
     ports:
       - target: 5432
         published: 5432
         protocol: tcp
-###< doctrine/doctrine-bundle ###
-
-###> symfony/mercure-bundle ###
-###< symfony/mercure-bundle ###
+  ###< doctrine/doctrine-bundle ###
+  
+  ###> symfony/mercure-bundle ###
+  ###< symfony/mercure-bundle ###
   adminer:
     image: adminer
     ports:
