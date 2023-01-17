@@ -6,44 +6,30 @@ use App\Entity\Annonce;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+//use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+#[AsController]
 class CreateAnnonceController extends AbstractController
 {
-    private $slugger;
-    private $em;
-
-    public function __construct(SluggerInterface $slugger, EntityManagerInterface $entityManager) {
-        $this->slugger = $slugger;
-        $this->em = $entityManager;
-    }
-    public function __invoke()
+    public function __invoke(Request $request): Annonce
     {
-        $annonce = new Annonce();
-        $annonce->setTitle($_POST['title']);
-        $annonce->setDescription($_POST['description']);
-        $annonce->setCreatedAt(new \DateTime());
-
-        $file = $_POST["imageFile"];
-
-        if ($file) {
-            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $this->slugger->slug($originalFilename);
-            $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-
-            try {
-                $file->move(
-                    $this->getParameter('images_annonces_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                return new \Exception("Upload Annonce image error : " . $e);
-            }
-
-            $annonce->setImage($newFilename);
+        $uploadedFile = $request->files->get('file');
+        if (!$uploadedFile) {
+            throw new BadRequestHttpException('"file" is required');
         }
 
-        $this->em->persist($annonce);
-        $this->em->flush();
+        $annonce = new Annonce();
+        $annonce->setTitle($request->get('title'));
+        $annonce->setDescription($request->get('description'));
+        $annonce->setFile($uploadedFile);
+        $annonce->setImage($uploadedFile->getClientOriginalName());
+        $annonce->setCreatedAt(new \DateTime());
+        $annonce->setUpdatedAt(new \DateTimeImmutable());
+
+        return $annonce;
     }
 }
