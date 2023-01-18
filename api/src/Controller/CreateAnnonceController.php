@@ -28,9 +28,11 @@ class CreateAnnonceController extends AbstractController
         $annonce->setFile($uploadedFile);
         $annonce->setImage($uploadedFile->getClientOriginalName());
         $annonce->setProprietaire($user);
-        $annonce->setIsAvailable($request->get("isAvailable"));
+        $annonce->setIsAvailable(true);
+        $annonce->setPrice($request->get('price'));
+        $annonce->setStatus("0");
+        $annonce->setIsPerHour($request->get("isPerHour"));
         $annonce->setCreatedAt(new \DateTime());
-        $annonce->setUpdatedAt(new \DateTimeImmutable());
 
         return $annonce;
     }
