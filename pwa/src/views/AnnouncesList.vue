@@ -79,8 +79,8 @@
   
   <script>
   import { ref } from 'vue'
-  import Sidebar from '../../partials/Sidebar.vue'
-  import Header from '../../partials/Header.vue'
+  import Sidebar from '../partials/Sidebar.vue'
+  import Header from '../partials/Header.vue'
   import AnnonceSidebar from '../partials/dashboard/annonce/AnnonceSidebar.vue'
   import AnnonceCards from '../partials/dashboard/annonce/AnnonceCards.vue'
   import Pagination from '../components/Pagination.vue'
