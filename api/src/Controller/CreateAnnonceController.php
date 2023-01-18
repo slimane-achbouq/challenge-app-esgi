@@ -4,16 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\MakerBundle\Str;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-//use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[AsController]
 class CreateAnnonceController extends AbstractController
@@ -40,6 +34,7 @@ class CreateAnnonceController extends AbstractController
         $annonce->setFile($uploadedFile);
         $annonce->setImage($uploadedFile->getClientOriginalName());
         $annonce->setProprietaire($user);
+        $annonce->setIsAvailable($request->get("isAvailable"));
         $annonce->setCreatedAt(new \DateTime());
         $annonce->setUpdatedAt(new \DateTimeImmutable());
 
