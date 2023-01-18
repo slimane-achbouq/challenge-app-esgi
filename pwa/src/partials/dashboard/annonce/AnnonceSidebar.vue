@@ -176,6 +176,6 @@
   
 <script>
   export default {
-    name: 'ShopSidebar',
+    name: 'AnnonceSidebar',
   }
 </script>
