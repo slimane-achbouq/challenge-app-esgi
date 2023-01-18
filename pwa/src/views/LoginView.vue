@@ -29,10 +29,13 @@
                 </svg>
               </router-link>
             </div>
-          </div>          
+          </div>
 
           <div class="max-w-sm mx-auto px-4 py-8">
             <h1 class="text-3xl text-slate-800 font-bold mb-6">Welcome back! ✨</h1>
+            <Banner type="error" :open="!!error">
+              {{ error }}
+            </Banner>
             <!-- Form -->
             <form @submit.prevent="submitForm">
               <div class="space-y-4">
@@ -49,7 +52,14 @@
                 <div class="mr-1">
                   <router-link class="text-sm underline hover:no-underline" to="/reset-password">Forgot Password?</router-link>
                 </div>
-                <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" type="submit" >Sign In</button>
+                <button v-if="isLoading" class="btn bg-indigo-500 hover:bg-indigo-600 text-white disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed shadow-none" disabled>
+                  <svg class="animate-spin w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16">
+                    <path d="M8 16a7.928 7.928 0 01-3.428-.77l.857-1.807A6.006 6.006 0 0014 8c0-3.309-2.691-6-6-6a6.006 6.006 0 00-5.422 8.572l-1.806.859A7.929 7.929 0 010 8c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" />
+                  </svg>
+                  <span class="ml-2">Loading</span>
+                </button>
+                <button v-else class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-3" type="submit" >Sign In</button>
+
               </div>
             </form>
             <!-- Footer -->
@@ -76,8 +86,8 @@
 
       <!-- Image -->
       <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
-        <img class="object-cover object-center w-full h-full" src="../images/auth-image.jpg" width="760" height="1024" alt="Authentication" />
-        <img class="absolute top-1/4 left-0 -translate-x-1/2 ml-8 hidden lg:block" src="../images/auth-decoration.png" width="218" height="224" alt="Authentication decoration" />
+        <img class="object-cover object-center w-full h-full" src="../images/auth-image.png" width="500" height="1024" alt="Authentication" />
+        <!-- <img class="absolute top-1/4 left-0 -translate-x-1/2 ml-8 hidden lg:block" src="../images/auth-decoration.png" width="218" height="224" alt="Authentication decoration" /> -->
       </div>
 
     </div>
@@ -86,7 +96,12 @@
 </template>
 
 <script>
+import Banner from '@/components/Banner.vue'
+
 export default {
+    components: {
+      Banner
+    },
     data() {
         return {
             email: '',
@@ -114,9 +129,8 @@ export default {
 
             try {
                 await this.$store.dispatch('auth/login', actionPayload);
-                this.$socket.emit('connected', this.$store.state.auth.token);
                 const redirectUrl = '/' + (this.$route.query.redirect || 'dashboard');
-                //this.$router.replace(redirectUrl);
+                this.$router.replace(redirectUrl);
             } catch (error) {
                 this.error = error.message || 'Failed to authenticated, try later.';
             }
