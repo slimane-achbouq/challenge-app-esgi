@@ -61,9 +61,6 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
@@ -80,6 +77,9 @@ class Annonce
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     private ?User $proprietaire = null;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,18 +93,6 @@ class Annonce
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -165,6 +153,18 @@ class Annonce
     public function setProprietaire(?User $proprietaire): self
     {
         $this->proprietaire = $proprietaire;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
