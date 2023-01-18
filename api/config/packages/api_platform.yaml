@@ -1,7 +1,7 @@
 api_platform:
     collection:
         pagination:
-            page_parameter_name: _page
+            page_parameter_name: page
     title: Hello API Platform
     version: 1.0.0
     mapping:
