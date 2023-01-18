@@ -20,13 +20,7 @@ class CreateAnnonceController extends AbstractController
         }
 
         $idUser = $request->get('proprietaire');
-
-        if (is_numeric($idUser)) {
-            $user = $userRepository->findOneBy(["id" => $idUser]);
-        }
-        else {
-            $user = $idUser;
-        }
+        $user = is_numeric($idUser) ? $userRepository->findOneBy(["id" => $idUser]) : $idUser;
 
         $annonce = new Annonce();
         $annonce->setTitle($request->get('title'));
