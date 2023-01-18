@@ -8,6 +8,7 @@ const router = createRouter({
     { path: '/', redirect: '/login' },
     { path: '/login', name: 'login', component: LoginView, meta: { requiresUnauth: false } },
     { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { requiresUnauth: false } },
+    
   ]
 })
 
