@@ -56,6 +56,9 @@
             <div class="px-4 py-8">
               <div class="max-w-md mx-auto">
                 <h1 class="text-3xl text-slate-800 font-bold mb-6">Information</h1>
+                  <Banner type="error" :open="!!error">
+                    {{ error }}
+                  </Banner>
                 <!-- Form -->
                 <form @submit.prevent="submitForm">
                   <div class="space-y-4 mb-8">
@@ -127,7 +130,13 @@
                   </div>
                   <div class="flex items-center justify-between">
                     <a class="text-sm underline hover:no-underline"  @click="back()">&lt;- Back</a>
-                    <button class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" type="submit">Next Step -&gt;</button>
+                    <button v-if="isLoading" class="btn bg-indigo-500 hover:bg-indigo-600 text-white disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed shadow-none" disabled>
+                      <svg class="animate-spin w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16">
+                        <path d="M8 16a7.928 7.928 0 01-3.428-.77l.857-1.807A6.006 6.006 0 0014 8c0-3.309-2.691-6-6-6a6.006 6.006 0 00-5.422 8.572l-1.806.859A7.929 7.929 0 010 8c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" />
+                      </svg>
+                      <span class="ml-2">Loading</span>
+                    </button>
+                    <button v-else class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" type="submit">Next Step -&gt;</button>
                   </div>
                 </form>
   
@@ -145,7 +154,9 @@
   </template>
   
   <script>
-  import { phoneValidation, passwordValidation, emailValidation } from '../utils/utils-common-function'
+  import { phoneValidation, passwordValidation, emailValidation } from '../utils/utils-common-function';
+  import Banner from '@/components/Banner.vue'
+
 
   
   export default {
@@ -163,21 +174,99 @@
         phoneNumber: '',
         email: '',
         password: '',
+        formValid: true,
+        isLoading: false,
+        error: null 
       }
     },
     methods: {
       back() {
         this.$emit('back', '');
       },
-      toggleErrors() {
-        if (Object.keys(this.formErrors).length === 0) {
-          this.formErrors = this.errors;
-        } else {
-          this.formErrors = {};
-        }
-      },
       async submitForm() {
+        this.formValid = true;
+        this.error = null;
+
+        if(this.state == 'Particular') {
+          if (this.name.length < 2 || this.familyName.length < 2 ) {
+            this.formValid = false;
+            this.error = 'Veuillez revérifier le nom ou le prénom';
+            return;
+          }
+        }
+
+        if(this.state == 'Company' || this.state == 'SelfEmployed') {
+          if(this.profession.length < 2 || this.comercialName.length < 2) {
+            this.formValid = false;
+            this.error = "Veuillez revérifier le nom de profession ou le nom d'enreprise";
+            return;
+          }
+        }
+
+        if(this.state == 'Association') {
+          if(this.associationName.length < 2) {
+            this.formValid = false;
+            this.error = "Veuillez revérifier le nom de l'association";
+            return;
+          }
+        }
+
+        if (this.city.length < 2 || this.street.length <2 || this.postalCode.length < 5) {
+          this.formValid = false;
+            this.error = "Veuillez revérifier le nom de la city ou le l'adresse ou le code postale";
+            return;
+        }
+
+        if (!passwordValidation(this.password)) {
+          this.formValid = false;
+          this.error = "Veuillez revérifier le mot de passe est valide";
+          return;
+        }
+
+        if (!emailValidation(this.email)) {
+          this.formValid = false;
+          this.error = "Veuillez revérifier le numéro de email est valide";
+          return;
+        }
+
+        if (!phoneValidation(this.phoneNumber)) {
+          this.formValid = false;
+          this.error = "Veuillez revérifier le numéro de téléphone s'il est valide";
+          return;
+        }
+
+        this.dataPayload = {
+          associationName: this.associationName,
+          profession: this.profession,
+          comercialName: this.comercialName,
+          name: this.name,
+          familyName: this.familyName,
+          street: this.street,
+          city: this.city,
+          postalCode: this.postalCode,
+          phoneNumber: this.phoneNumber,
+          email: this.email,
+          password: this.password
+        }
+
+        this.isLoading = true;
+
+        try{
+          console.log(this.dataPayload);
+          // here you apply your api for register 
+          // await this.$store.dispatch('regist/singup', dataPayload);
+          // const redirectUrl = '/' + (this.$route.query.redirect || 'login');
+          // this.$router.replace(redirectUrl);
+         
+        } catch (error) {
+          this.error = error.message || 'Failed to register, verify your information';
+        }
+
+        this.isLoading = false;
       }
+    },
+    components: {
+      Banner
     }
   }
   </script>

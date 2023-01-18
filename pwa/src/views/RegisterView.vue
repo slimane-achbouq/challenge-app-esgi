@@ -60,6 +60,10 @@
           <div class="px-4 py-8">
             <div class="max-w-md mx-auto">
               <h1 class="text-3xl text-slate-800 font-bold mb-6">Tell us what’s your situation ✨</h1>
+                <Banner type="error" :open="!!error">
+                  {{ error }}
+                </Banner>
+                <br>
               <form>
                 <div class="space-y-3 mb-8" v-for="index in organizmeGroup">
                   <label class="relative block cursor-pointer" :for="index.id">
@@ -77,7 +81,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                  <a class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" v-on:click="nextStep()">Next Step -&gt;</a>
+                  <button type="button" class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" @click="nextStep()">Next Step -&gt;</button>
                 </div>
               </form>
 
@@ -102,6 +106,8 @@
 
 <script>
 import OrganismeView from './OrganismeView.vue';
+import Banner from '@/components/Banner.vue'
+
 
 export default {
   name: 'Register',
@@ -130,19 +136,27 @@ export default {
           value: 'Association',
           name: 'Association'
         },
-      ]
+      ],
+      error: null 
     }
   },
   methods: {
     nextStep() {
-      this.state = this.picked;
+      this.error = null;
+
+      if(this.picked == '') {
+        this.error = 'Il faut choisir un organisme';
+      } else {
+        this.state = this.picked;
+      }
     },
     getState(state) {
       this.state = state;
     }
   },
   components: {
-    OrganismeView
+    OrganismeView,
+    Banner
   }
 }
 </script>
