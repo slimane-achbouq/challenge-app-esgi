@@ -80,6 +80,9 @@ class Annonce
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isAvailable = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -165,6 +168,18 @@ class Annonce
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function isIsAvailable(): ?bool
+    {
+        return $this->isAvailable;
+    }
+
+    public function setIsAvailable(?bool $isAvailable): self
+    {
+        $this->isAvailable = $isAvailable;
 
         return $this;
     }

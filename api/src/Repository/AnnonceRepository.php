@@ -39,6 +39,15 @@ class AnnonceRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAvailableAnnonces()
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.isAvailable = true')
+            ->orderBy('a.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Annonce[] Returns an array of Annonce objects
 //     */
