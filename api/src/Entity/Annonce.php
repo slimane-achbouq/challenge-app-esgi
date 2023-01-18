@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -45,7 +46,19 @@ use Symfony\Component\Validator\Constraints as Assert;
                             'file' => [
                                 'type' => 'string',
                                 'format' => 'binary'
-                            ]
+                            ],
+                            'title' => [
+                                'type' => 'string'
+                            ],
+                            'description' => [
+                                'type' => 'text'
+                            ],
+                            'proprietaire' => [
+                                'type' => 'int'
+                            ],
+                            'isAvailable' => [
+                                'type' => 'boolean'
+                            ],
                         ]
                     ]
                 ]
