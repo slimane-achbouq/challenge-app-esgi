@@ -55,6 +55,7 @@
                 :customer="customer"
                 v-model:selected="selected"
                 :value="customer.id"
+                @edit="onEdit"
               />
             </tbody>
           </table>
@@ -86,11 +87,17 @@
           selected.value = customers.value.map(customer => customer.id)
         }
       }
+
+      const onEdit =(user)=>{
+        emit('edit', user)
+      }
       
       watch(selected, () => {
         selectAll.value = customers.value.length === selected.value.length ? true : false
         emit('change-selection', selected.value)
       })    
+
+      
       
       const customers = ref([
         {
@@ -124,6 +131,7 @@
         selected,
         checkAll,
         customers,
+        onEdit
       }
     }
   }
