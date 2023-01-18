@@ -47,11 +47,10 @@ class AnnonceRepository extends ServiceEntityRepository
         }
     }
 
-    public function getAvailableAnnonces(int $page): Paginator
+    /*public function getAvailableAnnonces(int $page): Paginator
     {
         $firstResult = ($page - 1) * self::ITEMS_PER_PAGE;
 
-//        $user = $this->tokenStorage->getToken()->getUser();
         $queryBuilder = $this->createQueryBuilder('a')
             ->andWhere('a.isAvailable = true')
             ->orderBy('a.id', 'ASC');
@@ -65,7 +64,7 @@ class AnnonceRepository extends ServiceEntityRepository
         $paginator = new Paginator($doctrinePaginator);
 
         return $paginator;
-    }
+    }*/
 
 //    /**
 //     * @return Annonce[] Returns an array of Annonce objects
