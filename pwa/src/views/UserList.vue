@@ -64,7 +64,7 @@
   import Sidebar from '../partials/Sidebar.vue'
   import Header from '../partials/Header.vue'
   import DeleteButton from '../components/DeleteButton.vue'
-  import CustomersTable from '../partials/users/UsersTable.vue'
+  import CustomersTable from '../partials/dashboard/users/UsersTable.vue'
   import Pagination from '../components/Pagination.vue'
   
   export default {
