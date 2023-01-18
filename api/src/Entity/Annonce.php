@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Controller\AvailableAnnonceController;
 use App\Controller\CreateAnnonceController;
 use App\Repository\AnnonceRepository;
 use Doctrine\DBAL\Types\Types;
@@ -25,6 +26,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`annonce`')]
 #[Get]
 #[GetCollection]
+#[GetCollection(
+    uriTemplate: '/annonces/get/available',
+    controller: AvailableAnnonceController::class,
+    name: "Get all available Annonce"
+)]
 #[Delete]
 #[Patch]
 #[Post(
