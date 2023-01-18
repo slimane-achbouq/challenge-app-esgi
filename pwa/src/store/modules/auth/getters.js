@@ -9,6 +9,6 @@ export default {
         return state.firstName + ' ' + state.lastName;
     },
     role(state) {
-        return state.role === 'ROLE_ADMIN' ? 'Admin' : 'Client';
+        return state.roles === 'ROLE_ADMIN' ? 'Admin' : 'Client';
     }
 };

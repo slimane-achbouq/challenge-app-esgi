@@ -35,6 +35,7 @@ security:
         - { path: ^/$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
         - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI docs
         - { path: ^/auth, roles: PUBLIC_ACCESS }
+        - { path: /users, roles: PUBLIC_ACCESS, methods: [POST] }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:

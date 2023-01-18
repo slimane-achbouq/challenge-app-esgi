@@ -18,18 +18,27 @@ services:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
 
+#  pwa:
+#    build:
+#      context: ./pwa
+#    volumes:
+#      - ./pwa:/srv/app
+#    environment:
+#      API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://caddy
+#      API_PLATFORM_CREATE_CLIENT_OUTPUT: .
+#      # On Linux, you may want to comment the following line for improved performance
+#      WATCHPACK_POLLING: 'true'
+#    ports:
+#      - '5173:5173'
   pwa:
-    build:
-      context: ./pwa
+    image: node:lts
     volumes:
       - ./pwa:/srv/app
-    environment:
-      API_PLATFORM_CREATE_CLIENT_ENTRYPOINT: http://caddy
-      API_PLATFORM_CREATE_CLIENT_OUTPUT: .
-      # On Linux, you may want to comment the following line for improved performance
-      WATCHPACK_POLLING: 'true'
+    working_dir: /srv/app
     ports:
       - '5173:5173'
+    command: yarn host
+    tty: true
 
   caddy:
     volumes:

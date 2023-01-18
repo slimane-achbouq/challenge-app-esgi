@@ -13,21 +13,21 @@ export default {
                     password: payload.password
                 }),
             });
+            const responseData = await response.json();
             if (!response.ok) {
-                console.log(responseData);
                 const error = new Error(responseData.message || 'Failed to authenticate. Check your login data.');
                 throw error;
             }
 
-            const responseData = await response.json();
             localStorage.setItem('esgi-ws-token', responseData.token);
             const userInfos = VueJwtDecode.decode(responseData.token);
+            console.log(userInfos);
             context.commit('setUser', {
                 token: responseData.token,
                 firstName: userInfos.firstName,
                 lastName: userInfos.lastName,
-                email: userInfos.email,
-                role: userInfos.role,
+                email: userInfos.username,
+                roles: userInfos.roles,
                 id: userInfos.id
             });
         } catch (ex) {
