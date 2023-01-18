@@ -24,17 +24,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 #[ORM\Table(name: '`annonce`')]
-#[Get]
-#[GetCollection]
+//#[Get]
 #[GetCollection(
-    uriTemplate: '/annonces/get/available',
+    uriTemplate: '/annonces',
     controller: AvailableAnnonceController::class,
     name: "Get all available Annonce"
 )]
-#[Delete]
-#[Patch]
+//#[Delete]
+//#[Patch]
 #[Post(
-    uriTemplate: '/annonces/new',
+    uriTemplate: '/annonces',
     controller: CreateAnnonceController::class,
     openapiContext: [
         'requestBody' => [
