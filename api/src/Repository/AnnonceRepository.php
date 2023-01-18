@@ -5,6 +5,10 @@ namespace App\Repository;
 use App\Entity\Annonce;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use ApiPlatform\Doctrine\Orm\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * @extends ServiceEntityRepository<Annonce>
@@ -16,9 +20,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AnnonceRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    const ITEMS_PER_PAGE = 5;
+    private $tokenStorage;
+
+    public function __construct(ManagerRegistry $registry, TokenStorageInterface $tokenStorage)
     {
         parent::__construct($registry, Annonce::class);
+        $this->tokenStorage = $tokenStorage;
     }
 
     public function save(Annonce $entity, bool $flush = false): void
@@ -39,13 +47,24 @@ class AnnonceRepository extends ServiceEntityRepository
         }
     }
 
-    public function getAvailableAnnonces()
+    public function getAvailableAnnonces(int $page): Paginator
     {
-        return $this->createQueryBuilder('a')
+        $firstResult = ($page - 1) * self::ITEMS_PER_PAGE;
+
+//        $user = $this->tokenStorage->getToken()->getUser();
+        $queryBuilder = $this->createQueryBuilder('a')
             ->andWhere('a.isAvailable = true')
-            ->orderBy('a.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('a.id', 'ASC');
+
+        $criteria = Criteria::create()
+            ->setFirstResult($firstResult)
+            ->setMaxResults(self::ITEMS_PER_PAGE);
+        $queryBuilder->addCriteria($criteria);
+
+        $doctrinePaginator = new DoctrinePaginator($queryBuilder);
+        $paginator = new Paginator($doctrinePaginator);
+
+        return $paginator;
     }
 
 //    /**
