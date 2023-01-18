@@ -11,6 +11,7 @@ import ResetPassword from '@/views/ResetPasswordView.vue';
 import successMessageView from '@/views/successMessageView.vue';
 import ResetPasswordInputView from '@/views/ResetPasswordInputView.vue';
 import RegisterView from '@/views/RegisterView.vue'
+import DashboardView from '@/views/DashboardView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,7 @@ const router = createRouter({
     { path: '/login', name: 'login', component: LoginView, meta: { requiresUnauth: false } },
     { path: '/dashboard/users', name: 'users', component: UserList, meta: { requiresUnauth: false } },
     { path: '/register', name: 'register', component: RegisterView, meta: { requiresUnauth: false } },
+    { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { requiresUnauth: true } },
     { path: '/dashboard/announces', name: 'announces', component: AnnouncesList, meta: { requiresUnauth: false } },
     { path: '/announce', name: 'announce', component: Announce, meta: { requiresUnauth: false } },
     { path: '/newannounce', name: 'newannounce', component: NewAnnounce, meta: { requiresUnauth: false } },
