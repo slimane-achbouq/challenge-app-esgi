@@ -48,7 +48,32 @@
             <!-- Table -->
             <CustomersTable @change-selection="updateSelectedItems($event)" />
             
-            
+            <ModalBasic id="feedback-modal" :modalOpen="true" title="Edit User">
+                      <!-- Modal content -->
+                      <div class="px-5 py-4">
+                        <div class="space-y-3">
+                          <div>
+                            <label class="block text-sm font-medium mb-1" for="name">Name <span class="text-rose-500">*</span></label>
+                            <input id="name" class="form-input w-full px-2 py-1" type="text" required />
+                          </div>
+                          <div>
+                            <label class="block text-sm font-medium mb-1" for="email">Email <span class="text-rose-500">*</span></label>
+                            <input id="email" class="form-input w-full px-2 py-1" type="email" required />
+                          </div>
+                          <div>
+                            <label class="block text-sm font-medium mb-1" for="feedback">Message <span class="text-rose-500">*</span></label>
+                            <textarea id="feedback" class="form-textarea w-full px-2 py-1" rows="4" required></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Modal footer -->
+                      <div class="px-5 py-4 border-t border-slate-200">
+                        <div class="flex flex-wrap justify-end space-x-2">
+                          <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" >Cancel</button>
+                          <button class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white">Edit</button>
+                        </div>
+                      </div>
+            </ModalBasic>
             <!-- Pagination -->
             <div class="mt-8">
                 <Pagination />
@@ -69,6 +94,7 @@
   import DeleteButton from '../components/DeleteButton.vue'
   import CustomersTable from '../partials/dashboard/users/UsersTable.vue'
   import Pagination from '../components/Pagination.vue'
+  import ModalBasic from '../components/Modal.vue'
   
   export default {
     name: 'UserList',
@@ -77,7 +103,8 @@
       Header,
       CustomersTable,
       Pagination,
-      DeleteButton
+      DeleteButton,
+      ModalBasic
     },
     setup() {
   
