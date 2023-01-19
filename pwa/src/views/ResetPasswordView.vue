@@ -37,7 +37,7 @@
                     {{ error }}
                 </Banner>
               <!-- Form -->
-              <form>
+              <form @submit.prevent="sendMail">
                 <div class="space-y-4">
                   <div>
                     <label class="block text-sm font-medium mb-1" for="email">Email Address: <span class="text-rose-500">*</span></label>
@@ -51,7 +51,7 @@
                 </svg>
                 <span class="ml-2">Loading</span>
                 </button>
-                  <button v-else type="button" class="btn bg-indigo-500 hover:bg-indigo-600 text-white whitespace-nowrap" @click="sendMail()">Send Reset Link</button>
+                  <button v-else type="submit" class="btn bg-indigo-500 hover:bg-indigo-600 text-white whitespace-nowrap">Send Reset Link</button>
                 </div>
               </form>
             </div>
@@ -78,14 +78,14 @@
     data() {
         return {
             email: '',
-            isLoding: false,
+            isLoading: false,
             error: null
         }
     },
     methods: {
         async sendMail() {
             this.error = null;
-            this.isLoding = true;
+            this.isLoading = true;
 
             // TODO: we need to create function that validate if the email is valide, We imported from utils!
 
@@ -107,7 +107,6 @@
                 this.error = new Error(ex || 'Failed to send email. Check you have already an compte.');
                 throw error;
             }
-            this.isLoding = false;
         }
     }, 
     components: {

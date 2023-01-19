@@ -109,18 +109,18 @@ export default {
             }
 
             try {
-              await fetch('https://localhost/update/password', {
+              await fetch(`https://localhost/update/password/${this.$route.params.token}`, {
                   headers: {
                       'Content-Type': 'application/json',
                   },
                   method: 'POST',
                   body: JSON.stringify({
-                      newPassword: this.email,
+                      newPassword: this.newPassword,
                       confirmPassword: this.confirmPassword
                   }),
               });
 
-              const redirectUrl = '/' + (this.$route.query.redirect || 'login');
+              const redirectUrl = '/' + (this.$route.query.redirect || 'reset-password-modification-message');
               this.$router.replace(redirectUrl);
 
             } catch (ex) {
