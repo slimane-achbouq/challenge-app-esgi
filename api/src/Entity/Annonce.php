@@ -69,7 +69,7 @@ use Symfony\Component\Validator\Constraints as Assert;
                             'description' => [
                                 'type' => 'text'
                             ],
-                            'proprietaire' => [
+                            'owner' => [
                                 'type' => 'int'
                             ],
                             'price' => [
@@ -104,7 +104,7 @@ class Annonce
     private ?string $title = null;
 
     #[Groups(['annonce:read'])]
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -120,13 +120,13 @@ class Annonce
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     #[Groups(['annonce:write', 'annonce:read'])]
-    private ?User $proprietaire = null;
+    private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     #[Groups(['edit_annonce:write', 'annonce:read'])]
     private ?bool $isAvailable = null;
 
@@ -210,7 +210,9 @@ class Annonce
     #[ORM\PrePersist]
     public function prePersist(): void
     {
-        $this->status = "0";
+        $this->createdAt = new \DateTimeImmutable();
+        $this->isAvailable = true;
+        $this->status = 0;
     }
 
     #[ORM\PreUpdate]
@@ -226,14 +228,14 @@ class Annonce
         return $this;
     }*/
 
-    public function getProprietaire(): ?User
+    public function getOwner(): ?User
     {
-        return $this->proprietaire;
+        return $this->owner;
     }
 
-    public function setProprietaire(?User $proprietaire): self
+    public function setOwner(?User $owner): self
     {
-        $this->proprietaire = $proprietaire;
+        $this->owner = $owner;
 
         return $this;
     }
