@@ -31,14 +31,14 @@
               <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
   
                 <!-- Delete button -->
-                <DeleteButton :selectedItems="selectedItems" />       
+                <DeleteButton :selectedItems="selectedItems" @click="modaDeletelOpen=true"/>       
               </div>
   
             </div>
             
             <!-- Search form -->
             <div class="max-w-xl mb-5">
-                    <form class="relative">
+                    <form class="relative"      >
                     <label for="app-search" class="sr-only">Search</label>
                     <input id="app-search" class="form-input w-full pl-9 py-3 focus:border-slate-300" type="search" placeholder="Search…" />
                     <button class="absolute inset-0 right-auto group" type="submit" aria-label="Search">
@@ -96,6 +96,42 @@
                         </div>
                       </div>
             </ModalBasic>
+
+
+            <ModalBasic id="danger-modal" :modalOpen="modaDeletelOpen" >
+                      <div class="p-5 flex w-full space-x-4">
+                        <!-- Icon -->
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-rose-100">
+                          <svg class="w-4 h-4 shrink-0 fill-current text-rose-500" viewBox="0 0 16 16">
+                            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z" />
+                          </svg>
+                        </div>
+                        <!-- Content -->
+                        <div>
+                          <!-- Modal header -->
+                          <div class="mb-2">
+                            <div class="text-lg font-semibold text-slate-800">Delete 1 customer?</div>
+                          </div>
+                          <!-- Modal content -->
+                          <div class="text-sm mb-10">
+                            <div class="">
+                              <p>Are you sure you want to delete user(s) ?</p>
+                            </div>
+                          </div>
+                          <!-- Modal footer -->
+                          
+                        </div>
+
+                        
+                      </div>
+
+                      <div class="flex flex-wrap justify-end space-x-2 m-6">
+                            <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click.stop="modaDeletelOpen=false">Cancel</button>
+                            <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white">Yes, Delete it</button>
+                      </div>
+                    </ModalBasic>
+
+
             <!-- Pagination -->
             <div class="mt-8">
                 <Pagination />
@@ -133,6 +169,7 @@
       const sidebarOpen = ref(false)
       const selectedItems = ref([])
       const modalOpen = ref(false)
+      const modaDeletelOpen = ref(false)
   
       const updateSelectedItems = (selected) => {
         selectedItems.value = selected
@@ -142,13 +179,15 @@
         modalOpen.value=true
         selectedItems.value = selected
       }
+
   
       return {
         sidebarOpen,
         selectedItems,
         modalOpen,
         updateSelectedItems,
-        onOpenModal
+        onOpenModal,
+        modaDeletelOpen
       }  
     }
   }
