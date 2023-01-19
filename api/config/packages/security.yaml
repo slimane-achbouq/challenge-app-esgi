@@ -18,18 +18,17 @@ security:
         dev:
             pattern: ^/_(profiler|wdt)
             security: false
-        api:
-            pattern: ^/api/
+        main:
             stateless: true
             provider: users
-            jwt: ~
-        main:
             json_login:
                 check_path: auth # The name in routes.yaml is enough for mapping
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
+            user_checker: App\Security\UserChecker
 
     access_control:
         - { path: ^/$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
