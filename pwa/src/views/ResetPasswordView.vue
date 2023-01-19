@@ -91,8 +91,8 @@
 
             try {
                 // await this.$store.dispatch('reset-password', this.email);
-                // const redirectUrl = '/' + (this.$route.query.redirect || 'login');
-                // this.$router.replace(redirectUrl);
+                const redirectUrl = '/' + (this.$route.query.redirect || 'reset-password-success');
+                this.$router.replace(redirectUrl);
             } catch(error) {
                 this.error = error.message || 'You need to resend an email!';
             }
