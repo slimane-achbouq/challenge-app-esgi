@@ -90,11 +90,22 @@
             // TODO: we need to create function that validate if the email is valide, We imported from utils!
 
             try {
-                // await this.$store.dispatch('reset-password', this.email);
-                const redirectUrl = '/' + (this.$route.query.redirect || 'reset-password-success');
-                this.$router.replace(redirectUrl);
-            } catch(error) {
-                this.error = error.message || 'You need to resend an email!';
+              await fetch('https://localhost/reset/password', {
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  method: 'POST',
+                  body: JSON.stringify({
+                      email: this.email,
+                  }),
+              });
+
+              const redirectUrl = '/' + (this.$route.query.redirect || 'reset-password-success');
+              this.$router.replace(redirectUrl);
+
+            } catch (ex) {
+                this.error = new Error(ex || 'Failed to send email. Check you have already an compte.');
+                throw error;
             }
             this.isLoding = false;
         }
