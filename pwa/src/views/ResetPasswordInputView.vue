@@ -108,16 +108,24 @@ export default {
                 this.error = "Les mots de passe ne correspondent pas";
             }
 
-            const actionsPayload = {
-                newPassword: this.newPassword,
-                confirmPassword: this.confirmPassword,
-                token:  this.$route.params.token
-            }
-
             try {
-                console.log(actionsPayload);
-            } catch (error) {
-                this.error = error.message || 'There is a problem !';
+              await fetch('https://localhost/update/password', {
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  method: 'POST',
+                  body: JSON.stringify({
+                      newPassword: this.email,
+                      confirmPassword: this.confirmPassword
+                  }),
+              });
+
+              const redirectUrl = '/' + (this.$route.query.redirect || 'login');
+              this.$router.replace(redirectUrl);
+
+            } catch (ex) {
+                this.error = new Error(ex || 'Failed to change password. Check you have already an compte.');
+                throw error;
             }
         }
 
