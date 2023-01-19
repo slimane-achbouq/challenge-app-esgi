@@ -44,7 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[GetCollection]
 //#[Delete]
 #[Patch(
-    denormalizationContext: ['groups' => ['patch_annonce:write']]
+    denormalizationContext: ['groups' => ['patch_status_annonce:write']]
 )]
 #[Put(
     denormalizationContext: ['groups' => ['edit_annonce:write']]
@@ -99,7 +99,7 @@ class Annonce
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read', 'patch_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -123,22 +123,23 @@ class Annonce
     private ?User $proprietaire = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read', 'patch_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['edit_annonce:write', 'annonce:read', 'patch_annonce:write'])]
+    #[Groups(['edit_annonce:write', 'annonce:read'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read', 'patch_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read', 'patch_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     private ?bool $isPerHour = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['patch_status_annonce:write'])]
     private ?string $status = null;
 
     public function getId(): ?int
