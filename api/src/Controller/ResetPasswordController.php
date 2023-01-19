@@ -42,7 +42,7 @@ class ResetPasswordController extends AbstractController
         $now = new \DateTime();
         if ($resetPassword && $resetPassword->getCreatedAt()->modify('+ 3 hour') )
         {
-            if ($body['newPassword'] === $body['newPassword2']) {
+            if ($body['newPassword'] === $body['confirmPassword']) {
 
                 $newPassword = $encoder->hashPassword($resetPassword->getUtilisateur() ,$body['newPassword']);
                 $resetPassword->getUtilisateur()->setPassword($newPassword);
