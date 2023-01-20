@@ -125,9 +125,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'is_verified', type: Types::BOOLEAN, nullable: true, options: ["default" => false])]
     private ?bool $isVerified = null;
 
+    #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
+    private Collection $resetPasswords;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
+        $this->resetPasswords = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,6 +228,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($annonce->getOwner() === $this) {
                 $annonce->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResetPassword>
+     */
+    public function getResetPasswords(): Collection
+    {
+        return $this->resetPasswords;
+    }
+
+    public function addResetPassword(ResetPassword $resetPassword): self
+    {
+        if (!$this->resetPasswords->contains($resetPassword)) {
+            $this->resetPasswords->add($resetPassword);
+            $resetPassword->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResetPassword(ResetPassword $resetPassword): self
+    {
+        if ($this->resetPasswords->removeElement($resetPassword)) {
+            // set the owning side to null (unless already changed)
+            if ($resetPassword->getUtilisateur() === $this) {
+                $resetPassword->setUtilisateur(null);
             }
         }
 
