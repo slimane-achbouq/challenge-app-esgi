@@ -1,7 +1,5 @@
 api_platform:
     collection:
-        pagination:
-            page_parameter_name: page
     title: Hello API Platform
     version: 1.0.0
     mapping:
@@ -18,7 +16,6 @@ api_platform:
     mercure: ~
     # Good cache defaults for REST APIs
     defaults:
-        pagination_items_per_page: 2
         stateless: true
         cache_headers:
             vary: [ 'Content-Type', 'Authorization', 'Origin' ]
