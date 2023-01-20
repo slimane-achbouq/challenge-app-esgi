@@ -30,6 +30,10 @@ const router = createRouter({
     { path: '/reset-password', name: 'reset-password', component: ResetPassword, meta: { requiresUnauth: false }},
     { path: '/reset-password-success', name: 'reset-password-success', component: successMessageView, meta: { requiresUnauth: false }},
     { path: '/reset-password-input/:token', name: 'reset-password-input', component: ResetPasswordInputView, meta: { requiresUnauth: false }},
+    { path: '/reset-password-modification-message', name: 'reset-password-modification-message', component: ResetPasswordModificationMessageView, meta: { requiresUnauth: false }},
+
+    { path: '/demandes/:id', name: 'show-demande', meta: { requiresUnauth: false }},
+    { path: '/demande_histories/:id', name: 'show-demande-histories', meta: { requiresUnauth: false }},
   ]
 })
 
