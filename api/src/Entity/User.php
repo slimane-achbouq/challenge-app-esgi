@@ -118,7 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[Groups(['user:read'])]
-    #[ORM\OneToMany(mappedBy: 'proprietaire', targetEntity: Annonce::class)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
     private Collection $annonces;
 
     #[Groups(['user:read', 'user:read:verification_account_token'])]
@@ -212,7 +212,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->annonces->contains($annonce)) {
             $this->annonces->add($annonce);
-            $annonce->setProprietaire($this);
+            $annonce->setOwner($this);
         }
 
         return $this;
@@ -222,8 +222,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->annonces->removeElement($annonce)) {
             // set the owning side to null (unless already changed)
-            if ($annonce->getProprietaire() === $this) {
-                $annonce->setProprietaire(null);
+            if ($annonce->getOwner() === $this) {
+                $annonce->setOwner(null);
             }
         }
 
