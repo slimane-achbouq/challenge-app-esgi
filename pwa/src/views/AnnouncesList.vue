@@ -17,7 +17,7 @@
             <div class="mb-5">
   
               <!-- Title -->
-              <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Find the right product for you ✨</h1>
+              <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Liste of annoucement ✨</h1>
   
             </div>
   
