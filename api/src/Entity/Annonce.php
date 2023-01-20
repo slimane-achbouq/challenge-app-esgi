@@ -69,9 +69,6 @@ use Symfony\Component\Validator\Constraints as Assert;
                             'description' => [
                                 'type' => 'text'
                             ],
-                            'owner' => [
-                                'type' => 'int'
-                            ],
                             'price' => [
                                 'type' => 'float'
                             ],
@@ -119,7 +116,7 @@ class Annonce
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
-    #[Groups(['annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:read'])]
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
