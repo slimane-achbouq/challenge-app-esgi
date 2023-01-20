@@ -139,6 +139,9 @@ class Annonce
     #[Groups(['patch_status_annonce:write'])]
     private ?string $status = null;
 
+    #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]
+    private ?Demande $demande = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -293,6 +296,23 @@ class Annonce
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDemande(): ?Demande
+    {
+        return $this->demande;
+    }
+
+    public function setDemande(Demande $demande): self
+    {
+        // set the owning side of the relation if necessary
+        if ($demande->getAnnonce() !== $this) {
+            $demande->setAnnonce($this);
+        }
+
+        $this->demande = $demande;
 
         return $this;
     }

@@ -128,10 +128,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
     private Collection $resetPasswords;
 
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class)]
+    private Collection $demandes;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class)]
+    private Collection $demandeHistories;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->resetPasswords = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
+        $this->demandeHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -295,5 +303,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerifyAccountToken(?string $verifyAccountToken): void
     {
         $this->verifyAccountToken = $verifyAccountToken;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes->add($demande);
+            $demande->setLocataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            // set the owning side to null (unless already changed)
+            if ($demande->getLocataire() === $this) {
+                $demande->setLocataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DemandeHistory>
+     */
+    public function getDemandeHistories(): Collection
+    {
+        return $this->demandeHistories;
+    }
+
+    public function addDemandeHistory(DemandeHistory $demandeHistory): self
+    {
+        if (!$this->demandeHistories->contains($demandeHistory)) {
+            $this->demandeHistories->add($demandeHistory);
+            $demandeHistory->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemandeHistory(DemandeHistory $demandeHistory): self
+    {
+        if ($this->demandeHistories->removeElement($demandeHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($demandeHistory->getOwner() === $this) {
+                $demandeHistory->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }
