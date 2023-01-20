@@ -43,7 +43,7 @@ class ResetPasswordController extends AbstractController
             $this->sendMailService->send(
                 'zakaria@gmail.com',
                 $user->getEmail(),
-                'get the link to reset your password',
+                'Reset your password',
                 'reset-password',
                 compact('user', 'token')
             );
