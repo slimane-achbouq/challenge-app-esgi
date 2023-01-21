@@ -9,15 +9,31 @@
         
         <main>
           <div class="px-4 sm:px-6 lg:px-8 py-8 w-full">
-  
+            
             <!-- Page content -->
             <div class="max-w-5xl mx-auto flex flex-col lg:flex-row lg:space-x-8 xl:space-x-16">
   
               <!-- Content -->
               <div>
-                <header class="mb-4">
-                  <!-- Title -->
-                  <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2">Vélo</h1>
+                <header class="mb-4 flex justify-between">
+                  
+                  <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">Vélo</h1>
+
+                  <div>
+                  <button class="btn border-slate-200 hover:border-slate-300 text-slate-600">
+                      <svg class="w-4 h-4 fill-current text-slate-500 shrink-0" viewBox="0 0 16 16">
+                        <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z" />
+                      </svg>
+                      <span class="ml-2">Edit </span>
+                    </button>
+
+                  <button class=" ml-2 justify-end btn border-slate-200 hover:border-slate-300 text-rose-500 sm:justify-end">
+                      <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 16 16">
+                        <path d="M5 7h2v6H5V7zm4 0h2v6H9V7zm3-6v2h4v2h-1v10c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1V5H0V3h4V1c0-.6.4-1 1-1h6c.6 0 1 .4 1 1zM6 2v1h4V2H6zm7 3H3v9h10V5z" />
+                      </svg>
+                      <span class="ml-2">Delete</span>
+                  </button>
+                </div>
                 </header>
   
                 <!-- Meta -->
@@ -31,6 +47,7 @@
                       ELMOHRI Othmane
                     </a>
                   </div>
+
                   <!-- Right side -->
                   <div class="flex flex-wrap items-center sm:justify-end space-x-4">
                     
@@ -73,8 +90,10 @@
                       <div class="inline-flex text-sm font-medium text-amber-600">4.2</div>
                     </div>
                   </div>
+                  
                 </div>
   
+                <div class="text-sm font-semibold text-indigo-500 uppercase mb-2">Mon 27 Dec, 2021 </div>
                 <!-- Image -->
                 <figure class="mb-6">
                   <img class="w-full rounded-sm" src="https://img.freepik.com/photos-gratuite/velo-blanc-debout-dans-parc_1153-7319.jpg?w=2000" width="640" height="360" alt="Product" />
@@ -84,7 +103,6 @@
                 <div>
                   <h2 class="text-xl leading-snug text-slate-800 font-bold mb-2">Description</h2>
                   <p class="mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua u t enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                 
                 </div>
   
                 <hr class="my-6 border-t border-slate-200" />
@@ -100,7 +118,7 @@
                       <button class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
                         <div class="flex flex-wrap items-center justify-between mb-0.5">
                           <span class="font-semibold text-slate-800">Per hour</span>
-                          <span class="font-medium text-emerald-600">$39.00</span>
+                          <span class="font-medium text-emerald-600">€39.00</span>
                         </div>
                       </button>
                     </li>
@@ -108,16 +126,110 @@
                       <button class="w-full h-full text-left py-3 px-4 rounded bg-white border-2 border-indigo-400 shadow-sm duration-150 ease-in-out">
                         <div class="flex flex-wrap items-center justify-between mb-0.5">
                           <span class="font-semibold text-slate-800">Per day </span>
-                          <span class="font-medium text-emerald-600">$69.00</span>
+                          <span class="font-medium text-emerald-600">€69.00</span>
                         </div>
                       </button>
                     </li>
                   </ul>
                   <div class="mb-4">
-                    <a class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white" href="#0">Buy Now - $69.00</a>
+                    <a class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white" href="#0">Order Now - €69.00</a>
                   </div>
                 </div>
+
+                <hr class="my-6 border-t border-slate-200" />
+                 <!-- 2nd block -->
+              <div class="bg-white p-5 shadow-lg rounded-sm border border-slate-200 lg:w-72 xl:w-80">
+                <div class="flex justify-between space-x-1 mb-5">
+                  <div class="text-sm text-slate-800 font-semibold">Les demandes (127)</div>
+                </div>
+                <ul class="space-y-3">
+                  <li>
+                    <div class="flex justify-between">
+                      <div class="grow flex items-center">
+                        <div class="relative mr-3">
+                          <img class="w-8 h-8 rounded-full" src="../../images/user-32-08.jpg" width="32" height="32" alt="User 08" />
+                        </div>
+                        <div class="truncate">
+                          <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
+                        </div>
+                      </div>
+                      <button class="text-slate-400 hover:text-slate-500 rounded-full">
+                        <span class="sr-only">Menu</span>
+                        <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                          <circle cx="16" cy="16" r="2" />
+                          <circle cx="10" cy="16" r="2" />
+                          <circle cx="22" cy="16" r="2" />
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="flex justify-between">
+                      <div class="grow flex items-center">
+                        <div class="relative mr-3">
+                          <img class="w-8 h-8 rounded-full" src="../../images/user-32-01.jpg" width="32" height="32" alt="User 01" />
+                        </div>
+                        <div class="truncate">
+                          <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
+                        </div>
+                      </div>
+                      <button class="text-slate-400 hover:text-slate-500 rounded-full">
+                        <span class="sr-only">Menu</span>
+                        <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                          <circle cx="16" cy="16" r="2" />
+                          <circle cx="10" cy="16" r="2" />
+                          <circle cx="22" cy="16" r="2" />
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="flex justify-between">
+                      <div class="grow flex items-center">
+                        <div class="relative mr-3">
+                          <img class="w-8 h-8 rounded-full" src="../../images/user-32-03.jpg" width="32" height="32" alt="User 03" />
+                        </div>
+                        <div class="truncate">
+                          <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
+                        </div>
+                      </div>
+                      <button class="text-slate-400 hover:text-slate-500 rounded-full">
+                        <span class="sr-only">Menu</span>
+                        <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                          <circle cx="16" cy="16" r="2" />
+                          <circle cx="10" cy="16" r="2" />
+                          <circle cx="22" cy="16" r="2" />
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="flex justify-between">
+                      <div class="grow flex items-center">
+                        <div class="relative mr-3">
+                          <img class="w-8 h-8 rounded-full" src="../../images/user-32-05.jpg" width="32" height="32" alt="User 05" />
+                        </div>
+                        <div class="truncate">
+                          <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
+                        </div>
+                      </div>
+                      <button class="text-slate-400 hover:text-slate-500 rounded-full">
+                        <span class="sr-only">Menu</span>
+                        <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
+                          <circle cx="16" cy="16" r="2" />
+                          <circle cx="10" cy="16" r="2" />
+                          <circle cx="22" cy="16" r="2" />
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                </ul>
               </div>
+
+                
+              </div>
+
+              
   
             </div>
   
