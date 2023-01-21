@@ -3,6 +3,7 @@ import LoginView from '@/views/LoginView.vue';
 import DashboardView from '@/views/DashboardView.vue';
 import UserList from '@/views/UserList.vue';
 import AnnouncesList from '@/views/AnnouncesList.vue';
+import Announce from '@/views/Announce.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +13,7 @@ const router = createRouter({
     { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { requiresUnauth: false } },
     { path: '/dashboard/users', name: 'users', component: UserList, meta: { requiresUnauth: false } },
     { path: '/dashboard/announces', name: 'announces', component: AnnouncesList, meta: { requiresUnauth: false } },
+    { path: '/announce', name: 'announce', component: Announce, meta: { requiresUnauth: false } },
   ]
 })
 
