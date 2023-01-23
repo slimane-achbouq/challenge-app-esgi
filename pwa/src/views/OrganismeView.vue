@@ -63,70 +63,82 @@
                 <form @submit.prevent="submitForm">
                   <div class="space-y-4 mb-8">
                     <!-- Nom de l'association Code -->
-                    <div v-if="state == 'Association'">
-                        <label class="block text-sm font-medium mb-1" for="associationName">Association name: <span class="text-rose-500">*</span></label>
-                        <input id="associationName" class="form-input w-full" type="text" v-model.trim="associationName" required/>
-                    </div>
+                      <div v-if="state == 'Association'">
+                          <label class="block text-sm font-medium mb-1" for="associationName">Association name: <span class="text-rose-500">*</span></label>
+                          <input id="associationName" class="form-input w-full" type="text" v-model.trim="associationName" required/>
+                      </div>
+                      <div v-if="errors.associationName" class="text-xs mt-1 text-rose-500">{{ errors.associationName }}</div>
 
                     <!-- Profession Comercial Name Code -->
                     <div class="flex space-x-4" v-if="state == 'Company' || state == 'SelfEmployed'">
                       <div class="flex-1">
-                        <label class="block text-sm font-medium mb-1" for="profession">Profession: <span class="text-rose-500">*</span></label>
-                        <input id="profession" class="form-input w-full" type="text" v-model.trim="profession" required/>
+                          <label class="block text-sm font-medium mb-1" for="profession">Profession: <span class="text-rose-500">*</span></label>
+                          <input id="profession" class="form-input w-full" type="text" v-model.trim="profession" required/>          
+                          <div v-if="errors.profession" class="text-xs mt-1 text-rose-500">{{ errors.profession }}</div>
                       </div>
                       <div class="flex-1">
-                        <label class="block text-sm font-medium mb-1" for="comercialName">Commercial name: <span class="text-rose-500">*</span></label>
-                        <input id="comercialName" class="form-input w-full" type="text" v-model.trim="comercialName" required/>
-                      </div>
+                          <label class="block text-sm font-medium mb-1" for="comercialName">Commercial name: <span class="text-rose-500">*</span></label>
+                          <input id="comercialName" class="form-input w-full" type="text" v-model.trim="comercialName" required/>
+                          <div v-if="errors.comercialName" class="text-xs mt-1 text-rose-500">{{ errors.comercialName }}</div>
+                       </div>
                     </div>
 
                     <!-- Name and FamilyName Code -->
                     <div class="flex space-x-4" v-if="state == 'Particular'">
                       <div class="flex-1">
-                        <label class="block text-sm font-medium mb-1" for="name">Name:  <span class="text-rose-500">*</span></label>
-                        <input id="name" class="form-input w-full" type="text" v-model.trim="name" required/>
+                          <label class="block text-sm font-medium mb-1" for="name">Name:  <span class="text-rose-500">*</span></label>
+                          <input id="name" class="form-input w-full" type="text" v-model.trim="name" required/>
+                          <div v-if="errors.name" class="text-xs mt-1 text-rose-500">{{ errors.name }}</div>
                       </div>
                       <div class="flex-1">
-                        <label class="block text-sm font-medium mb-1" for="familyName">Family Name: <span class="text-rose-500">*</span></label>
-                        <input id="familyName" class="form-input w-full" type="text" v-model.trim="familyName" required/>
+                          <label class="block text-sm font-medium mb-1" for="familyName">Family Name: <span class="text-rose-500">*</span></label>
+                          <input id="familyName" class="form-input w-full" type="text" v-model.trim="familyName" required/>
+                          <div v-if="errors.familyName" class="text-xs mt-1 text-rose-500">{{ errors.familyName }}</div>
                       </div>
                     </div>
 
                     <!-- Street Address -->
                     <div>
-                      <label class="block text-sm font-medium mb-1" for="street">Street Address: <span class="text-rose-500">*</span></label>
-                      <input id="street" class="form-input w-full" type="text" v-model.trim="street" required/>
+                        <label class="block text-sm font-medium mb-1" for="street">Street Address: <span class="text-rose-500">*</span></label>
+                        <input id="street" class="form-input w-full" type="text" v-model.trim="street" required/>
+                        <div v-if="errors.street" class="text-xs mt-1 text-rose-500">{{ errors.street }}</div>
                     </div>
 
                     <!-- City and Postal Code -->
+                    
                     <div class="flex space-x-4">
                       <div class="flex-1">
-                        <label class="block text-sm font-medium mb-1" for="city">City: <span class="text-rose-500">*</span></label>
-                        <input id="city" class="form-input w-full" type="text" v-model.trim="city" required/>
+                          <label class="block text-sm font-medium mb-1" for="city">City: <span class="text-rose-500">*</span></label>
+                          <input id="city" class="form-input w-full" type="text" v-model.trim="city" required/>
+                          <div v-if="errors.city" class="text-xs mt-1 text-rose-500">{{ errors.city }}</div>
                       </div>
                       <div class="flex-1">
-                        <label class="block text-sm font-medium mb-1" for="postalCode">Postal Code: <span class="text-rose-500">*</span></label>
-                        <input id="postalCode" class="form-input w-full" type="text" v-model.trim="postalCode" required/>
+                          <label class="block text-sm font-medium mb-1" for="postalCode">Postal Code: <span class="text-rose-500">*</span></label>
+                          <input id="postalCode" class="form-input w-full" type="text" v-model.trim="postalCode" required/>
+                          <div v-if="errors.postalCode" class="text-xs mt-1 text-rose-500">{{ errors.postalCode }}</div>
                       </div>
                     </div>
 
                     <!-- Phone number Code -->
                     <div>
-                      <label class="block text-sm font-medium mb-1" for="phoneNumber">Phone number: <span class="text-rose-500">*</span></label>
-                      <input id="phoneNumber" class="form-input w-full" type="tel" v-model.trim="phoneNumber" required/>
+                        <label class="block text-sm font-medium mb-1" for="phoneNumber">Phone number: <span class="text-rose-500">*</span></label>
+                        <input id="phoneNumber" class="form-input w-full" type="tel" v-model.trim="phoneNumber" required/>
+                       <div v-if="errorEmail" class="text-xs mt-1 text-rose-500">{{ e }}</div>
                     </div>
 
                     <!-- Email Code -->
                     <div>
                       <label class="block text-sm font-medium mb-1" for="email">E-mail: <span class="text-rose-500">*</span></label>
                       <input id="email" class="form-input w-full" type="text" v-model.trim="email" required/>
+                      <div v-if="errors.email" class="text-xs mt-1 text-rose-500">{{ errors.email }}</div>
                     </div>
 
                     <!-- Password Code -->
-                    <div>
+                    <div> 
                       <label class="block text-sm font-medium mb-1" for="password">Password: <span class="text-rose-500">*</span></label>
                       <input id="password" class="form-input w-full" type="password" v-model.trim="password" required/>
                     </div>
+                    <div v-if="errors.password" class="text-xs mt-1 text-rose-500">{{ errors.password }}</div>
                   </div>
                   <div class="flex items-center justify-between">
                     <a class="text-sm underline hover:no-underline"  @click="back()">&lt;- Back</a>
@@ -176,7 +188,19 @@
         password: '',
         formValid: true,
         isLoading: false,
-        error: null 
+        errors: {
+          associationName: '',
+          profession: '',
+          comercialName: '',
+          name: '',
+          familyName: '',
+          street: '',
+          city: '',
+          postalCode: '',
+          phoneNumber: '',
+          email: '',
+          password: '',
+        }
       }
     },
     methods: {
@@ -185,20 +209,33 @@
       },
       async submitForm() {
         this.formValid = true;
-        this.error = null;
+        Object.keys(this.errors).forEach(key => this.errors[key]='');
 
         if(this.state == 'Particular') {
-          if (this.name.length < 2 || this.familyName.length < 2 ) {
+          if (this.name.length < 2) {
             this.formValid = false;
-            this.error = 'Veuillez revérifier le nom ou le prénom';
+            this.errors.name = 'Veuillez revérifier votre nom';
+            return;
+          }
+          if (this.familyName.length < 2 ) {
+            this.formValid = false;
+            this.errors.familyName = 'Veuillez revérifier votre prénom';
             return;
           }
         }
 
-        if(this.state == 'Company' || this.state == 'SelfEmployed') {
-          if(this.profession.length < 2 || this.comercialName.length < 2) {
+        if(this.state == 'SelfEmployed') {
+          if(this.profession.length < 2) {
             this.formValid = false;
-            this.error = "Veuillez revérifier le nom de profession ou le nom d'enreprise";
+            this.errors.profession = "Veuillez revérifier le nom de profession";
+            return;
+          }
+        }
+
+        if(this.state == 'Company') {
+          if(this.comercialName.length < 2) {
+            this.formValid = false;
+            this.errors.comercialName = "Veuillez revérifier le nom d'enreprise";
             return;
           }
         }
@@ -206,32 +243,45 @@
         if(this.state == 'Association') {
           if(this.associationName.length < 2) {
             this.formValid = false;
-            this.error = "Veuillez revérifier le nom de l'association";
+            this.errors.associationName = "Veuillez revérifier le nom de l'association";
             return;
           }
         }
 
-        if (this.city.length < 2 || this.street.length <2 || this.postalCode.length < 5) {
+        if (this.city.length < 2) {
           this.formValid = false;
-            this.error = "Veuillez revérifier le nom de la city ou le l'adresse ou le code postale";
+            this.errors.city = "Veuillez revérifier le nom de la city";
             return;
         }
+        
+        if (this.street.length <2) {
+          this.formValid = false;
+          this.errors.street = "Veuillez revérifier votre adresse";
+          return;
+        }
+
+        if (this.postalCode.length < 5) {
+          this.formValid = false;
+            this.errors.postalCode = "Veuillez revérifier votre code postale";
+            return;
+        }
+        
 
         if (!passwordValidation(this.password)) {
           this.formValid = false;
-          this.error = "Veuillez revérifier le mot de passe est valide";
+          this.errors.password = "Veuillez revérifier le mot de passe s'il est valide";
           return;
         }
 
         if (!emailValidation(this.email)) {
           this.formValid = false;
-          this.error = "Veuillez revérifier le numéro de email est valide";
+          this.errors.email = "Veuillez revérifier votre email s'il est valide";
           return;
         }
 
         if (!phoneValidation(this.phoneNumber)) {
           this.formValid = false;
-          this.error = "Veuillez revérifier le numéro de téléphone s'il est valide";
+          this.error = "Veuillez revérifier votre numéro de téléphone s'il est valide";
           return;
         }
 
