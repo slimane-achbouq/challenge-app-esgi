@@ -26,7 +26,6 @@ const router = createRouter({
     { path: '/dashboard/announces', name: 'announces', component: AnnouncesList, meta: { requiresUnauth: false } },
     { path: '/announce', name: 'announce', component: Announce, meta: { requiresUnauth: false } },
     { path: '/newannounce', name: 'newannounce', component: NewAnnounce, meta: { requiresUnauth: false } },
-    { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { requiresUnauth: true } },
     { path: '/account-verification/:userId/:token', name: 'account-verification', component: AccountVerificationView , meta: { requiresUnauth: false } },
     { path: '/reset-password', name: 'reset-password', component: ResetPassword, meta: { requiresUnauth: false }},
     { path: '/reset-password-success', name: 'reset-password-success', component: successMessageView, meta: { requiresUnauth: false }},
