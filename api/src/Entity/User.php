@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -29,6 +30,9 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
 #[ApiResource(
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
+)]
+#[Patch(
+    denormalizationContext: ['groups' => ['user-update:write']]
 )]
 #[Post(
     uriTemplate: '/users/{id}/account-verification',
@@ -92,14 +96,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Groups(['user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:read', 'user:read:verification_account_token','user-update:write'])]
     #[ORM\Column]
     private array $roles = [];
 
@@ -121,7 +125,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
     private Collection $annonces;
 
-    #[Groups(['user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:read', 'user:read:verification_account_token','user-update:write'])]
     #[ORM\Column(name: 'is_verified', type: Types::BOOLEAN, nullable: true, options: ["default" => false])]
     private ?bool $isVerified = null;
 
