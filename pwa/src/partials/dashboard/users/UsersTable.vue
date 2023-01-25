@@ -137,7 +137,8 @@
           }
         })
         users.value = response.data
-        console.log(users.value)
+        console.log(response.data)
+        console.log(users)
       } catch (error) {
         console.error(error)
       }
