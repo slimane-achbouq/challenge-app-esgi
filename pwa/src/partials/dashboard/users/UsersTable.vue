@@ -66,8 +66,9 @@
   </template>
   
 <script>
-  import { ref, watch } from 'vue'
+  import { ref, watch,onMounted } from 'vue'
   import Customer from './UsersTableItem.vue'
+  import axios from 'axios'
   
   
   export default {
@@ -80,6 +81,8 @@
   
       const selectAll = ref(false)
       const selected = ref([])
+      const users = ref([])
+      const token = localStorage.getItem('esgi-ws-token')
   
       const checkAll = () => {
         selected.value = []
@@ -125,14 +128,39 @@
           fav: false
         },
       ])
+
+      const fetchUsers = async() => {
+      try {
+        const response = await axios.get('https://localhost/users', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        users.value = response.data
+        console.log(users.value)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+      onMounted(fetchUsers)
+        
   
       return {
         selectAll,
         selected,
         checkAll,
         customers,
-        onEdit
+        onEdit,
+        users,
+        fetchUsers
       }
+
+
+      
+
     }
+
+    
   }
   </script>
