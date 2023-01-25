@@ -8,7 +8,7 @@ import Announce from '@/views/Announce.vue';
 import NewAnnounce from '@/views/NewAnnounce.vue';
 import AccountVerificationView from '@/views/AccountVerificationView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
-import successMessageView from '@/views/ResetPasswordSuccessView.vue';
+import successMessageView from '@/views/successMessageView.vue';
 import ResetPasswordInputView from '@/views/ResetPasswordInputView.vue';
 
 const router = createRouter({
