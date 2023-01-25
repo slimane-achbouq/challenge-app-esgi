@@ -137,7 +137,7 @@
           }
         })
         users.value = response.data
-        console.log(response.data)
+        console.log(response.data.hydra)
         console.log(users)
       } catch (error) {
         console.error(error)

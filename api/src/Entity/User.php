@@ -15,6 +15,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
+
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,6 +34,9 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:write']],
 )]
+
+//#[Get]
+#[GetCollection]
 #[Patch(
     denormalizationContext: ['groups' => ['user-update:write']]
 )]
@@ -60,6 +66,15 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     denormalizationContext: ['groups' => ['user:write:verification_account_token']],
     name: 'account_verification'
 )]
+
+
+#[Post(
+    uriTemplate: '/users/{name}',
+    normalizationContext: ['groups' => ['user:read:verification_account_token']],
+    denormalizationContext: ['groups' => ['user:write:verification_account_token']],
+    name: 'account_verification'
+)]
+
 #[Post(
     uriTemplate: '/users',
     controller: RegisterController::class,
