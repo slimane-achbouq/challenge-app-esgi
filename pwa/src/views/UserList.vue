@@ -60,7 +60,7 @@
                          <div class="grid grid-cols-2 gap-4" >
                           <div class="col-span-1">
                             <label class="block text-sm font-medium mb-1" for="name">Nom <span class="text-rose-500">*</span></label>
-                            <input id="name" class="form-input w-full px-2 py-1" type="text" required :value="selectedItems.name"/>
+                            <input ref="email" id="name" class="form-input w-full px-2 py-1" type="text" required :value="selectedItems.name"/>
                           </div>
                           <div class="col-span-1">
                             <label class="block text-sm font-medium mb-1" for="name">Prenom <span class="text-rose-500">*</span></label>
@@ -84,7 +84,7 @@
 
                           <div>
                             <label class="block text-sm font-medium mb-1" for="email">Email <span class="text-rose-500">*</span></label>
-                            <input id="email" class="form-input w-full px-2 py-1" type="email" required :value="selectedItems.email"/>
+                            <input v-model="selectedItems.email"  id="email" class="form-input w-full px-2 py-1" type="email" required/>
                           </div>
                         </div>
                       </div>
@@ -92,7 +92,7 @@
                       <div class="px-5 py-4 border-t border-slate-200">
                         <div class="flex flex-wrap justify-end space-x-2">
                           <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click.stop="modalOpen=false">Cancel</button>
-                          <button class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white">Edit</button>
+                          <button class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white" @click="updateUser">Edit</button>
                         </div>
                       </div>
             </ModalBasic>
@@ -153,7 +153,7 @@
   import CustomersTable from '../partials/dashboard/users/UsersTable.vue'
   import Pagination from '../components/Pagination.vue'
   import ModalBasic from '../components/Modal.vue'
-  
+  import axios from 'axios'
   export default {
     name: 'UserList',
     components: {
@@ -170,7 +170,6 @@
       const selectedItems = ref([])
       const modalOpen = ref(false)
       const modaDeletelOpen = ref(false)
-  
       const updateSelectedItems = (selected) => {
         selectedItems.value = selected
       }
@@ -178,7 +177,35 @@
       function onOpenModal (selected){
         modalOpen.value=true
         selectedItems.value = selected
-      }
+        console.log(selectedItems.value);
+      };
+
+      function updateUser(){
+          
+                // Get the form data from the inputs
+                //const name = this.$refs.name.value
+                //const prenom = this.$refs.prenom.value
+                //const location = this.$refs.location.value
+                //const status = this.$refs.status.value
+                console.log(this.selectedItems)
+
+                try {
+                // Get the form data from the inputs
+                
+                const data = { email: this.selectedItems.email }
+                const response = axios.patch(`https://localhost/users/${this.selectedItems.id}`,  data , {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+                    }
+                })
+                modalOpen.value = false
+                
+            } catch (error) {
+                console.error(error)
+            }
+                
+            
+        }
 
   
       return {
@@ -187,7 +214,8 @@
         modalOpen,
         updateSelectedItems,
         onOpenModal,
-        modaDeletelOpen
+        modaDeletelOpen,
+        updateUser,
       }  
     }
   }

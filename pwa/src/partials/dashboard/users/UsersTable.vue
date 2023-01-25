@@ -102,32 +102,7 @@
 
       
       
-      const customers = ref([
-        {
-          id: '0',
-          image: null,
-          name: 'Patricia Semklo',
-          email: 'patricia.semklo@app.com',
-          location: '🇬🇧 London, UK',
-          mobile: '0605840998',
-          status: 'Bloqué',
-          nbrObjets: '12',
-          nbLocation: '43',
-          fav: true
-        },
-        {
-          id: '1',
-          image: null,
-          name: 'Dominik Lamakani',
-          email: 'dominik.lamakani@gmail.com',
-          location: '🇩🇪 Dortmund, DE',
-          mobile: '0605840998',
-          status: 'active',
-          nbrObjets: '24',
-          nbLocation: '4',
-          fav: false
-        },
-      ])
+      const customers = ref([])
 
       const fetchUsers = async() => {
       try {
@@ -136,9 +111,7 @@
             Authorization: `Bearer ${token}`
           }
         })
-        users.value = response.data
-        console.log(response.data.hydra)
-        console.log(users)
+        customers.value = response.data["hydra:member"];
       } catch (error) {
         console.error(error)
       }
