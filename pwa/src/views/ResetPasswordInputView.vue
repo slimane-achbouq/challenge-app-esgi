@@ -1,7 +1,7 @@
 <template>
     <main class="bg-white">
   
-      <div class="relative flex">
+      <div class="relative flex" v-if="!isSuccess">
   
         <!-- Content -->
         <div class="w-full md:w-1/2">
@@ -78,12 +78,15 @@
         </div>
   
       </div>
-  
+      <div v-if="isSuccess">
+          <successMessageView :message='successMesage'></successMessageView>
+      </div>
     </main>
 </template>
   
 <script>
-import Banner from '@/components/Banner.vue'
+import Banner from '@/components/Banner.vue';
+import successMessageView from './successMessageView.vue';
 
 
 export default {
@@ -94,12 +97,15 @@ export default {
             confirmPassword: '',
             token: '',
             isLoading: false,
-            error: null
+            error: null,
+            isSuccess: false,
+            successMesage: ''
         }
     },
     methods: {
         async submitForm() {
             this.isLoading = true;
+            this.isSuccess = false;
             this.error = null;
 
             // we need to verify if the new password is valide (validation password from utils)
@@ -120,8 +126,8 @@ export default {
                   }),
               });
 
-              const redirectUrl = '/' + (this.$route.query.redirect || 'reset-password-modification-message');
-              this.$router.replace(redirectUrl);
+              this.isSuccess = true;
+              this.successMesage = 'votre mot de passe a été bien modifier.'
 
             } catch (ex) {
                 this.error = new Error(ex || 'Failed to change password. Check you have already an compte.');
@@ -131,7 +137,8 @@ export default {
 
     },
     components: {
-        Banner
+        Banner,
+        successMessageView
     }
     }
 </script>
