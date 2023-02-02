@@ -14,13 +14,16 @@ import DashboardView from '@/views/DashboardView.vue';
 import OrganizmeView from '@/views/OrganismeView.vue';
 import ResetPasswordModificationMessageView from '@/views/ResetPasswordModificationMessageView.vue';
 
+import RegisterViewBis from '@/views/RegisterViewBis.vue';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', name: 'home', redirect: '/login' },
     { path: '/login', name: 'login', component: LoginView, meta: { requiresUnauth: false } },
     { path: '/dashboard/users', name: 'users', component: UserList, meta: { requiresUnauth: false } },
-    { path: '/register', name: 'register', component: RegisterView, meta: { requiresUnauth: false } },
+    { path: '/register', name: 'register', component: RegisterViewBis, meta: { requiresUnauth: false } },
+    { path: '/register2', name: 'register2', component: RegisterView, meta: { requiresUnauth: false } },
     { path: '/organisme', name: 'organisme', component: OrganizmeView, meta: { requiresUnauth: false } },
     { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { requiresUnauth: true } },
     { path: '/dashboard/announces', name: 'announces', component: AnnouncesList, meta: { requiresUnauth: false } },

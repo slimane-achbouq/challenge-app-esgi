@@ -6,11 +6,7 @@ export default {
     namespaced: true,
     state() {
         return {
-          firstName: '',
-          lastName: '',
-          email: '',
-          role: '',
-          id: '',
+          situation: '',
         };
       },
     mutations,
