@@ -12,7 +12,6 @@ import ResetPasswordInputView from '@/views/ResetPasswordInputView.vue';
 import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue';
 import OrganizmeView from '@/views/OrganismeView.vue';
-import ResetPasswordModificationMessageView from '@/views/ResetPasswordModificationMessageView.vue';
 
 import RegisterViewBis from '@/views/RegisterViewBis.vue';
 
@@ -33,7 +32,6 @@ const router = createRouter({
     { path: '/reset-password', name: 'reset-password', component: ResetPassword, meta: { requiresUnauth: false }},
     { path: '/reset-password-success', name: 'reset-password-success', component: successMessageView, meta: { requiresUnauth: false }},
     { path: '/reset-password-input/:token', name: 'reset-password-input', component: ResetPasswordInputView, meta: { requiresUnauth: false }},
-    { path: '/reset-password-modification-message', name: 'reset-password-modification-message', component: ResetPasswordModificationMessageView, meta: { requiresUnauth: false }},
   ]
 })
 

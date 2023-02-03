@@ -402,7 +402,7 @@ export default {
                 if (response.ok) {
                     this.$emit('nextStep', {
                         id: 3,
-                        label: 'Congurlation',
+                        label: '',
                         selectedTab: 'StepThreeSuccess'
                       })
 		            }
