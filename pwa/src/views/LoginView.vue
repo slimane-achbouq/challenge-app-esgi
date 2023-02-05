@@ -65,7 +65,7 @@
             <!-- Footer -->
             <div class="pt-5 mt-6 border-t border-slate-200">
               <div class="text-sm">
-                Don’t you have an account? <router-link class="font-medium text-indigo-500 hover:text-indigo-600" to="/signup">Sign Up</router-link>
+                Don’t you have an account? <router-link class="font-medium text-indigo-500 hover:text-indigo-600" to="/register">Sign Up</router-link>
               </div>
               <!-- Warning -->
               <div class="mt-5">
@@ -115,6 +115,7 @@ export default {
         async submitForm() {
             this.formIsValid = true;
             this.error = null;
+            
             if (this.email === '' || !this.email.includes('@') || this.password.length < 4) {
                 this.formIsValid = false;
                 return;

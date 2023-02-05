@@ -29,7 +29,6 @@ final class UserAccountVerificationSubscriber implements EventSubscriberInterfac
 
     public function postPersist(LifecycleEventArgs $args): void
     {
-        $this->logger->info('HELLOOOOOOOOO');
         $entity = $args->getObject();
 
         if (!$entity instanceof User) {
@@ -37,7 +36,6 @@ final class UserAccountVerificationSubscriber implements EventSubscriberInterfac
         }
 
         $this->sendVerificationAccountEmail($entity);
-        $this->logger->info('Email Sent !!!!!');
     }
 
     private function sendVerificationAccountEmail(User $user)
