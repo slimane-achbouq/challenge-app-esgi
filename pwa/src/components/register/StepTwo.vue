@@ -295,7 +295,6 @@ export default {
     async submitRegister() {
       this.formValid = true;
       Object.keys(this.errors).forEach((key) => (this.errors[key] = ""));
-      console.log('hello');
 
       if (this.state == "individual") {
         if (this.name.length < 2) {
@@ -387,7 +386,6 @@ export default {
         email: this.email,
         password: this.password,
       };
-      this.$emit('submitRegister', this.dataPayload);
       this.isLoading = true;
 
       try {
@@ -405,7 +403,15 @@ export default {
                         label: '',
                         selectedTab: 'StepThreeSuccess'
                       })
-		            }
+		            } else {
+                  let responseBody = await response.json();
+                  this.error = responseBody['hydra:description'] || 'Failed to register try again later.';
+                    this.$emit('nextStep', {
+                        id: 3,
+                        label: this.error,
+                        selectedTab: 'StepThreeError'
+                      })
+                }
             } catch (error) {
               this.error = error.message || 'Failed to register try again later.';
                     this.$emit('nextStep', {

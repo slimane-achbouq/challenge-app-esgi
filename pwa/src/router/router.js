@@ -9,11 +9,10 @@ import AccountVerificationView from '@/views/AccountVerificationView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
 import successMessageView from '@/views/successMessageView.vue';
 import ResetPasswordInputView from '@/views/ResetPasswordInputView.vue';
-import RegisterView from '@/views/RegisterView.vue'
 import DashboardView from '@/views/DashboardView.vue';
 import OrganizmeView from '@/views/OrganismeView.vue';
 
-import RegisterViewBis from '@/views/RegisterViewBis.vue';
+import RegisterView from '@/views/RegisterView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,8 +20,7 @@ const router = createRouter({
     { path: '/', name: 'home', redirect: '/login' },
     { path: '/login', name: 'login', component: LoginView, meta: { requiresUnauth: false } },
     { path: '/dashboard/users', name: 'users', component: UserList, meta: { requiresUnauth: false } },
-    { path: '/register', name: 'register', component: RegisterViewBis, meta: { requiresUnauth: false } },
-    { path: '/register2', name: 'register2', component: RegisterView, meta: { requiresUnauth: false } },
+    { path: '/register', name: 'register', component: RegisterView, meta: { requiresUnauth: false } },
     { path: '/organisme', name: 'organisme', component: OrganizmeView, meta: { requiresUnauth: false } },
     { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { requiresUnauth: true } },
     { path: '/dashboard/announces', name: 'announces', component: AnnouncesList, meta: { requiresUnauth: false } },

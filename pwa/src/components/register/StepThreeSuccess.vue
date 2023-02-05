@@ -9,18 +9,9 @@
                 <div class="icon-fix"></div>
             </div>
         </div>
-        <h1 class="text-3xl text-slate-800 font-bold mb-8">Votre comptes a été bien créer</h1>
+        <h1 class="text-3xl text-slate-800 font-bold mb-8">Your account has been successfully created ! check your email to verify your account.</h1>
       <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white" to="/login">Go to login -&gt;</router-link>
     </div>
   </div>
 </template>
 
-<script>
-import successMessageView from '../../views/successMessageView.vue';
-
-  export default {
-  components: {
-    successMessageView
-  }
-  }
-</script>

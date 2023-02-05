@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-4 mb-8">
-      Error
+      Error occurred please try again !
   </div>
 </template>
 
