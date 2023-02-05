@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-env:
-  VITE_API_URL = "https://localhost"
 
 jobs:
   build:
+    env:
+      VITE_API_URL = "https://localhost"
     defaults:
       run:
         working-directory: pwa
