@@ -389,7 +389,7 @@ export default {
       this.isLoading = true;
 
       try {
-                const response = await fetch(`https://localhost/users`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',
