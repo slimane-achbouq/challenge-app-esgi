@@ -20,12 +20,13 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        working-directory: ./pwa
         uses: bahmutov/npm-install@v1
+        with:
+          working-directory: pwa
 
       - name: Build project
-        working-directory: ./pwa
         run: npm run build
+        working-directory: ./pwa
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
