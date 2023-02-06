@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 #[ORM\Table(name: '`annonce`')]
-//#[Get]
+#[Get]
 #[GetCollection]
 //#[Delete]
 #[Patch(
@@ -105,6 +105,7 @@ class Annonce
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['annonce:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Vich\UploadableField(mapping: "annonce_imageFile", fileNameProperty: "image")]
@@ -136,7 +137,7 @@ class Annonce
     private ?bool $isPerHour = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['patch_status_annonce:write'])]
+    #[Groups(['patch_status_annonce:write', 'annonce:read'])]
     private ?string $status = null;
 
     public function getId(): ?int

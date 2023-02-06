@@ -90,7 +90,7 @@
                                                 <br>
 
 
-                                                <div class="flex items-center justify-center w-full">
+                                                <div class="flex items-center justify-center w-full" v-if="!hideImageField">
                                                     <label for="dropzone-file"
                                                            class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                                         <div
@@ -113,6 +113,9 @@
                                                         <input id="dropzone-file" type="file" class="hidden" required
                                                                @change="handleFile"/>
                                                     </label>
+                                                </div>
+                                                <div class="flex items-center justify-center w-full" v-if="hideImageField">
+                                                    <img :src="previewSrc" alt="Preview image" id="previewImg">
                                                 </div>
 
 
@@ -156,14 +159,16 @@ export default {
             description: '',
             price: null,
             isPerHour: false,
-            file: null
+            file: null,
+            hideImageField: false,
+            previewSrc: "",
         }
     },
     methods: {
         handleFile(event) {
             this.file = event.target.files[0];
-            console.log(event.target.files[0])
-            console.log(Object.values(event.target.files[0]))
+            this.previewSrc = URL.createObjectURL(event.target.files[0]);
+            this.hideImageField = true;
         },
         submitForm: async function () {
             const formData = new FormData();
@@ -186,7 +191,8 @@ export default {
                 });
 
                 const responseData = await response.json();
-                console.log(responseData)
+                const redirectUrl = responseData['@id'];
+                this.$router.replace(redirectUrl);
             } catch (e) {
                 console.log(e.message)
             }
