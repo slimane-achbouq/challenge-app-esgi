@@ -241,10 +241,10 @@
     </div>
   </template>
   
-  <script>
-  import Header from '../partials/Header.vue'
+<script>
+import Header from '@/partials/Header.vue'
   
-  export default {
+export default {
     name: 'Announce',
     components: {
       Header,
@@ -255,5 +255,5 @@
       return {
       }  
     }
-  }
-  </script>
+}
+</script>
