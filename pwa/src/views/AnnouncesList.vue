@@ -94,10 +94,10 @@
 
 
                             <!-- Cards 1 (Video Courses) -->
-                            <div v-for="announce in announces" :key="announce['@id'].match(/\d+/)[0]">
+                            <div >
                                 <div>
                                     <div class="grid grid-cols-12 gap-6">
-                                        <AnnonceCards v-bind="announce" :url="url"
+                                        <AnnonceCards v-for="announce in announces" :key="announce['@id'].match(/\d+/)[0]" v-bind="announce" :url="url"
                                                       :src="url + '/uploads/images_annonces/' + announce.image"
                                                       :id="announce['@id'].match(/\d+/)[0]"/>
                                     </div>
