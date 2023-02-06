@@ -213,7 +213,7 @@ export default {
         return {}
     },
     async created() {
-        let token = localStorage.getItem('esgi-ws-token');
+        let token = this.$store.getters["auth/token"]
 
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
         console.log(id)

@@ -179,7 +179,7 @@ export default {
             formData.append('file', this.file);
             formData.append('isAvailable', 0);
 
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"]
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces`, {
                     method: 'POST',
