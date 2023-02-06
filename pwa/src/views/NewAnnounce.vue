@@ -3,11 +3,14 @@
 
     <div class="flex h-screen overflow-hidden">
 
+                <!-- Sidebar -->
+        <Sidebar :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false"/>
+
         <!-- Content area -->
         <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
             <!-- Site header -->
-            <Header/>
+            <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen"/>
 
             <main>
 
@@ -146,12 +149,14 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue'
+import Header from '@/partials/Header.vue'
+import Sidebar from '../partials/Sidebar.vue'
 
 export default {
     name: 'NewAnnounce',
     components: {
         Header,
+        Sidebar
     },
     data() {
         return {
