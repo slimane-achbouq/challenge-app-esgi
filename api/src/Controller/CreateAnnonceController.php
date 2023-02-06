@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -12,7 +14,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 #[AsController]
 class CreateAnnonceController extends AbstractController
 {
-    public function __invoke(Request $request, TokenStorageInterface $tokenStorage): Annonce
+    public function __construct(private RequestStack $requestStack)
+    {
+    }
+
+    public function __invoke(TokenStorageInterface $tokenStorage): Annonce
     {
         $request = $this->requestStack->getCurrentRequest();
         $uploadedFile = $request->files->get('file');
