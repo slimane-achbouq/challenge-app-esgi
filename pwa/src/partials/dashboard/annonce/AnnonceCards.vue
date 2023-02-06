@@ -4,7 +4,7 @@
       <div class="flex flex-col h-full">
         <!-- Image -->
         <div class="relative">
-          <img class="w-full" src="../../images/applications-image-21.jpg" width="301" height="226" alt="Application 21" />
+          <img class="w-full" src="" width="301" height="226" alt="Application 21" />
           <!-- Like button -->
           <button class="absolute top-0 right-0 mt-4 mr-4">
             <div class="text-slate-100 bg-slate-900 bg-opacity-60 rounded-full">
