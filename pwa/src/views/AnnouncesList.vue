@@ -18,9 +18,7 @@
 
                         <!-- Title -->
                         <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">List of announcements ✨</h1>
-                        <router-link to="/newannounce">
-                            <span class="text-indigo-500">Create Announce</span>
-                        </router-link>
+
                     </div>
 
                     <!-- Page content -->

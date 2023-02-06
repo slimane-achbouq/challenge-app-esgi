@@ -132,7 +132,7 @@ class Annonce
     #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     private ?float $price = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: true, options: ["default" => false])]
     #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     private ?bool $isPerHour = null;
 
