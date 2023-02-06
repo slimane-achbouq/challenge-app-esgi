@@ -1,35 +1,37 @@
 <template>
     <div class="flex h-screen overflow-hidden">
-  
+
       <!-- Sidebar -->
       <Sidebar :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
-  
+
       <!-- Content area -->
       <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-        
+
         <!-- Site header -->
         <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
-  
+
         <main>
           <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-  
+
             <!-- Page header -->
             <div class="mb-5">
-  
+
               <!-- Title -->
-              <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Liste of annoucement ✨</h1>
-  
+              <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">List of announcements ✨</h1>
+                <router-link to="/newannounce">
+                    <span class="text-indigo-500">Create Announce</span>
+                </router-link>
             </div>
-  
+
             <!-- Page content -->
             <div class="flex flex-col space-y-10 sm:flex-row sm:space-x-6 sm:space-y-0 md:flex-col md:space-x-0 md:space-y-10 xl:flex-row xl:space-x-6 xl:space-y-0 mt-9">
-  
+
               <!-- Sidebar -->
               <AnnonceSidebar />
-  
+
               <!-- Content -->
               <div>
-  
+
                 <!-- Filters -->
                 <div class="mb-5">
                   <ul class="flex flex-wrap -m-1">
@@ -50,10 +52,10 @@
                     </li>
                   </ul>
                 </div>
-                
-                
+
+
                 <div class="text-sm text-slate-500 italic mb-4">67.975 Items</div>
-                
+
                 <div class="mb-5">
                     <!-- Start -->
                     <form>
@@ -78,24 +80,24 @@
                     <AnnonceCards />
                   </div>
                 </div>
-  
+
                 <!-- Pagination -->
                 <div class="mt-6">
                   <Pagination />
                 </div>
-  
+
               </div>
-  
+
             </div>
-  
-          </div>        
+
+          </div>
         </main>
-  
-      </div> 
-  
+
+      </div>
+
     </div>
   </template>
-  
+
   <script>
   import { ref } from 'vue'
   import Sidebar from '../partials/Sidebar.vue'
@@ -103,23 +105,23 @@
   import AnnonceSidebar from '../partials/dashboard/annonce/AnnonceSidebar.vue'
   import AnnonceCards from '../partials/dashboard/annonce/AnnonceCards.vue'
   import Pagination from '../components/Pagination.vue'
-  
+
   export default {
     name: 'AnnouncesList',
     components: {
       Sidebar,
       Header,
       AnnonceSidebar,
-      AnnonceCards,    
+      AnnonceCards,
       Pagination,
     },
     setup() {
-  
+
       const sidebarOpen = ref(false)
-  
+
       return {
         sidebarOpen,
-      }  
+      }
     }
   }
   </script>
