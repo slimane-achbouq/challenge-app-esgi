@@ -14,12 +14,22 @@
                     <div class="max-w-5xl mx-auto flex flex-col lg:flex-row lg:space-x-8 xl:space-x-16">
                         <!-- Content -->
                         <div>
-                            <div v-if="status == 0"
-                                 class="bg-orange-500 text-center flex items-center justify-center mb-5"
-                                 style="border-radius: 10px; height: 50px">
+                            <div v-if="status == 0">
+                                <div
+                                    class="bg-orange-500 text-center flex items-center justify-center mb-5"
+                                    style="border-radius: 10px; height: 50px">
                             <span class="text-white">
                                 The announce is being verified by an administrator. Thank you for waiting.
                             </span>
+                                </div>
+                                <div class="flex justify-evenly">
+                                    <button class="bg-green-600" style="width: 30%; height: 40px;border-radius: 5px;" @click="handleValidAnnounce">
+                                        Accept the announce
+                                    </button>
+                                    <button class="bg-red-500" style="width: 30%; height: 40px;border-radius: 5px;" @click="handleRefuseAnnounce">
+                                        Refuse the announce
+                                    </button>
+                                </div>
                             </div>
                             <div v-else-if="status == 2"
                                  class="bg-red-500 text-center flex items-center justify-center mb-5"
@@ -134,79 +144,6 @@
                             </div>
 
                             <hr class="my-6 border-t border-slate-200"/>
-
-<!--                <hr class="my-6 border-t border-slate-200" />
-                 &lt;!&ndash; 2nd block &ndash;&gt;
-              <div class="bg-white p-5 shadow-lg rounded-sm border border-slate-200 lg:w-72 xl:w-80">
-                <div class="flex justify-between space-x-1 mb-5">
-                  <div class="text-sm text-slate-800 font-semibold">Les demandes (127)</div>
-                </div>
-                <ul class="space-y-3">
-                  <li>
-                    <div class="flex justify-between">
-                      <div class="grow flex items-center">
-                        <div class="relative mr-3">
-                          <img class="w-8 h-8 rounded-full" :src="User3208Image" width="32" height="32" alt="User 08" />
-                        </div>
-                        <div class="truncate">
-                          <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
-                        </div>
-                      </div>
-                      <button class="text-slate-400 hover:text-slate-500 rounded-full">
-                        <span class="sr-only">Menu</span>
-                        <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
-                          <circle cx="16" cy="16" r="2" />
-                          <circle cx="10" cy="16" r="2" />
-                          <circle cx="22" cy="16" r="2" />
-                        </svg>
-                      </button>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="flex justify-between">
-                      <div class="grow flex items-center">
-                        <div class="relative mr-3">
-                          <img class="w-8 h-8 rounded-full" :src="User3601Image" width="32" height="32" alt="User 01" />
-                        </div>
-                        <div class="truncate">
-                          <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
-                        </div>
-                      </div>
-                      <button class="text-slate-400 hover:text-slate-500 rounded-full">
-                        <span class="sr-only">Menu</span>
-                        <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
-                          <circle cx="16" cy="16" r="2" />
-                          <circle cx="10" cy="16" r="2" />
-                          <circle cx="22" cy="16" r="2" />
-                        </svg>
-                      </button>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="flex justify-between">
-                      <div class="grow flex items-center">
-                        <div class="relative mr-3">
-                          <img class="w-8 h-8 rounded-full" :src="User3208Image" width="32" height="32" alt="User 03" />
-                        </div>
-                        <div class="truncate">
-                          <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
-                        </div>
-                      </div>
-                      <button class="text-slate-400 hover:text-slate-500 rounded-full">
-                        <span class="sr-only">Menu</span>
-                        <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32">
-                          <circle cx="16" cy="16" r="2" />
-                          <circle cx="10" cy="16" r="2" />
-                          <circle cx="22" cy="16" r="2" />
-                        </svg>
-                      </button>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="flex justify-between">
-                      <div class="grow flex items-center">
-                        <div class="relative mr-3">
-                          <img class="w-8 h-8 rounded-full" :src="User3205Image" width="32" height="32" alt="User 05" />-->
                         </div>
 
                         <!-- Sidebar -->
@@ -264,6 +201,7 @@
 <script>
 import Header from '../partials/Header.vue'
 
+let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
     name: 'Announce',
     components: {
@@ -279,6 +217,68 @@ export default {
             src: "",
             status: "",
         }
+    },
+    methods: {
+        updateData: async function() {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'GET',
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            let data = await response.json();
+            this.title = data.title;
+            this.description = data.description;
+            this.isPerHour = data.isPerHour;
+            let date = new Date(data.createdAt);
+            this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            this.price = data.price;
+            this.status = data.status;
+            this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
+        },
+        handleValidAnnounce: async function () {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/merge-patch+json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    status: "1"
+                })
+            });
+
+            const response = await request.json();
+            console.log(response);
+
+            await this.updateData();
+
+        },
+        handleRefuseAnnounce: async function() {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/merge-patch+json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    status: "2"
+                })
+            });
+
+            const response = await request.json();
+            console.log(response);
+
+            await this.updateData();
+        },
     },
     setup() {
         return {}
