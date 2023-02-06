@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                             <div class="mt-6">
-                                <Pagination/>
+                                <Pagination @increasePage="handleNextPagination" @decreasePage="handlePreviousPagination" :page="page"/>
                             </div>
 
                         </div>
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import {ref} from 'vue'
+import {provide, ref} from 'vue'
 import Sidebar from '../partials/Sidebar.vue'
 import Header from '../partials/Header.vue'
 import AnnonceSidebar from '../partials/dashboard/annonce/AnnonceSidebar.vue'
@@ -142,6 +142,7 @@ export default {
         return {
             announces: null,
             url: "",
+            page: 1
         }
     },
     setup() {
@@ -152,10 +153,40 @@ export default {
             sidebarOpen,
         }
     },
+    methods: {
+        handleNextPagination(n) {
+            this.page += n;
+            this.updateData();
+            console.log(this.page)
+            provide('pageChange', this.page)
+        },
+        handlePreviousPagination(n) {
+            if (this.page > 1) {
+                this.page -= n;
+                this.updateData();
+                console.log(this.page)
+                provide('pageChange', this.page)
+            }
+        },
+        async updateData() {
+            let token = this.$store.getters["auth/token"]
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}`, {
+                method: 'GET',
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            let data = await response.json();
+            this.announces = data['hydra:member'];
+        }
+    },
     async created() {
         let token = this.$store.getters["auth/token"]
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
