@@ -19,7 +19,7 @@ const router = createRouter({
     { path: '/login', name: 'login', component: LoginView, meta: { requiresUnauth: false } },
     { path: '/dashboard/users', name: 'users', component: UserList, meta: { requiresUnauth: false } },
     { path: '/dashboard/announces', name: 'announces', component: AnnouncesList, meta: { requiresUnauth: false } },
-    { path: '/announce', name: 'announce', component: Announce, meta: { requiresUnauth: false } },
+    { path: '/announce/:id', name: 'announce', component: Announce, meta: { requiresUnauth: false } },
     { path: '/newannounce', name: 'newannounce', component: NewAnnounce, meta: { requiresUnauth: false } },
     { path: '/dashboard', name: 'dashboard', component: DashboardView, meta: { requiresUnauth: true } },
     { path: '/account-verification/:userId/:token', name: 'account-verification', component: AccountVerificationView , meta: { requiresUnauth: false } },

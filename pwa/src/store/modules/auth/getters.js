@@ -11,4 +11,5 @@ export default {
     role(state) {
         return state.roles === 'ROLE_ADMIN' ? 'Admin' : 'Client';
     }
+    
 };

@@ -17,7 +17,7 @@
               <div>
                 <header class="mb-4 flex justify-between">
                   
-                  <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">Vélo</h1>
+                  <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">{{announce.title}}</h1>
 
                   <div>
                   <button class="btn border-slate-200 hover:border-slate-300 text-slate-600">
@@ -93,7 +93,7 @@
                   
                 </div>
   
-                <div class="text-sm font-semibold text-indigo-500 uppercase mb-2">Mon 27 Dec, 2021 </div>
+                <div class="text-sm font-semibold text-indigo-500 uppercase mb-2">{{announce.createdAt}} </div>
                 <!-- Image -->
                 <figure class="mb-6">
                   <img class="w-full rounded-sm" src="https://img.freepik.com/photos-gratuite/velo-blanc-debout-dans-parc_1153-7319.jpg?w=2000" width="640" height="360" alt="Product" />
@@ -102,7 +102,7 @@
                 <!-- Product content -->
                 <div>
                   <h2 class="text-xl leading-snug text-slate-800 font-bold mb-2">Description</h2>
-                  <p class="mb-6">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua u t enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                  <p class="mb-6">{{announce.description}}.</p>
                 </div>
   
                 <hr class="my-6 border-t border-slate-200" />
@@ -115,18 +115,18 @@
                   <div class="text-sm text-slate-800 font-semibold mb-3">Select the offer</div>
                   <ul class="space-y-2 sm:flex sm:space-y-0 sm:space-x-2 lg:space-y-2 lg:space-x-0 lg:flex-col mb-4">
                     <li>
-                      <button class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out">
+                      <button class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out" :class = "announce.isAvailable?'border-2 border-indigo-400 ':'cursor-not-allowed	'">
                         <div class="flex flex-wrap items-center justify-between mb-0.5">
                           <span class="font-semibold text-slate-800">Per hour</span>
-                          <span class="font-medium text-emerald-600">€39.00</span>
+                          <span class="font-medium text-emerald-600">€{{announce.price}}</span>
                         </div>
                       </button>
                     </li>
                     <li>
-                      <button class="w-full h-full text-left py-3 px-4 rounded bg-white border-2 border-indigo-400 shadow-sm duration-150 ease-in-out">
+                      <button class="w-full h-full text-left py-3 px-4 rounded bg-white border border-slate-200 hover:border-slate-300 shadow-sm duration-150 ease-in-out" :class = "!announce.isAvailable?'border-2 border-indigo-400 ':'cursor-not-allowed	'">
                         <div class="flex flex-wrap items-center justify-between mb-0.5">
-                          <span class="font-semibold text-slate-800">Per day </span>
-                          <span class="font-medium text-emerald-600">€69.00</span>
+                          <span class="font-semibold text-slate-800">Fix price </span>
+                          <span class="font-medium text-emerald-600">€{{announce.price}}</span>
                         </div>
                       </button>
                     </li>
@@ -243,6 +243,9 @@
   
   <script>
   import Header from '../partials/Header.vue'
+  import { ref, watch,onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
+  import axios from 'axios'
   
   export default {
     name: 'Announce',
@@ -250,9 +253,33 @@
       Header,
     },
     setup() {
-  
+
+
+      
+      const token = this.$store.getters["auth/token"]
+      const announce = ref([])
+      const route = useRoute()
+      const path ='https://localhost/annonces/'+route.params.id
+
+      const fetchAnnounce = async() => {
+
+      try {
+        let token
+        const response = await axios.get(path, {
+          headers: {
+            Authorization: `Bearer ${this.$store.getters["auth/token"]}`
+          }
+        })
+        announce.value = response.data
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+      onMounted(fetchAnnounce)
   
       return {
+        announce,
       }  
     }
   }

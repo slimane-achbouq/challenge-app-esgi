@@ -3,7 +3,7 @@ import VueJwtDecode from 'vue-jwt-decode';
 export default {
     async login(context, payload) {
         try {
-            const response = await fetch('https://localhost/auth', {
+            const response = await fetch('https://localhost/auth', {    
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -31,24 +31,13 @@ export default {
                 roles: userInfos.roles,
                 id: userInfos.id
             });
+
+            console.log(payload)
         } catch (ex) {
             const error = new Error(ex || 'Failed to authenticate. Check your login data.');
             throw error;
         }   
 
     },
-    tryLogin(context) {
-        const token = localStorage.getItem('esgi-ws-token');
-        if (token) {
-            const userInfos = VueJwtDecode.decode(token);
-            context.commit('setUser', {
-                token: token,
-                firstName: userInfos.firstName,
-                lastName: userInfos.lastName,
-                email: userInfos.email,
-                role: userInfos.role,
-                id: userInfos.id
-            });
-        }
-    },
+    
 }

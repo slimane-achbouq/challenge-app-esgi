@@ -106,13 +106,13 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','annonce:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write','annonce:read'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
@@ -123,7 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    #[Groups(['user:write:verification_account_token'])]
+    #[Groups(['user:write:verification_account_token','annonce:read'])]
     private ?string $verifyAccountToken = null;
 
     /**
@@ -137,7 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[Groups(['user:read'])]
+    #[Groups(['user:read',])]
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
     private Collection $annonces;
 

@@ -42,6 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`annonce`')]
 //#[Get]
 #[GetCollection]
+#[Get]
 //#[Delete]
 #[Patch(
     denormalizationContext: ['groups' => ['patch_status_annonce:write']]
@@ -105,6 +106,7 @@ class Annonce
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['annonce:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Vich\UploadableField(mapping: "annonce_imageFile", fileNameProperty: "image")]
