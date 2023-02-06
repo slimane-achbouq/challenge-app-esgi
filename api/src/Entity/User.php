@@ -19,6 +19,9 @@ use ApiPlatform\Metadata\Post;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+
 
 /* TODO
 Je m'inscris en tant que : (Particulier | Auto-entrepreneur/Indépendant | Entreprise | Association)
@@ -59,6 +62,8 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     name: 'account_verification'
 )]
 #[Get]
+#[GetCollection]
+#[Patch(denormalizationContext: ['groups' => ['user-update:write']])]
 #[Post(
     uriTemplate: '/users',
     controller: RegisterController::class,
@@ -129,9 +134,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]

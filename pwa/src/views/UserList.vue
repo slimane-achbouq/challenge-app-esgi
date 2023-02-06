@@ -84,7 +84,7 @@
 
                           <div>
                             <label class="block text-sm font-medium mb-1" for="email">Email <span class="text-rose-500">*</span></label>
-                            <input id="email" class="form-input w-full px-2 py-1" type="email" required :value="selectedItems.email"/>
+                            <input v-model="selectedItems.email" id="email" class="form-input w-full px-2 py-1" type="email" required />
                           </div>
                         </div>
                       </div>
@@ -92,7 +92,7 @@
                       <div class="px-5 py-4 border-t border-slate-200">
                         <div class="flex flex-wrap justify-end space-x-2">
                           <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click.stop="modalOpen=false">Cancel</button>
-                          <button class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white">Edit</button>
+                          <button class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white" @click="updateUser">Edit</button>
                         </div>
                       </div>
             </ModalBasic>
@@ -153,6 +153,8 @@
   import CustomersTable from '../partials/dashboard/users/UsersTable.vue'
   import Pagination from '../components/Pagination.vue'
   import ModalBasic from '../components/Modal.vue'
+  import axios from 'axios'
+
   
   export default {
     name: 'UserList',
@@ -180,6 +182,33 @@
         selectedItems.value = selected
       }
 
+      function updateUser(){
+          
+          // Get the form data from the inputs
+          //const name = this.$refs.name.value
+          //const prenom = this.$refs.prenom.value
+          //const location = this.$refs.location.value
+          //const status = this.$refs.status.value
+          try {
+          // Get the form data from the inputs
+          
+          const data = { email: this.selectedItems.email }
+          console.log(data)
+          const response = axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}`,  data , {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+              }
+          })
+          modalOpen.value = false
+          console.log(response)
+          
+      } catch (error) {
+          console.error(error)
+      }
+          
+      
+  }
+
   
       return {
         sidebarOpen,
@@ -187,7 +216,8 @@
         modalOpen,
         updateSelectedItems,
         onOpenModal,
-        modaDeletelOpen
+        modaDeletelOpen,
+        updateUser,
       }  
     }
   }
