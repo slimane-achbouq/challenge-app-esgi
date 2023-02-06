@@ -153,7 +153,7 @@ export default {
         }
     },
     async created() {
-        let token = localStorage.getItem('esgi-ws-token');
+        let token = this.$store.getters["auth/token"]
 
         const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces`, {
             method: 'GET',
