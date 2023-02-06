@@ -187,7 +187,7 @@
                     <div class="flex justify-between">
                       <div class="grow flex items-center">
                         <div class="relative mr-3">
-                          <img class="w-8 h-8 rounded-full" src="../../images/user-32-03.jpg" width="32" height="32" alt="User 03" />
+                          <img class="w-8 h-8 rounded-full" :src="User3208Image" width="32" height="32" alt="User 03" />
                         </div>
                         <div class="truncate">
                           <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
@@ -207,7 +207,7 @@
                     <div class="flex justify-between">
                       <div class="grow flex items-center">
                         <div class="relative mr-3">
-                          <img class="w-8 h-8 rounded-full" src="../../images/user-32-05.jpg" width="32" height="32" alt="User 05" />
+                          <img class="w-8 h-8 rounded-full" :src="User3205Image" width="32" height="32" alt="User 05" />
                         </div>
                         <div class="truncate">
                           <span class="text-sm font-medium text-slate-800">ELMOHRI OTHMANE</span>
@@ -242,7 +242,9 @@
   </template>
   
 <script>
-import Header from '@/partials/Header.vue'
+import Header from '@/partials/Header.vue';
+import User3208Image from '@/images/user-32-08.jpg';
+import User3205Image from '@/images/user-32-05.jpg';
   
 export default {
     name: 'Announce',
@@ -253,6 +255,7 @@ export default {
   
   
       return {
+        User3208Image
       }  
     }
 }
