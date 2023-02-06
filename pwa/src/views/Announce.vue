@@ -14,12 +14,22 @@
                     <div class="max-w-5xl mx-auto flex flex-col lg:flex-row lg:space-x-8 xl:space-x-16">
                         <!-- Content -->
                         <div>
-                            <div v-if="status == 0"
-                                 class="bg-orange-500 text-center flex items-center justify-center mb-5"
-                                 style="border-radius: 10px; height: 50px">
+                            <div v-if="status == 0">
+                                <div
+                                    class="bg-orange-500 text-center flex items-center justify-center mb-5"
+                                    style="border-radius: 10px; height: 50px">
                             <span class="text-white">
                                 The announce is being verified by an administrator. Thank you for waiting.
                             </span>
+                                </div>
+                                <div class="flex justify-evenly">
+                                    <button class="bg-green-600" style="width: 30%; height: 40px;border-radius: 5px;" @click="handleValidAnnounce">
+                                        Accept the announce
+                                    </button>
+                                    <button class="bg-red-500" style="width: 30%; height: 40px;border-radius: 5px;" @click="handleRefuseAnnounce">
+                                        Refuse the announce
+                                    </button>
+                                </div>
                             </div>
                             <div v-else-if="status == 2"
                                  class="bg-red-500 text-center flex items-center justify-center mb-5"
@@ -192,6 +202,7 @@
 <script>
 import Header from '../partials/Header.vue'
 
+let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
     name: 'Announce',
     components: {
@@ -208,9 +219,69 @@ export default {
             status: "",
         }
     },
+    methods: {
+        updateData: async function() {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'GET',
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            let data = await response.json();
+            this.title = data.title;
+            this.description = data.description;
+            this.isPerHour = data.isPerHour;
+            let date = new Date(data.createdAt);
+            this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            this.price = data.price;
+            this.status = data.status;
+            this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
+        },
+        handleValidAnnounce: async function () {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/merge-patch+json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    status: "1"
+                })
+            });
+
+            const response = await request.json();
+            console.log(response);
+
+            await this.updateData();
+
+        },
+        handleRefuseAnnounce: async function() {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/merge-patch+json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    status: "2"
+                })
+            });
+
+            const response = await request.json();
+            console.log(response);
+
+            await this.updateData();
+        },
+    },
     setup() {
-
-
         return {}
     },
     async created() {
