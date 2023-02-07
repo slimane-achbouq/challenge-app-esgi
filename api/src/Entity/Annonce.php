@@ -40,7 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 #[ORM\Table(name: '`annonce`')]
-//#[Get]
+#[Get]
 #[GetCollection]
 //#[Delete]
 #[Patch(
@@ -89,14 +89,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isPerHour'])]
+#[ApiFilter(NumericFilter::class, properties: ['status'])]
 class Annonce
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['annonce:read'])]
     private ?int $id = null;
 
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -105,6 +107,7 @@ class Annonce
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['annonce:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Vich\UploadableField(mapping: "annonce_imageFile", fileNameProperty: "image")]
@@ -120,24 +123,24 @@ class Annonce
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['edit_annonce:write', 'annonce:read'])]
+    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?float $price = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[ORM\Column(nullable: true, options: ["default" => false])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?bool $isPerHour = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['patch_status_annonce:write'])]
-    private ?string $status = null;
+    #[ORM\Column]
+    #[Groups(['patch_status_annonce:write', 'annonce:read'])]
+    private ?int $status = null;
 
     #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]
     private ?Demande $demande = null;
@@ -288,12 +291,12 @@ class Annonce
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 

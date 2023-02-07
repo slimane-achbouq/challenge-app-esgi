@@ -19,7 +19,7 @@
                     </label>
                   </div>
                 </th>
-                <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap ">
                   <div class="font-semibold text-left">Nom</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -35,10 +35,10 @@
                   <div class="font-semibold text-left">Status</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div class="font-semibold text-left">Nombre d'objet</div>
+                  <div class="font-semibold text-left">profession</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div class="font-semibold">Nbr location</div>
+                  <div class="font-semibold">Nassociation Name</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                   <span class="sr-only">Menu</span>
@@ -66,8 +66,12 @@
   </template>
   
 <script>
-  import { ref, watch } from 'vue'
+  import { ref, watch,onMounted } from 'vue'
   import Customer from './UsersTableItem.vue'
+  import { useStore } from 'vuex';
+  import { mapGetters } from 'vuex';
+  import axios from 'axios'
+  
   
   
   export default {
@@ -76,10 +80,24 @@
       Customer,
     },  
     props: ['selectedItems'],
+
+    data() {
+        return {
+            users: [],
+        }
+    },
+
+    methods:{
+
+    },
     setup(props, { emit }) {
-  
+
+      const store = useStore();
+      const  token = localStorage.getItem('esgi-ws-token')
+    
       const selectAll = ref(false)
       const selected = ref([])
+      const customers = ref([])
   
       const checkAll = () => {
         selected.value = []
@@ -97,34 +115,24 @@
         emit('change-selection', selected.value)
       })    
 
+      const fetchUsers = async() => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        customers.value = response.data["hydra:member"];
+        console.log(customers.value)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+  
       
+    onMounted(fetchUsers)
       
-      const customers = ref([
-        {
-          id: '0',
-          image: null,
-          name: 'Patricia Semklo',
-          email: 'patricia.semklo@app.com',
-          location: '🇬🇧 London, UK',
-          mobile: '0605840998',
-          status: 'Bloqué',
-          nbrObjets: '12',
-          nbLocation: '43',
-          fav: true
-        },
-        {
-          id: '1',
-          image: null,
-          name: 'Dominik Lamakani',
-          email: 'dominik.lamakani@gmail.com',
-          location: '🇩🇪 Dortmund, DE',
-          mobile: '0605840998',
-          status: 'active',
-          nbrObjets: '24',
-          nbLocation: '4',
-          fav: false
-        },
-      ])
   
       return {
         selectAll,
