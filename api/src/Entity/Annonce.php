@@ -94,9 +94,10 @@ class Annonce
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['annonce:read'])]
     private ?int $id = null;
 
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -121,19 +122,19 @@ class Annonce
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['edit_annonce:write', 'annonce:read'])]
+    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true, options: ["default" => false])]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
     private ?bool $isPerHour = null;
 
     #[ORM\Column(length: 255)]

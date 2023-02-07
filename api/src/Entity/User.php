@@ -137,7 +137,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write','annonce:read'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
