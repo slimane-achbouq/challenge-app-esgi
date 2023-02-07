@@ -117,7 +117,7 @@ class Annonce
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
-    #[Groups(['annonce:read'])]
+    #[Groups(['annonce:read', 'user:read'])]
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]

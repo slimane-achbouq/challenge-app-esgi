@@ -76,9 +76,18 @@
                                              src="data:image/png;base64,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"
                                              width="32" height="32" alt="User 04"/>
                                     </a>
-                                    <a class="block text-sm font-semibold text-slate-800 whitespace-nowrap" href="#0">
-                                        ELMOHRI Othmane
-                                    </a>
+                                    <span v-if="owner && owner.firstName && owner.lastName" class="block text-sm font-semibold text-slate-800 whitespace-nowrap" href="#0">
+                                        {{ owner.firstName }} {{ owner.lastName }}
+                                    </span>
+                                    <span v-else-if="owner && owner.associationName" class="block text-sm font-semibold text-slate-800 whitespace-nowrap" href="#0">
+                                        {{ owner.associationName }}
+                                    </span>
+                                    <span v-else-if="owner && owner.commercialName" class="block text-sm font-semibold text-slate-800 whitespace-nowrap" href="#0">
+                                        {{ owner.commercialName }}
+                                    </span>
+                                    <span v-else-if="owner" class="block text-sm font-semibold text-slate-800 whitespace-nowrap" href="#0">
+                                        {{ owner.email }}
+                                    </span>
                                 </div>
 
                                 <!-- Right side -->
@@ -252,6 +261,7 @@ export default {
             endingDate: null,
             dateError: null,
             validOrder: false,
+            owner: null
         }
     },
     methods: {
@@ -304,6 +314,7 @@ export default {
             this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             this.price = data.price;
             this.status = data.status;
+            this.owner = data.owner;
             this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
         },
         handleValidAnnounce: async function () {
@@ -369,6 +380,7 @@ export default {
         this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
         this.price = data.price;
         this.status = data.status;
+        this.owner = data.owner;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
         console.log(data)
     }
