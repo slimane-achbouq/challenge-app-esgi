@@ -95,10 +95,10 @@ class Annonce
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['annonce:read'])]
+    #[Groups(['annonce:read', 'demande:read'])]
     private ?int $id = null;
 
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
@@ -107,7 +107,7 @@ class Annonce
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['annonce:read'])]
+    #[Groups(['annonce:read', 'demande:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Vich\UploadableField(mapping: "annonce_imageFile", fileNameProperty: "image")]
@@ -119,7 +119,7 @@ class Annonce
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
-    #[Groups(['annonce:read', 'user:read'])]
+    #[Groups(['annonce:read', 'user:read', 'demande:read'])]
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -127,19 +127,19 @@ class Annonce
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
+    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true, options: ["default" => false])]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
     private ?bool $isPerHour = null;
 
     #[ORM\Column]
-    #[Groups(['patch_status_annonce:write', 'annonce:read'])]
+    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read'])]
     private ?int $status = null;
 
     #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]

@@ -183,17 +183,20 @@
                                         </button>
                                     </li>
                                 </ul>
-                                <div v-if="status == 0" class="mb-4">
+                                <div v-if="owner && this.useremail != this.owner.email">
+                                    <div v-if="status == 0" class="mb-4">
                                     <span class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white opacity-30">Order
                                         Now</span>
-                                </div>
-                                <div v-else-if="status == 1" class="mb-4">
-                                    <router-link to="#">
-                                        <button @click.prevent="this.isBeingOrdered = true"
-                                                class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">Order
-                                            Now
-                                        </button>
-                                    </router-link>
+                                    </div>
+                                    <div v-else-if="status == 1" class="mb-4">
+                                        <router-link to="#">
+                                            <button v-if="canOrder" @click.prevent="this.isBeingOrdered = true"
+                                                    class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">
+                                                Order
+                                                Now
+                                            </button>
+                                        </router-link>
+                                    </div>
                                 </div>
                                 <div v-if="validOrder" class="inline text-center">
                                     <span class="text-green-500">
@@ -220,6 +223,11 @@
                                         </button>
                                     </form>
                                 </div>
+                                <div v-if="isAlreadyOrdered">
+                                    <span class="text-green-500">
+                                        You have already orderded this article.
+                                    </span>
+                                </div>
                             </div>
 
                             <hr class="my-6 border-t border-slate-200"/>
@@ -228,7 +236,17 @@
                                 <div class="flex justify-between space-x-1 mb-5">
                                     <div class="text-sm text-slate-800 font-semibold">Requests</div>
                                 </div>
-
+                                <ul class="space-y-3">
+                                    <li v-for="demande in demandes" v-bind:key="demande.id">
+                                        <div class="flex justify-between">
+                                            <div class="grow flex items-center">
+                                                <div class="truncate">
+                                                    <span class="text-sm font-medium text-slate-800">{{ demande.locataire.email }} - {{ demande.createdAt }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
 
 
@@ -345,7 +363,10 @@ export default {
             useremail: "",
             isOwner: false,
             modalOpen: false,
-            id: null
+            id: null,
+            isAlreadyOrdered: null,
+            demandes: null,
+            canOrder: true
         }
     },
     methods: {
@@ -363,6 +384,7 @@ export default {
             if (this.startingDate && this.endingDate && this.startingDate <= this.endingDate) {
                 const formData = new FormData();
                 formData.append('annonce', id);
+                formData.append('locataire', this.useremail);
                 const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
                     method: 'POST',
                     headers: {
@@ -400,6 +422,32 @@ export default {
             this.status = data.status;
             this.owner = data.owner;
             this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
+
+            const response2 = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+                method: 'GET',
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            const res = await response2.json();
+            const demandes = res['hydra:member'];
+            let finalDemandes = [];
+            for (let demande of demandes) {
+                console.log(demande)
+                if (demande.annonce.id === parseInt(id)) {
+                    finalDemandes.push(demande);
+                    let date = new Date(demande.createdAt);
+                    demande.createdAt = date.toLocaleDateString();
+                }
+                if (demande.locataire.email === this.useremail) {
+                    this.isAlreadyOrdered = true;
+                    this.canOrder = false;
+                }
+            }
+            console.log(finalDemandes);
+            this.demandes = finalDemandes;
         },
         handleValidAnnounce: async function () {
             let token = localStorage.getItem('esgi-ws-token');
@@ -486,7 +534,33 @@ export default {
         this.status = data.status;
         this.owner = data.owner;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
-        this.isOwner = this.useremail === data.owner.email
+        this.isOwner = this.useremail === data.owner.email;
+
+        const response2 = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        const res = await response2.json();
+        const demandes = res['hydra:member'];
+        let finalDemandes = [];
+        for (let demande of demandes) {
+            console.log(demande)
+            if (demande.annonce.id === parseInt(id)) {
+                let date = new Date(demande.createdAt);
+                demande.createdAt = date.toLocaleDateString();
+                finalDemandes.push(demande);
+            }
+            if (demande.locataire.email === this.useremail) {
+                this.isAlreadyOrdered = true;
+                this.canOrder = false;
+            }
+        }
+        console.log(finalDemandes);
+        this.demandes = finalDemandes;
     }
 }
 </script>

@@ -137,18 +137,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write','annonce:read'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write','annonce:read', 'demande:read'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Groups(['user:read', 'user:read:verification_account_token', 'annonce:read'])]
+    #[Groups(['user:read', 'user:read:verification_account_token', 'annonce:read', 'demande:read'])]
     #[ORM\Column]
     private array $roles = [];
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write', 'annonce:read', 'demande:read'])]
     private string $role;
 
     #[Groups(['user:write:verification_account_token'])]
@@ -169,7 +169,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
     private Collection $annonces;
 
-    #[Groups(['user:read', 'user:read:verification_account_token','user-update:write', 'annonce:read'])]
+    #[Groups(['user:read', 'user:read:verification_account_token','user-update:write', 'annonce:read', 'demande:read'])]
 
     #[ORM\Column(name: 'is_verified', type: Types::BOOLEAN, nullable: true, options: ["default" => false])]
     private ?bool $isVerified = null;
@@ -177,39 +177,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
     private Collection $resetPasswords;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $associationName = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profession = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commercialName = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $postalCode = null;
 
-    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 

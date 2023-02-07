@@ -48,6 +48,7 @@ class Demande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['demande:read'])]
     #[ORM\Column]
     private ?int $id = null;
 
@@ -56,6 +57,7 @@ class Demande
     private ?string $status = null;
 
     #[ORM\Column]
+    #[Groups(['demande:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -69,7 +71,7 @@ class Demande
     #[Groups(['demande:write', 'edit_demande:write', 'demande:read'])]
     private ?\DateTimeInterface $dateEnd = null;
 
-    #[ORM\OneToOne(inversedBy: 'demande', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'demande')]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['demande:read'])]
     private ?Annonce $annonce = null;
