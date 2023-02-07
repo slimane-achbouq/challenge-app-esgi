@@ -4,7 +4,7 @@ export default {
         state.firstName = payload.firstName;
         state.lastName = payload.lastName;
         state.email = payload.email;
-        state.role = payload.role;
+        state.roles = payload.roles;
         state.id = payload.id
     }
 };

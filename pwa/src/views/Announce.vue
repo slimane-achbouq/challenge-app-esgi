@@ -22,7 +22,7 @@
                                 The announce is being verified by an administrator. Thank you for waiting.
                             </span>
                                 </div>
-                                <div class="flex justify-evenly">
+                                <div class="flex justify-evenly" v-if="role==='Admin'">
                                     <button class="bg-green-600" style="width: 30%; height: 40px;border-radius: 5px;" @click="handleValidAnnounce">
                                         Accept the announce
                                     </button>
@@ -45,13 +45,13 @@
 
                                 <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">{{ title }}</h1>
 
-                                <div>
-                                    <button class="btn border-slate-200 hover:border-slate-300 text-slate-600">
+                                <div v-if="this.isOwner">
+                                    <button class="btn border-slate-200 hover:border-slate-300 text-slate-600" @click="onOpenModal">
                                         <svg class="w-4 h-4 fill-current text-slate-500 shrink-0" viewBox="0 0 16 16">
                                             <path
                                                 d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z"/>
                                         </svg>
-                                        <span class="ml-2">Edit </span>
+                                        <span class="ml-2" >Edit </span>
                                     </button>
 
                                     <button
@@ -192,6 +192,69 @@
                     </div>
 
                 </div>
+                <ModalBasic id="feedback-modal" :modalOpen="modalOpen" @close-modal="onModalClose"  title="Edit Announce">
+                      <!-- Modal content -->
+                      <div class="px-5 py-4">
+                        <div class="space-y-3 ">
+
+                          <div class="col-span-1">
+                            <label class="block text-sm font-medium mb-1" for="mandatory">Title<span class="text-rose-500">*</span></label>
+                            <input id="mandatory" class="form-input w-full" type="text"
+                                                           v-model.trim="title"
+                                                           required/>
+                          </div>
+
+                          <div class="col-span-6 sm:col-span-4">
+                                                    <label for="message"
+                                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description
+                                                        <span class="text-rose-500">*</span></label>
+                                                    <textarea id="message" rows="4" v-model.trim="description" required
+                                                              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                              placeholder="Write the description here..."></textarea>
+                          </div>
+
+                          <div class="col-span-6 sm:col-span-3">
+                                                    <label for="country"
+                                                           class="block text-sm font-medium text-gray-700">Flexible
+                                                        price</label>
+                                                    <select id="country" name="country" autocomplete="country-name"
+                                                            v-model.trim="isPerHour"
+                                                            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                                                        <option value="true">Per hour (flexible)</option>
+                                                        <option value="false">Fixed</option>
+                                                    </select>
+                        </div>
+
+                        <div>
+                                                    <label for="price" class="block text-sm font-medium text-gray-700">Price
+                                                        <span class="text-rose-500">*</span></label>
+                                                    <div class="relative mt-1 rounded-md shadow-sm">
+                                                        <div
+                                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                                            <span class="text-gray-500 sm:text-sm">€</span>
+                                                        </div>
+                                                        <input type="number" name="price" id="price"
+                                                               v-model.trim="price"
+                                                               required
+                                                               class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                                               placeholder="0.00">
+                                                        <div class="absolute inset-y-0 right-0 flex items-center">
+
+                                                        </div>
+                                                    </div>
+                        </div>
+
+                        </div>
+                      </div>
+                      <!-- Modal footer -->
+                      <div class="px-5 py-4 border-t border-slate-200">
+                        <div class="flex flex-wrap justify-end space-x-2">
+                          <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click.stop="modalOpen=false">Cancel</button>
+                          <button class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white" @click="updateAnnounce">Edit</button>
+                        </div>
+                      </div>
+                </ModalBasic>
+                
             </main>
 
         </div>
@@ -201,12 +264,15 @@
 
 <script>
 import Header from '../partials/Header.vue'
+import ModalBasic from '../components/Modal.vue'
+import axios from 'axios'
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
     name: 'Announce',
     components: {
         Header,
+        ModalBasic
     },
     data() {
         return {
@@ -217,6 +283,11 @@ export default {
             createdAt: null,
             src: "",
             status: "",
+            role:"",
+            useremail:"",
+            isOwner:false,
+            modalOpen:false,
+            id:null
         }
     },
     methods: {
@@ -231,7 +302,7 @@ export default {
                 },
             });
 
-            let data = await response.json();
+            let data = await response.json();  
             this.title = data.title;
             this.description = data.description;
             this.isPerHour = data.isPerHour;
@@ -280,13 +351,26 @@ export default {
 
             await this.updateData();
         },
+        onOpenModal (){
+            this.modalOpen=true
+        },
+        updateAnnounce() {
+            const data = { title: this.title,description: this.description,price: this.price,isPerHour: this.isPerHour ===true?true:false }
+            const response = axios.patch(`${import.meta.env.VITE_API_URL}/annonces/${id}`,  data , {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+              }
+          })
+          this.modalOpen=false
+        },
     },
     setup() {
-        return {}
     },
     async created() {
         let token = this.$store.getters["auth/token"]
-
+        this.role = this.$store.getters["auth/role"]
+        this.useremail = this.$store.getters["auth/email"]
+        
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
         console.log(id)
         const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
@@ -298,6 +382,7 @@ export default {
         });
 
         let data = await response.json();
+        this.id=data.id
         this.title = data.title;
         this.description = data.description;
         this.isPerHour = data.isPerHour;
@@ -306,7 +391,7 @@ export default {
         this.price = data.price;
         this.status = data.status;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
-        console.log(data)
+        this.isOwner = this.useremail ===data.owner.email
     }
 }
 </script>

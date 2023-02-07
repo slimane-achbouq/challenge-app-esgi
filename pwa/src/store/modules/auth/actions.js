@@ -45,7 +45,7 @@ export default {
                 firstName: userInfos.firstName,
                 lastName: userInfos.lastName,
                 email: userInfos.email,
-                role: userInfos.role,
+                roles: userInfos.roles,
                 id: userInfos.id
             });
         }
