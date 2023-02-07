@@ -170,9 +170,26 @@
                                 </div>
                                 <div v-else-if="status == 1" class="mb-4">
                                     <router-link to="#">
-                                    <span class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">Order
-                                        Now</span>
+                                    <button @click.prevent="this.isBeingOrdered = true" class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">Order
+                                        Now</button>
                                     </router-link>
+                                </div>
+                                <div v-if="isBeingOrdered" class="inline text-center">
+                                    <form @submit.prevent="submitDemandeForm" method="post">
+                                        <div>
+                                            <label for="startingDate">From <br></label>
+                                            <input type="datetime-local" id="startingDate" name="startingDate" class="w-full" v-model="startingDate">
+                                        </div>
+                                        <div class="mt-2">
+                                            <label for="endingDate">To <br></label>
+                                            <input type="datetime-local" id="endingDate" name="endingDate" class="w-full" v-model="endingDate">
+                                        </div>
+                                        <div v-if="dateError">
+                                            <span class="text-red-500">{{ dateError }}</span>
+                                        </div>
+
+                                        <button type="submit" class="btn w-full bg-blue-500 text-white mt-3">Confirm</button>
+                                    </form>
                                 </div>
                             </div>
 
@@ -218,9 +235,36 @@ export default {
             createdAt: null,
             src: "",
             status: "",
+            isBeingOrdered: false,
+            startingDate: null,
+            endingDate: null,
+            dateError: null
         }
     },
     methods: {
+        submitDemandeForm: async function() {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            this.dateError = null;
+            if (!this.startingDate || !this.endingDate) {
+                this.dateError = "Please select two dates.";
+            }
+            if (this.startingDate && this.endingDate && this.startingDate > this.endingDate) {
+                this.dateError = "Please choose a starting date earlier than the ending date";
+            }
+
+            /*if (this.startingDate && this.endingDate && this.startingDate <= this.endingDate) {
+                const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/merge-patch+json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                    })
+                });
+            }*/
+        },
         updateData: async function() {
             let token = localStorage.getItem('esgi-ws-token');
 
@@ -289,7 +333,6 @@ export default {
         let token = this.$store.getters["auth/token"]
 
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
-        console.log(id)
         const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
             method: 'GET',
             headers: {
