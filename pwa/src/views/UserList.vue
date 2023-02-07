@@ -59,25 +59,25 @@
 
                          <div class="grid grid-cols-2 gap-4" >
                           <div class="col-span-1">
-                            <label class="block text-sm font-medium mb-1" for="name">Nom <span class="text-rose-500">*</span></label>
-                            <input id="name" class="form-input w-full px-2 py-1" type="text" required :value="selectedItems.name"/>
+                            <label class="block text-sm font-medium mb-1" for="name">First Name<span class="text-rose-500">*</span></label>
+                            <input v-model="selectedItems.firstName" id="name" class="form-input w-full px-2 py-1" type="text" required />
                           </div>
                           <div class="col-span-1">
-                            <label class="block text-sm font-medium mb-1" for="name">Prenom <span class="text-rose-500">*</span></label>
-                            <input id="name" class="form-input w-full px-2 py-1" type="text"  :value="selectedItems.name"/>
+                            <label class="block text-sm font-medium mb-1" for="name">Last Name <span class="text-rose-500">*</span></label>
+                            <input  v-model="selectedItems.lastName" id="name" class="form-input w-full px-2 py-1" type="text" />
                           </div>
                          </div>
 
                          <div class="grid grid-cols-2 gap-4" >
                           <div class="col-span-1">
-                            <label class="block text-sm font-medium mb-1" for="name">Code postal <span class="text-rose-500">*</span></label>
-                            <input id="name" class="form-input w-full px-2 py-1" type="text" required :value="selectedItems.location"/>
+                            <label class="block text-sm font-medium mb-1" for="name">Mobile <span class="text-rose-500">*</span></label>
+                            <input v-model="selectedItems.phoneNumber" id="name" class="form-input w-full px-2 py-1" type="text" required />
                           </div>
                           <div class="col-span-1">
                             <label class="block text-sm font-medium mb-1" for="name">Status <span class="text-rose-500">*</span></label>
-                            <select class="form-select">
-                                <option>Active</option>
-                                <option>Banned</option>
+                            <select class="form-select" v-model="isVerifiedv">
+                                <option value="true">Actived</option>
+                                <option value="false">Not Actived</option>
                             </select>
                           </div>
                          </div>
@@ -172,6 +172,7 @@
       const selectedItems = ref([])
       const modalOpen = ref(false)
       const modaDeletelOpen = ref(false)
+      const isVerifiedv=ref(false)
   
       const updateSelectedItems = (selected) => {
         selectedItems.value = selected
@@ -192,7 +193,13 @@
           try {
           // Get the form data from the inputs
           
-          const data = { email: this.selectedItems.email }
+          console.log(isVerifiedv["_value"])
+          const data = { 
+            email: this.selectedItems.email,
+            firstName: this.selectedItems.firstName,
+            lastName: this.selectedItems.lastName,
+            isVerified: isVerifiedv["_value"] ? true:false,
+            phoneNumber: this.selectedItems.phoneNumber  }
           console.log(data)
           const response = axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}`,  data , {
               headers: {
@@ -218,6 +225,7 @@
         onOpenModal,
         modaDeletelOpen,
         updateUser,
+        isVerifiedv
       }  
     }
   }

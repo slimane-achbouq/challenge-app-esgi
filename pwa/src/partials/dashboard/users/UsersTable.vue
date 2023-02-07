@@ -19,7 +19,7 @@
                     </label>
                   </div>
                 </th>
-                <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap ">
                   <div class="font-semibold text-left">Nom</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
@@ -35,10 +35,10 @@
                   <div class="font-semibold text-left">Status</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div class="font-semibold text-left">Nombre d'objet</div>
+                  <div class="font-semibold text-left">profession</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div class="font-semibold">Nbr location</div>
+                  <div class="font-semibold">Nassociation Name</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                   <span class="sr-only">Menu</span>
@@ -123,6 +123,7 @@
           }
         })
         customers.value = response.data["hydra:member"];
+        console.log(customers.value)
       } catch (error) {
         console.error(error)
       }
