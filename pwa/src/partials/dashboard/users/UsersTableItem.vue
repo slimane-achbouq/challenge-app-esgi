@@ -10,29 +10,27 @@
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
         <div class="flex items-center">
-          <div class="w-10 h-10 shrink-0 mr-2 sm:mr-3">
-            <img class="rounded-full" :src="customer.image" width="40" height="40" :alt="customer.name" />
-          </div>
-          <div class="font-medium text-slate-800">{{customer.name}}</div>
+          
+          <div class="font-medium text-slate-800">{{customer.firstName}} {{customer.lastName}}</div>
         </div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
         <div class="text-left">{{customer.email}}</div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div class="text-left">{{customer.location}}</div>
+        <div class="text-left">{{customer.city}},{{customer.postalCode}}</div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div class="text-center">{{customer.mobile}}</div>
+        <div class="text-center">{{customer.phoneNumber}}</div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div class="text-center font-medium text-sky-500">{{customer.status}}</div>
+        <div class="text-center font-medium text-sky-500"><span v-if="customer.isVerified">Verified</span><span v-if="!customer.isVerified">Not verified</span></div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div class="text-center font-medium text-emerald-500">{{customer.nbrObjets}}</div>
+        <div class="text-center font-medium text-emerald-500">{{customer.profession}}</div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div class="text-center">{{customer.nbLocation}}</div>
+        <div class="text-center">{{customer.associationName}}</div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
         <!-- Menu button -->

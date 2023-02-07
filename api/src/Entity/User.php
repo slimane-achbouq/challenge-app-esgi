@@ -19,6 +19,9 @@ use ApiPlatform\Metadata\Post;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+
 
 /* TODO
 Je m'inscris en tant que : (Particulier | Auto-entrepreneur/Indépendant | Entreprise | Association)
@@ -59,6 +62,8 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     name: 'account_verification'
 )]
 #[Get]
+#[GetCollection]
+#[Patch(denormalizationContext: ['groups' => ['user-update:write']])]
 #[Post(
     uriTemplate: '/users',
     controller: RegisterController::class,
@@ -129,9 +134,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token', 'annonce:read'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write','annonce:read'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
@@ -163,46 +169,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
     private Collection $annonces;
 
-    #[Groups(['user:read', 'user:read:verification_account_token', 'annonce:read'])]
+    #[Groups(['user:read', 'user:read:verification_account_token','user-update:write', 'annonce:read'])]
+
     #[ORM\Column(name: 'is_verified', type: Types::BOOLEAN, nullable: true, options: ["default" => false])]
     private ?bool $isVerified = null;
 
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
     private Collection $resetPasswords;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $associationName = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profession = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commercialName = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $postalCode = null;
 
-    #[Groups(['user:write', 'annonce:read'])]
+    #[Groups(['user:write','user:read','user-update:write', 'annonce:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 

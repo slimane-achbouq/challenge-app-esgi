@@ -179,7 +179,7 @@ class Demande
     public function prePersist(): void
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->status = "0";
+        $this->status = 0;
     }
 
     #[ORM\PreUpdate]
