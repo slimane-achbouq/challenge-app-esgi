@@ -205,6 +205,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
+
     #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class)]
     private Collection $demandes;
 
@@ -499,6 +500,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPostalCode(?string $postalCode): self
     {
         $this->postalCode = $postalCode;
+        return $this;
     }
 
     /**
