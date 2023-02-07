@@ -169,7 +169,7 @@ export default {
         async updateData() {
             let token = this.$store.getters["auth/token"]
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}&itemsPerPage=5&status=1`, {
                 method: 'GET',
                 headers: {
                     // 'Content-Type': 'multipart/form-data',
@@ -184,7 +184,7 @@ export default {
     async created() {
         let token = this.$store.getters["auth/token"]
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}&itemsPerPage=5&status=1`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',

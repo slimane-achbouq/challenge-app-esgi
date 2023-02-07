@@ -89,6 +89,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isPerHour'])]
+#[ApiFilter(NumericFilter::class, properties: ['status'])]
 class Annonce
 {
     #[ORM\Id]
@@ -136,9 +137,9 @@ class Annonce
     #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
     private ?bool $isPerHour = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column]
     #[Groups(['patch_status_annonce:write', 'annonce:read'])]
-    private ?string $status = null;
+    private ?int $status = null;
 
     public function getId(): ?int
     {
@@ -286,12 +287,12 @@ class Annonce
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
