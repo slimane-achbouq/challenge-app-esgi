@@ -3,7 +3,6 @@
         <nav class="mb-4 sm:mb-0 sm:order-1" role="navigation" aria-label="Navigation">
             <ul class="flex justify-center">
                 <li class="ml-3 first:ml-0">
-                    <span>{{page}}</span>
                     <button v-if="page == 1" class="btn bg-white border-slate-200 text-slate-300 cursor-not-allowed" disabled
                             @click="$emit('decreasePage', 1)">&lt;- Previous
                     </button>

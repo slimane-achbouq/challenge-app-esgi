@@ -9,9 +9,11 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\DemandeHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DemandeHistoryRepository::class)]
 #[ApiResource(
+    normalizationContext: ['groups' => ['demande_history:read']],
     paginationClientItemsPerPage: true,
     paginationItemsPerPage: 5,
     paginationMaximumItemsPerPage: 5
@@ -25,18 +27,23 @@ class DemandeHistory
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['demande_history:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandeHistories')]
+    #[Groups(['demande_history:read', 'user:read'])]
     private ?User $owner = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandeHistories')]
+    #[Groups(['demande:read'])]
     private ?Demande $demand = null;
 
     #[ORM\Column]
+    #[Groups(['demande_history:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['demande_history:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int

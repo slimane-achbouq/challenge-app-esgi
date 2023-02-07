@@ -234,7 +234,9 @@
                             <!-- 2nd block -->
                             <div class="bg-white p-5 shadow-lg rounded-sm border border-slate-200 lg:w-72 xl:w-80">
                                 <div class="flex justify-between space-x-1 mb-5">
-                                    <div class="text-sm text-slate-800 font-semibold">Requests</div>
+                                    <div class="text-sm text-slate-800 font-semibold">
+                                        Requests - <button>See all</button>
+                                    </div>
                                 </div>
                                 <ul class="space-y-3">
                                     <li v-for="demande in demandes" v-bind:key="demande.id">

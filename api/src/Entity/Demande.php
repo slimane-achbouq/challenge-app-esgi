@@ -61,6 +61,7 @@ class Demande
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['demande:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -73,14 +74,15 @@ class Demande
 
     #[ORM\ManyToOne(inversedBy: 'demande')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['demande:read'])]
+    #[Groups(['demande:read', 'annonce:read'])]
     private ?Annonce $annonce = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandes')]
-    #[Groups(['demande:read'])]
+    #[Groups(['demande:read', 'user:read'])]
     private ?User $locataire = null;
 
     #[ORM\OneToMany(mappedBy: 'demand', targetEntity: DemandeHistory::class)]
+    #[Groups(['demande_history:read'])]
     private Collection $demandeHistories;
 
     public function __construct()
