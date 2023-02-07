@@ -253,7 +253,7 @@
                         </div>
                       </div>
                 </ModalBasic>
-                
+
             </main>
 
         </div>
@@ -281,7 +281,7 @@ export default {
             isPerHour: null,
             createdAt: null,
             src: "",
-            status: "",
+            status: null,
             role:"",
             useremail:"",
             isOwner:false,
@@ -301,7 +301,7 @@ export default {
                 },
             });
 
-            let data = await response.json();  
+            let data = await response.json();
             this.title = data.title;
             this.description = data.description;
             this.isPerHour = data.isPerHour;
@@ -321,7 +321,7 @@ export default {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    status: "1"
+                    status: 1
                 })
             });
 
@@ -341,7 +341,7 @@ export default {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    status: "2"
+                    status: 2
                 })
             });
 
@@ -369,7 +369,7 @@ export default {
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
         this.useremail = this.$store.getters["auth/email"]
-        
+
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
         console.log(id)
         const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
