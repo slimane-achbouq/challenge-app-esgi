@@ -23,10 +23,12 @@
                             </span>
                                 </div>
                                 <div class="flex justify-evenly">
-                                    <button class="bg-green-600" style="width: 30%; height: 40px;border-radius: 5px;" @click="handleValidAnnounce">
+                                    <button class="bg-green-600" style="width: 30%; height: 40px;border-radius: 5px;"
+                                            @click="handleValidAnnounce">
                                         Accept the announce
                                     </button>
-                                    <button class="bg-red-500" style="width: 30%; height: 40px;border-radius: 5px;" @click="handleRefuseAnnounce">
+                                    <button class="bg-red-500" style="width: 30%; height: 40px;border-radius: 5px;"
+                                            @click="handleRefuseAnnounce">
                                         Refuse the announce
                                     </button>
                                 </div>
@@ -170,25 +172,35 @@
                                 </div>
                                 <div v-else-if="status == 1" class="mb-4">
                                     <router-link to="#">
-                                    <button @click.prevent="this.isBeingOrdered = true" class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">Order
-                                        Now</button>
+                                        <button @click.prevent="this.isBeingOrdered = true"
+                                                class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">Order
+                                            Now
+                                        </button>
                                     </router-link>
+                                </div>
+                                <div v-if="validOrder" class="inline text-center">
+                                    <span class="text-green-500">
+                                        Your order request has been sent to the seller ! Please wait while the seller confirms your dates choice.
+                                    </span>
                                 </div>
                                 <div v-if="isBeingOrdered" class="inline text-center">
                                     <form @submit.prevent="submitDemandeForm" method="post">
                                         <div>
                                             <label for="startingDate">From <br></label>
-                                            <input type="datetime-local" id="startingDate" name="startingDate" class="w-full" v-model="startingDate">
+                                            <input type="datetime-local" id="startingDate" name="startingDate"
+                                                   class="w-full" v-model="startingDate">
                                         </div>
                                         <div class="mt-2">
                                             <label for="endingDate">To <br></label>
-                                            <input type="datetime-local" id="endingDate" name="endingDate" class="w-full" v-model="endingDate">
+                                            <input type="datetime-local" id="endingDate" name="endingDate"
+                                                   class="w-full" v-model="endingDate">
                                         </div>
                                         <div v-if="dateError">
                                             <span class="text-red-500">{{ dateError }}</span>
                                         </div>
 
-                                        <button type="submit" class="btn w-full bg-blue-500 text-white mt-3">Confirm</button>
+                                        <button type="submit" class="btn w-full bg-blue-500 text-white mt-3">Confirm
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -238,11 +250,12 @@ export default {
             isBeingOrdered: false,
             startingDate: null,
             endingDate: null,
-            dateError: null
+            dateError: null,
+            validOrder: false,
         }
     },
     methods: {
-        submitDemandeForm: async function() {
+        submitDemandeForm: async function () {
             let token = localStorage.getItem('esgi-ws-token');
 
             this.dateError = null;
@@ -253,19 +266,26 @@ export default {
                 this.dateError = "Please choose a starting date earlier than the ending date";
             }
 
-            /*if (this.startingDate && this.endingDate && this.startingDate <= this.endingDate) {
-                const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+            if (this.startingDate && this.endingDate && this.startingDate <= this.endingDate) {
+                const formData = new FormData();
+                formData.append('annonce', id);
+                const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/merge-patch+json',
+                        // 'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({
-                    })
+                    body: formData
                 });
-            }*/
+
+                const response = await request.json();
+                console.log(response);
+
+                this.isBeingOrdered = false;
+                this.validOrder = true;
+            }
         },
-        updateData: async function() {
+        updateData: async function () {
             let token = localStorage.getItem('esgi-ws-token');
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
@@ -306,7 +326,7 @@ export default {
             await this.updateData();
 
         },
-        handleRefuseAnnounce: async function() {
+        handleRefuseAnnounce: async function () {
             let token = localStorage.getItem('esgi-ws-token');
 
             const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
