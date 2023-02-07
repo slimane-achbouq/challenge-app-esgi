@@ -144,7 +144,6 @@
                             </div>
 
                             <hr class="my-6 border-t border-slate-200"/>
-
                         </div>
 
                         <!-- Sidebar -->

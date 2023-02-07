@@ -95,11 +95,11 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     uriTemplate: '/address/{address}',
     controller: AddressController::class,
     openapiContext: [
-        'parameters'=> [[
+        'parameters' => [[
             'name' => 'address',
-            'in'   => 'path',
+            'in' => 'path',
             'description' => 'address to search',
-            'type'  => 'string',
+            'type' => 'string',
             'required' => true,
             'example' => '35 sir waji'
         ]]
@@ -212,10 +212,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class)]
+    private Collection $demandes;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class)]
+    private Collection $demandeHistories;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->resetPasswords = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
+        $this->demandeHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -449,6 +457,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStreet(?string $street): self
     {
         $this->street = $street;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes->add($demande);
+            $demande->setLocataire($this);
+        }
 
         return $this;
     }
@@ -461,7 +485,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCity(?string $city): self
     {
         $this->city = $city;
+    }
 
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            // set the owning side to null (unless already changed)
+            if ($demande->getLocataire() === $this) {
+                $demande->setLocataire(null);
+            }
+        }
         return $this;
     }
 
@@ -473,7 +506,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPostalCode(?string $postalCode): self
     {
         $this->postalCode = $postalCode;
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, DemandeHistory>
+     */
+    public function getDemandeHistories(): Collection
+    {
+        return $this->demandeHistories;
+    }
+
+    public function addDemandeHistory(DemandeHistory $demandeHistory): self
+    {
+        if (!$this->demandeHistories->contains($demandeHistory)) {
+            $this->demandeHistories->add($demandeHistory);
+            $demandeHistory->setOwner($this);
+        }
         return $this;
     }
 
@@ -503,5 +552,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRole(string $role): void
     {
         $this->role = $role;
+    }
+
+    public function removeDemandeHistory(DemandeHistory $demandeHistory): self
+    {
+        if ($this->demandeHistories->removeElement($demandeHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($demandeHistory->getOwner() === $this) {
+                $demandeHistory->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }
