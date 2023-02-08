@@ -65,28 +65,80 @@
                                     <thead
                                         class="text-xs font-semibold uppercase text-slate-500 bg-slate-50 border-t border-b border-slate-200">
                                     <tr>
-                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Created by</th>
+                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Status
+                                        </th>
+                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Created by
+                                        </th>
                                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Announce</th>
-                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Created At</th>
-                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Starting date</th>
-                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Ending date</th>
+                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Created At
+                                        </th>
+                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Starting
+                                            date
+                                        </th>
+                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Ending date
+                                        </th>
                                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody v-if="demandes" class="text-sm divide-y divide-slate-200">
                                     <tr v-for="demande in demandes" v-bind:key="demande.id">
-                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">{{ demande.locataire.email }}</td>
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                            <span v-if="demande.status == 0 && demande.annonce.owner.email === useremail" class="text-blue-500">
+                                                You have to respond
+                                            </span>
+                                            <span v-else-if="demande.status == 0 && demande.locataire.email === useremail" class="text-orange-500">
+                                                Wait for the seller to respond
+                                            </span>
+                                            <span v-else-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid" class="text-green-500">
+                                                Confirmed. You have to pay.
+                                            </span>
+                                            <span v-else-if="demande.status == 1 && demande.annonce.owner.email === useremail && !demande.isPaid" class="text-green-500">
+                                                Confirmed. Wait for the renter to pay.
+                                            </span>
+                                            <span v-else-if="demande.status == 2 && demande.annonce.owner.email === useremail" class="text-orange-500">
+                                                Wait for the renter to respond
+                                            </span>
+                                            <span v-else-if="demande.status == 2 && demande.locataire.email === useremail" class="text-blue-500">
+                                                You have to respond
+                                            </span>
+                                            <span v-else-if="demande.status == 3" class="text-red-500">
+                                                Refused
+                                            </span>
+                                            <span v-else-if="demande.status == 1 && demande.isPaid" class="text-green-500">
+                                                Confirmed.
+                                            </span>
+                                        </td>
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                            {{ demande.locataire.email }}
+                                        </td>
                                         <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                             <router-link :to="{ name: 'announce', params: { id: demande.annonce.id }}">
-                                            <span class="text-blue-500">{{ demande.annonce.title }}</span>
+                                                <span class="text-blue-500">{{ demande.annonce.title }}</span>
                                             </router-link>
                                         </td>
-                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">{{ demande.createdAt }}</td>
-                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">{{ demande.dateStart }}</td>
-                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">{{ demande.dateEnd }}</td>
                                         <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-                                            <button class="btn bg-green-700 text-white">
+                                            {{ demande.createdAt }}
+                                        </td>
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                            {{ demande.dateStart }}
+                                        </td>
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                            {{ demande.dateEnd }}
+                                        </td>
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                            <button class="btn bg-green-700 text-white" style="margin-right: 10px"
+                                                    v-if="demande.status == 0 && demande.annonce.owner.email === useremail"
+                                                    @click="onOpenModal(demande)">
                                                 Respond
+                                            </button>
+                                            <button class="btn bg-green-700 text-white" style="margin-right: 10px"
+                                                    v-else-if="demande.status == 2 && demande.locataire.email === useremail"
+                                                    @click="onOpenModal(demande)">
+                                                Respond
+                                            </button>
+                                            <button class="btn bg-green-700 text-white" style="margin-right: 10px"
+                                                    v-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid">
+                                                Pay
                                             </button>
                                             <button class="btn bg-blue-600 text-white">
                                                 History
@@ -103,6 +155,66 @@
                         </div>
                     </div>
 
+                    <ModalBasic v-if="validatingDemande" id="feedback-modal" :modalOpen="modalOpen"
+                                @close-modal="onModalClose"
+                                :title="'Request : ' + validatingDemande.annonce.title + ' by ' + validatingDemande.locataire.email">
+                        <!-- Modal content -->
+                        <div class="px-5 py-4">
+                            <div class="space-y-3 ">
+                                <div v-if="validatingDemande">
+                                    <p class="text-center">
+                                        From <br>
+                                        <span class="text-blue-500">{{ validatingDemande.dateStart }}</span> <br>
+                                        To <br>
+                                        <span class="text-blue-500">{{ validatingDemande.dateEnd }}</span>
+                                    </p>
+                                </div>
+                                <div v-if="modifyRequest" class="text-center">
+                                    From
+                                    <div>
+                                        <input type="datetime-local" id="newDateStart" name="newDateStart"
+                                               v-model="newDateStart">
+                                    </div>
+                                    To
+                                    <div>
+                                        <input type="datetime-local" id="newDateEnd" name="newDateEnd"
+                                               v-model="newDateEnd">
+                                    </div>
+                                    <div v-if="dateError">
+                                        <span class="text-red-500">{{ dateError }}</span>
+                                    </div>
+
+                                    <div style="margin-top: 20px">
+                                        <button class="btn bg-red-500 text-white" @click="cancelModifyRequest"
+                                                style="margin-right: 10px">
+                                            Cancel
+                                        </button>
+                                        <button class="btn bg-indigo-500 text-white"
+                                                @click="submitModifyRequest(validatingDemande.id, validatingDemande.status)">
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="px-5 py-4 border-t border-slate-200">
+                            <div class="flex flex-wrap justify-end space-x-2">
+                                <button class="btn-sm bg-red-500 hover:bg-red-600 text-white"
+                                        @click="handleRefuseRequest(validatingDemande.id)">
+                                    Refuse
+                                </button>
+                                <button class="btn-sm bg-orange-500 hover:bg-orange-600 text-white"
+                                        @click="handleModifyRequest">
+                                    Give other dates
+                                </button>
+                                <button class="btn-sm bg-indigo-500 hover:bg-indigo-600 text-white"
+                                        @click="handleSubmitRequest(validatingDemande.id)">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </ModalBasic>
 
                     <!-- Pagination -->
                     <div class="mt-8">
@@ -123,6 +235,8 @@ import Header from '../partials/Header.vue'
 import DeleteButton from '../components/DeleteButton.vue'
 import Pagination from '../components/Pagination.vue'
 import ModalBasic from '../components/Modal.vue'
+import CustomersTable from "@/partials/dashboard/users/UsersTable.vue";
+import {ref} from "vue";
 
 
 export default {
@@ -131,27 +245,147 @@ export default {
         Sidebar,
         Header,
         Pagination,
-        ModalBasic
+        ModalBasic,
+        CustomersTable,
     },
     data() {
         return {
-            id: null,
-            status: null,
-            createdAt: null,
-            updatedAt: null,
-            dateStart: null,
-            dateEnd: null,
-            annonce: null,
-            locataire: null,
             demandeHistories: null,
             src: "",
             demandes: null,
             useremail: "",
+            modifyRequest: false,
+            newDateStart: null,
+            newDateEnd: null,
+            dateError: null,
         }
     },
-    methods: {},
+    methods: {
+        handleRefuseRequest: async function (id) {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    status: 3
+                })
+            });
+
+            const response = await request.json();
+            console.log(response);
+
+            this.updateDemandeData();
+            this.modalOpen = false;
+        },
+        handleModifyRequest: async function () {
+            this.modifyRequest = true;
+        },
+        handleSubmitRequest: async function (id) {
+            let token = localStorage.getItem('esgi-ws-token');
+            const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    status: 1
+                })
+            });
+
+            const response = await request.json();
+            console.log(response);
+
+            await this.updateDemandeData();
+            this.modalOpen = false;
+        },
+        cancelModifyRequest: function () {
+            this.modifyRequest = false;
+        },
+        submitModifyRequest: async function (id, actualStatus) {
+            let token = localStorage.getItem('esgi-ws-token');
+
+            this.dateError = null;
+            if (!this.newDateStart || !this.newDateEnd) {
+                this.dateError = "Please select two dates.";
+            }
+            if (this.newDateStart && this.newDateEnd && this.newDateStart > this.newDateEnd) {
+                this.dateError = "Please choose a starting date earlier than the ending date";
+            }
+
+            if (this.newDateEnd && this.newDateEnd && this.newDateEnd <= this.newDateEnd) {
+                const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        dateStart: this.newDateStart,
+                        dateEnd: this.newDateEnd,
+                        status: actualStatus == 2 ? 0 : 2
+                    })
+                });
+
+                const response = await request.json();
+                console.log(response);
+
+                await this.updateDemandeData();
+                this.modalOpen = false;
+            }
+        },
+        updateDemandeData: async function () {
+            let token = this.$store.getters["auth/token"]
+            this.role = this.$store.getters["auth/role"]
+            this.useremail = this.$store.getters["auth/email"]
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+                method: 'GET',
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            let res = await response.json();
+            let data = res['hydra:member'];
+            this.annonce = data.annonce;
+            this.locataire = data.locataire;
+            this.demandeHistories = data.demandeHistories;
+
+            let finalDemandes = [];
+            for (let demande of data) {
+                if (demande.annonce.owner.email === this.useremail || demande.locataire.email === this.useremail) {
+                    let date = new Date(demande.createdAt);
+                    demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                    date = new Date(demande.dateStart);
+                    demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                    date = new Date(demande.dateEnd);
+                    demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                    finalDemandes.push(demande);
+                }
+            }
+            this.demandes = finalDemandes;
+        }
+    },
     setup() {
-        return {}
+        const modalOpen = ref(false);
+        const validatingDemande = ref(null);
+
+        function onOpenModal(e) {
+            validatingDemande.value = e;
+            modalOpen.value = true
+        }
+
+        return {
+            onOpenModal,
+            modalOpen,
+            validatingDemande
+        }
     },
     async created() {
         let token = this.$store.getters["auth/token"]
@@ -168,12 +402,6 @@ export default {
 
         let res = await response.json();
         let data = res['hydra:member'];
-        this.id = data.id;
-        this.status = data.status;
-        let date = new Date(data.createdAt);
-        this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-        date = new Date(data.updatedAt);
-        this.updatedAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
         this.annonce = data.annonce;
         this.locataire = data.locataire;
         this.demandeHistories = data.demandeHistories;
@@ -181,7 +409,7 @@ export default {
         let finalDemandes = [];
         for (let demande of data) {
             console.log(demande)
-            if (demande.annonce.owner.email === this.useremail) {
+            if (demande.annonce.owner.email === this.useremail || demande.locataire.email === this.useremail) {
                 let date = new Date(demande.createdAt);
                 demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 date = new Date(demande.dateStart);
@@ -192,8 +420,6 @@ export default {
             }
         }
         this.demandes = finalDemandes;
-        this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
-        // this.isOwner = this.useremail === data.owner.email;
     }
 }
 </script>

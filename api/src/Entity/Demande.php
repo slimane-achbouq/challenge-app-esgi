@@ -52,9 +52,9 @@ class Demande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['patch_status:write', 'demande:read'])]
-    private ?string $status = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['patch_status:write', 'demande:read', 'edit_demande:write'])]
+    private ?int $status = null;
 
     #[ORM\Column]
     #[Groups(['demande:read'])]
@@ -85,6 +85,10 @@ class Demande
     #[Groups(['demande_history:read'])]
     private Collection $demandeHistories;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['demande:read'])]
+    private ?bool $isPaid = null;
+
     public function __construct()
     {
         $this->demandeHistories = new ArrayCollection();
@@ -95,12 +99,12 @@ class Demande
         return $this->id;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -184,6 +188,7 @@ class Demande
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->status = 0;
+        $this->isPaid = false;
     }
 
     #[ORM\PreUpdate]
@@ -218,6 +223,18 @@ class Demande
                 $demandeHistory->setDemand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsPaid(): ?bool
+    {
+        return $this->isPaid;
+    }
+
+    public function setIsPaid(?bool $isPaid): self
+    {
+        $this->isPaid = $isPaid;
 
         return $this;
     }

@@ -366,7 +366,7 @@ export default {
             isOwner: false,
             modalOpen: false,
             id: null,
-            isAlreadyOrdered: null,
+            isAlreadyOrdered: false,
             demandes: null,
             canOrder: true
         }
@@ -443,7 +443,7 @@ export default {
                     let date = new Date(demande.createdAt);
                     demande.createdAt = date.toLocaleDateString();
                 }
-                if (demande.locataire.email === this.useremail) {
+                if (demande.locataire.email === this.useremail && demande.annonce.id == id) {
                     this.isAlreadyOrdered = true;
                     this.canOrder = false;
                 }
@@ -556,7 +556,7 @@ export default {
                 demande.createdAt = date.toLocaleDateString();
                 finalDemandes.push(demande);
             }
-            if (demande.locataire.email === this.useremail) {
+            if (demande.locataire.email === this.useremail && demande.annonce.id == id) {
                 this.isAlreadyOrdered = true;
                 this.canOrder = false;
             }
