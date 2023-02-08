@@ -336,6 +336,21 @@ export default {
 
                 await this.updateDemandeData();
                 this.modalOpen = false;
+
+                let formData = new FormData();
+                formData.append('owner', this.useremail);
+                formData.append('demand', id);
+                const request2 = await fetch(`${import.meta.env.VITE_API_URL}/demande_histories`, {
+                    method: 'POST',
+                    headers: {
+                        // 'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+
+                const response2 = await request2.json();
+                console.log(response2);
             }
         },
         updateDemandeData: async function () {
