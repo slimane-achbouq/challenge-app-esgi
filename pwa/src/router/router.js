@@ -11,6 +11,7 @@ import successMessageView from '@/views/successMessageView.vue';
 import ResetPasswordInputView from '@/views/ResetPasswordInputView.vue';
 import DashboardView from '@/views/DashboardView.vue';
 import OrganizmeView from '@/views/OrganismeView.vue';
+import UserProfile from '@/views/UserProfile.vue';
 
 import RegisterView from '@/views/RegisterView.vue';
 import RequestsList from "@/views/RequestsList.vue";
@@ -45,6 +46,8 @@ const router = createRouter({
     { path: '/disputes/new/:id', name: 'new-dispute', component: NewLitige, meta: { requiresUnauth: false }},
     { path: '/dashboard/disputes', name: 'disputes', component: DisputesList, meta: { requiresUnauth: false }},
     { path: '/disputes/:id', name: 'show-dispute', component: Litige, meta: { requiresUnauth: false }},
+    { path: '/demande_histories/:id', name: 'show-demande-histories', meta: { requiresUnauth: false }},
+    { path: '/userprofile', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
   ]
 })
 
