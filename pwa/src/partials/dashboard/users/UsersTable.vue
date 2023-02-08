@@ -1,4 +1,6 @@
 <template>
+
+  <div>
     <div class="bg-white shadow-lg rounded-sm border border-slate-200 relative">
       <header class="px-5 py-4">
         <h2 class="font-semibold text-slate-800">All Users <span class="text-slate-400 font-medium">248</span></h2>
@@ -61,8 +63,31 @@
           </table>
   
         </div>
+        
       </div>
+
+      
     </div>
+
+    <div class="mt-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <nav class="mb-4 sm:mb-0 sm:order-1" role="navigation" aria-label="Navigation">
+            <ul class="flex justify-center">
+              <li class="ml-3 first:ml-0">
+                <a class="btn bg-white border-slate-200 " :class="{ 'text-slate-300 cursor-not-allowed': page === 1,'hover:border-slate-300 text-indigo-500': page != 1}"  @click.prevent="prevPage">&lt;- Previous</a>
+              </li>
+              <li class="ml-3 first:ml-0">
+                <a class="btn bg-white border-slate-200 " :class="{ 'text-slate-300 cursor-not-allowed': page >= lastPage,'hover:border-slate-300 text-indigo-500': page < lastPage}"  @click.prevent="nextPage">Next -&gt;</a>
+              </li>
+            </ul>
+          </nav>
+          <div class="text-sm text-slate-500 text-center sm:text-left">
+            Showing <span class="font-medium text-slate-600">{{ page }}</span> to <span class="font-medium text-slate-600">{{lastPage}}</span> of <span class="font-medium text-slate-600">{{totalResult}}</span> results
+          </div>
+        </div>
+    </div>
+
+  </div>
   </template>
   
 <script>
@@ -71,6 +96,7 @@
   import { useStore } from 'vuex';
   import { mapGetters } from 'vuex';
   import axios from 'axios'
+  import Pagination from '../../../components/Pagination.vue'
   
   
   
@@ -78,12 +104,15 @@
     name: 'UsersTable',
     components: {
       Customer,
+      Pagination
     },  
     props: ['selectedItems'],
 
     data() {
         return {
             users: [],
+            
+            
         }
     },
 
@@ -98,6 +127,10 @@
       const selectAll = ref(false)
       const selected = ref([])
       const customers = ref([])
+      const totalResult = ref([0])
+      const lastPage = ref([0])
+      const perPage = ref([2])
+      const page = ref([1])
   
       const checkAll = () => {
         selected.value = []
@@ -117,17 +150,36 @@
 
       const fetchUsers = async() => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users?page=${page.value}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         })
         customers.value = response.data["hydra:member"];
+        totalResult.value=response.data["hydra:totalItems"];
+        lastPage.value=response.data["hydra:view"]["hydra:last"].split("page=")[1];;
+        console.log(lastPage.value)
+        console.log(totalResult.value)
         console.log(customers.value)
       } catch (error) {
         console.error(error)
       }
     }
+
+    function nextPage() {
+        if(page.value < lastPage.value){
+          page.value++
+          fetchUsers()
+        } 
+      }
+    function prevPage() {
+        if (page.value >0 ){
+          page.value--
+          fetchUsers()
+        } 
+    }
+
+    
 
   
       
@@ -139,8 +191,15 @@
         selected,
         checkAll,
         customers,
-        onEdit
+        onEdit,
+        nextPage,
+        prevPage,
+        lastPage,
+        page,
+        totalResult
       }
     }
+
+    
   }
   </script>

@@ -130,13 +130,7 @@
                             <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white">Yes, Delete it</button>
                       </div>
                     </ModalBasic>
-
-
-            <!-- Pagination -->
-            <div class="mt-8">
-                <Pagination />
-            </div>          
-  
+      
           </div>
         </main>
   
@@ -151,7 +145,7 @@
   import Header from '../partials/Header.vue'
   import DeleteButton from '../components/DeleteButton.vue'
   import CustomersTable from '../partials/dashboard/users/UsersTable.vue'
-  import Pagination from '../components/Pagination.vue'
+  
   import ModalBasic from '../components/Modal.vue'
   import axios from 'axios'
 
@@ -162,7 +156,6 @@
       Sidebar,
       Header,
       CustomersTable,
-      Pagination,
       DeleteButton,
       ModalBasic
     },
