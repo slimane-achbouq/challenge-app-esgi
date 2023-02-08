@@ -459,6 +459,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStreet(?string $street): self
     {
         $this->street = $street;
+
+        return $this;
     }
 
     /**
@@ -487,6 +489,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCity(?string $city): self
     {
         $this->city = $city;
+
+        return $this;
     }
 
     public function removeDemande(Demande $demande): self
