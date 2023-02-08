@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
@@ -30,6 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: DemandeRepository::class)]
 #[ORM\Table(name: '`demande`')]
 #[GetCollection]
+#[Get]
 #[Patch(
     denormalizationContext: ['groups' => ['patch_status:write']]
 )]
@@ -53,7 +55,7 @@ class Demande
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['patch_status:write', 'demande:read', 'edit_demande:write'])]
+    #[Groups(['patch_status:write', 'demande:read', 'edit_demande:write', 'demande_history:read'])]
     private ?int $status = null;
 
     #[ORM\Column]
@@ -82,7 +84,7 @@ class Demande
     private ?User $locataire = null;
 
     #[ORM\OneToMany(mappedBy: 'demand', targetEntity: DemandeHistory::class)]
-    #[Groups(['demande_history:read'])]
+    #[Groups(['demande:read'])]
     private Collection $demandeHistories;
 
     #[ORM\Column(nullable: true)]

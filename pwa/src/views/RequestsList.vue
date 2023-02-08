@@ -83,28 +83,41 @@
                                     <tbody v-if="demandes" class="text-sm divide-y divide-slate-200">
                                     <tr v-for="demande in demandes" v-bind:key="demande.id">
                                         <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-                                            <span v-if="demande.status == 0 && demande.annonce.owner.email === useremail" class="text-blue-500">
+                                            <span
+                                                v-if="demande.status == 0 && demande.annonce.owner.email === useremail"
+                                                class="text-blue-500">
                                                 You have to respond
                                             </span>
-                                            <span v-else-if="demande.status == 0 && demande.locataire.email === useremail" class="text-orange-500">
+                                            <span
+                                                v-else-if="demande.status == 0 && demande.locataire.email === useremail"
+                                                class="text-orange-500">
                                                 Wait for the seller to respond
                                             </span>
-                                            <span v-else-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid" class="text-green-500">
+                                            <span
+                                                v-else-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid"
+                                                class="text-green-500">
                                                 Confirmed. You have to pay.
                                             </span>
-                                            <span v-else-if="demande.status == 1 && demande.annonce.owner.email === useremail && !demande.isPaid" class="text-green-500">
+                                            <span
+                                                v-else-if="demande.status == 1 && demande.annonce.owner.email === useremail && !demande.isPaid"
+                                                class="text-green-500">
                                                 Confirmed. Wait for the renter to pay.
                                             </span>
-                                            <span v-else-if="demande.status == 2 && demande.annonce.owner.email === useremail" class="text-orange-500">
+                                            <span
+                                                v-else-if="demande.status == 2 && demande.annonce.owner.email === useremail"
+                                                class="text-orange-500">
                                                 Wait for the renter to respond
                                             </span>
-                                            <span v-else-if="demande.status == 2 && demande.locataire.email === useremail" class="text-blue-500">
+                                            <span
+                                                v-else-if="demande.status == 2 && demande.locataire.email === useremail"
+                                                class="text-blue-500">
                                                 You have to respond
                                             </span>
                                             <span v-else-if="demande.status == 3" class="text-red-500">
                                                 Refused
                                             </span>
-                                            <span v-else-if="demande.status == 1 && demande.isPaid" class="text-green-500">
+                                            <span v-else-if="demande.status == 1 && demande.isPaid"
+                                                  class="text-green-500">
                                                 Confirmed.
                                             </span>
                                         </td>
@@ -140,9 +153,11 @@
                                                     v-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid">
                                                 Pay
                                             </button>
-                                            <button class="btn bg-blue-600 text-white">
-                                                History
-                                            </button>
+                                            <router-link :to="{ name: 'show-demande-histories', params: { id: demande.id }}">
+                                                <button class="btn bg-blue-600 text-white">
+                                                    History
+                                                </button>
+                                            </router-link>
                                         </td>
                                     </tr>
                                     <tr>
@@ -232,7 +247,6 @@
 <script>
 import Sidebar from '../partials/Sidebar.vue'
 import Header from '../partials/Header.vue'
-import DeleteButton from '../components/DeleteButton.vue'
 import Pagination from '../components/Pagination.vue'
 import ModalBasic from '../components/Modal.vue'
 import CustomersTable from "@/partials/dashboard/users/UsersTable.vue";

@@ -40,7 +40,7 @@ class DemandeHistory
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandeHistories')]
-    #[Groups(['demande_history:read', 'user:read'])]
+    #[Groups(['demande_history:read', 'user:read', 'demande:read'])]
     private ?User $owner = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandeHistories')]
@@ -48,7 +48,7 @@ class DemandeHistory
     private ?Demande $demand = null;
 
     #[ORM\Column]
-    #[Groups(['demande_history:read'])]
+    #[Groups(['demande_history:read', 'demande:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]

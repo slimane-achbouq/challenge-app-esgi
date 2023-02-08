@@ -14,6 +14,7 @@ import OrganizmeView from '@/views/OrganismeView.vue';
 
 import RegisterView from '@/views/RegisterView.vue';
 import RequestsList from "@/views/RequestsList.vue";
+import DemandeHistory from "@/views/DemandeHistory.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +34,7 @@ const router = createRouter({
     { path: '/reset-password-input/:token', name: 'reset-password-input', component: ResetPasswordInputView, meta: { requiresUnauth: false }},
     { path: '/dashboard/requests', name: 'requests', component: RequestsList, meta: { requiresUnauth: false } },
     { path: '/demandes/:id', name: 'show-demande', meta: { requiresUnauth: false }},
-    { path: '/demande_histories/:id', name: 'show-demande-histories', meta: { requiresUnauth: false }},
+    { path: '/requests/history/:id', name: 'show-demande-histories', component: DemandeHistory, meta: { requiresUnauth: false }},
   ]
 })
 
