@@ -29,6 +29,9 @@
                         <header class="mb-2">
                             <a href="#0">
                                 <h3 class="text-lg text-slate-800 font-semibold mb-1">{{ title }}</h3>
+                                <div v-if="currentRole == 'Admin' && status == 0" class="float-right">
+                                    <span class="text-sm text-orange-600">Pending to review</span>
+                                </div>
                             </a>
                             <div class="text-sm">{{ description }}</div>
                         </header>
@@ -94,8 +97,15 @@
 </template>
 
 <script>
+import announce from "@/views/Announce.vue";
+
 export default {
     name: 'AnnonceCards',
-    props: ['@id', 'id', '@type', 'title', 'description', 'owner', 'price', 'image', 'isPerHour', 'isAvailable', 'src', 'url'],
+    computed: {
+        announce() {
+            return announce
+        }
+    },
+    props: ['@id', 'id', '@type', 'title', 'description', 'owner', 'price', 'image', 'isPerHour', 'isAvailable', 'src', 'url', 'currentRole', 'status'],
 }
 </script>

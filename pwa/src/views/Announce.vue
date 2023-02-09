@@ -405,6 +405,7 @@ export default {
         },
         updateData: async function () {
             let token = localStorage.getItem('esgi-ws-token');
+            let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
                 method: 'GET',
@@ -453,6 +454,7 @@ export default {
         },
         handleValidAnnounce: async function () {
             let token = localStorage.getItem('esgi-ws-token');
+            let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
                 method: 'PATCH',
@@ -473,6 +475,7 @@ export default {
         },
         handleRefuseAnnounce: async function () {
             let token = localStorage.getItem('esgi-ws-token');
+            let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
                 method: 'PATCH',
@@ -494,6 +497,7 @@ export default {
             this.modalOpen = true
         },
         updateAnnounce() {
+            let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
             const data = {
                 title: this.title,
                 description: this.description,
