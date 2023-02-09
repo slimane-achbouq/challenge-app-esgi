@@ -152,8 +152,13 @@
 
                                             <router-link
                                                 :to="{ name: 'show-request', params: { id: demande.id }}">
-                                                <button class="btn bg-green-600 text-white" style="margin-right: 10px">
+                                                <button class="btn bg-green-600 text-white" style="margin-right: 10px"
+                                                        v-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid">
                                                     Pay
+                                                </button>
+                                                <button class="btn bg-green-600 text-white" style="margin-right: 10px"
+                                                        v-if="demande.status == 1 && demande.isPaid">
+                                                    View
                                                 </button>
                                             </router-link>
                                             <router-link
@@ -388,13 +393,18 @@ export default {
 
             let finalDemandes = [];
             for (let demande of data) {
-                if (demande.annonce.owner.email === this.useremail || demande.locataire.email === this.useremail) {
-                    let date = new Date(demande.createdAt);
-                    demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                    date = new Date(demande.dateStart);
-                    demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                    date = new Date(demande.dateEnd);
-                    demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                console.log(demande);
+                let date = new Date(demande.createdAt);
+                demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                date = new Date(demande.dateStart);
+                demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                date = new Date(demande.dateEnd);
+                demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
+                    console.log("ici")
+                    finalDemandes.push(demande);
+                }
+                else if(demande.locataire.email == this.useremail) {
                     finalDemandes.push(demande);
                 }
             }
@@ -437,14 +447,18 @@ export default {
 
         let finalDemandes = [];
         for (let demande of data) {
-            console.log(demande)
-            if (demande.annonce.owner.email === this.useremail || demande.locataire.email === this.useremail) {
-                let date = new Date(demande.createdAt);
-                demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                date = new Date(demande.dateStart);
-                demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                date = new Date(demande.dateEnd);
-                demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            console.log(demande);
+            let date = new Date(demande.createdAt);
+            demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            date = new Date(demande.dateStart);
+            demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            date = new Date(demande.dateEnd);
+            demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
+                console.log("ici")
+                finalDemandes.push(demande);
+            }
+            else if(demande.locataire.email == this.useremail) {
                 finalDemandes.push(demande);
             }
         }

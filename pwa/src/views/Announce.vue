@@ -374,6 +374,7 @@ export default {
     methods: {
         submitDemandeForm: async function () {
             let token = localStorage.getItem('esgi-ws-token');
+            let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             this.dateError = null;
             if (!this.startingDate || !this.endingDate) {
@@ -386,6 +387,7 @@ export default {
             if (this.startingDate && this.endingDate && this.startingDate <= this.endingDate) {
                 const formData = new FormData();
                 formData.append('annonce', id);
+                console.log("ID : " + id);
                 formData.append('locataire', this.useremail);
                 const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
                     method: 'POST',
