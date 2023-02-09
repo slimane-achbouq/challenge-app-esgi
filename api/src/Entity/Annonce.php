@@ -20,6 +20,8 @@ use App\Controller\AvailableAnnonceController;
 use App\Controller\CreateAnnonceController;
 use App\Repository\AnnonceRepository;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping as ORM;
@@ -102,7 +104,7 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Groups(['annonce:read'])]
+    #[Groups(['annonce:read', 'demande:read'])]
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
@@ -123,7 +125,7 @@ class Annonce
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -144,6 +146,14 @@ class Annonce
 
     #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]
     private ?Demande $demande = null;
+
+    #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Paiement::class)]
+    private Collection $paiements;
+
+    public function __construct()
+    {
+        $this->paiements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -316,6 +326,36 @@ class Annonce
         }
 
         $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Paiement>
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): self
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements->add($paiement);
+            $paiement->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): self
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getAnnonce() === $this) {
+                $paiement->setAnnonce(null);
+            }
+        }
 
         return $this;
     }

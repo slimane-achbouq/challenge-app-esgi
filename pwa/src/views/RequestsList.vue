@@ -149,20 +149,20 @@
                                                     @click="onOpenModal(demande)">
                                                 Respond
                                             </button>
-                                            <button class="btn bg-green-700 text-white" style="margin-right: 10px"
-                                                    v-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid">
-                                                Pay
-                                            </button>
-                                            <router-link :to="{ name: 'show-demande-histories', params: { id: demande.id }}">
+
+                                            <router-link
+                                                :to="{ name: 'show-request', params: { id: demande.id }}">
+                                                <button class="btn bg-green-600 text-white" style="margin-right: 10px">
+                                                    Pay
+                                                </button>
+                                            </router-link>
+                                            <router-link
+                                                :to="{ name: 'show-demande-histories', params: { id: demande.id }}">
                                                 <button class="btn bg-blue-600 text-white">
                                                     History
                                                 </button>
                                             </router-link>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -292,7 +292,7 @@ export default {
             const response = await request.json();
             console.log(response);
 
-            this.updateDemandeData();
+            await this.updateDemandeData();
             this.modalOpen = false;
         },
         handleModifyRequest: async function () {

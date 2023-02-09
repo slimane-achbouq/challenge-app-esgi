@@ -88,8 +88,11 @@ class Demande
     private Collection $demandeHistories;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['demande:read'])]
+    #[Groups(['demande:read', 'patch_status:write'])]
     private ?bool $isPaid = null;
+
+    #[ORM\OneToOne(mappedBy: 'demande', cascade: ['persist', 'remove'])]
+    private ?Paiement $paiement = null;
 
     public function __construct()
     {
@@ -237,6 +240,28 @@ class Demande
     public function setIsPaid(?bool $isPaid): self
     {
         $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getPaiement(): ?Paiement
+    {
+        return $this->paiement;
+    }
+
+    public function setPaiement(?Paiement $paiement): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($paiement === null && $this->paiement !== null) {
+            $this->paiement->setDemande(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($paiement !== null && $paiement->getDemande() !== $this) {
+            $paiement->setDemande($this);
+        }
+
+        $this->paiement = $paiement;
 
         return $this;
     }
