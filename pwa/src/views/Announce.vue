@@ -401,6 +401,7 @@ export default {
 
                 this.isBeingOrdered = false;
                 this.validOrder = true;
+                this.canOrder = false;
             }
         },
         updateData: async function () {
@@ -538,9 +539,11 @@ export default {
         this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
         this.price = data.price;
         this.status = data.status;
+        console.log(data.owner)
         this.owner = data.owner;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
         this.isOwner = this.useremail === data.owner.email;
+        console.log(this.isOwner)
 
         const response2 = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
             method: 'GET',
@@ -552,6 +555,7 @@ export default {
 
         const res = await response2.json();
         const demandes = res['hydra:member'];
+        console.log(res)
         let finalDemandes = [];
         for (let demande of demandes) {
             console.log(demande)
