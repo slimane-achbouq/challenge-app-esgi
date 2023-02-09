@@ -47,7 +47,7 @@ const router = createRouter({
     { path: '/dashboard/disputes', name: 'disputes', component: DisputesList, meta: { requiresUnauth: false }},
     { path: '/disputes/:id', name: 'show-dispute', component: Litige, meta: { requiresUnauth: false }},
     { path: '/demande_histories/:id', name: 'show-demande-histories', meta: { requiresUnauth: false }},
-    { path: '/userprofile', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
+    { path: '/userprofile/:id', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
   ]
 })
 
