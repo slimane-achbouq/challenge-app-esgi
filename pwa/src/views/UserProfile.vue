@@ -54,16 +54,17 @@
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-country">Profession: <span class="text-rose-500">*</span></label>
-                          <input id="card-state" class="form-input w-full" type="text" v-model="user.proffesion"/>
+                          <input id="card-state" class="form-input w-full" type="text" v-model="user.profession"/>
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-state">Association name</label>
-                          <input id="card-state" class="form-input w-full" type="text"  v-model="user.associationname"/>commercialname
+                          <input id="card-state" class="form-input w-full" type="text"  v-model="user.associationName"/>commercialname
                         </div>  
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-country">Commercial name: <span class="text-rose-500">*</span></label>
-                          <input id="card-state" class="form-input w-full" type="text"  v-model="user.commercialname"/>
+                          <input id="card-state" class="form-input w-full" type="text"  v-model="user.commercialName"/>
                         </div>
+       
                       </div>
                       <!-- Divider -->
                       <hr class="my-2 border-t border-slate-200" />
@@ -71,7 +72,7 @@
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-vat">Street Address:</label>
-                          <input id="card-vat" class="form-input w-full" type="text"  v-model="user.streetaddress"/>
+                          <input id="card-vat" class="form-input w-full" type="text"  v-model="user.street"/>
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-vat">City</label>
@@ -79,12 +80,13 @@
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-postcode">Postcode</label>
-                          <input id="card-postcode" class="form-input w-full" type="text"  v-model="user.postcode"/>
+                          
+                          <input id="card-postcode" class="form-input w-full" type="text"  v-model="user.postalCode"/>
                         </div>
                         
                       </div>
                       <div class="text-right">
-                        <button type="submit" class="btn bg-white border-slate-200 hover:border-slate-300 text-indigo-500">Edit</button>
+                        <button  class="btn bg-white border-slate-200 hover:border-slate-300 text-indigo-500" @click.prevent="updateUser">Edit</button>
                       </div>
                     </div>
                   </form>
@@ -110,6 +112,7 @@
   import { ref } from 'vue'
   import Sidebar from '../partials/SidebarProfile.vue'
   import Header from '../partials/Header.vue'
+  import axios from 'axios'
   
   export default {
     name: 'UserProfile',
@@ -124,14 +127,64 @@
         lastName: "",
         email: "",
         phoneNumber: "",
-        streetaddress: "",
-        postcode: "",
+        street: "",
+        postalCode: "",
         city:"",
-        associationname:"",
-        commercialname:"",
-        proffesion:""
+        associationName:"",
+        commercialName:"",
+        profession:"",
+        isVerified:false,
+        annonces:[],
+        id:0
       }
   }
+  },
+  methods:{
+     updateUser(){
+      console.log("ok")
+          try {
+          let userInformations ={
+              firstName: this.user.firstName,
+              lastName: this.user.lastName,
+              email: this.user.email,
+              phoneNumber: this.user.phoneNumber,
+              associationName:this.user.associationName,
+              commercialName:this.user.commercialName,
+              profession:this.user.profession
+                }
+          console.log(userInformations)
+          const response = axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.user.id}`,userInformations , {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+              }
+          })
+          console.log(response)
+          
+          } catch (error) {
+              console.error(error)
+          }
+              
+      
   }
+  },
+  async created() {
+        let token = this.$store.getters["auth/token"]
+        this.role = this.$store.getters["auth/role"]
+        this.useremail = this.$store.getters["auth/email"]
+
+        let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
+        console.log(id)
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${id}`, {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        let data = await response.json();
+        this.user = await data
+        console.log(this.user)
+    }
 }
   </script>

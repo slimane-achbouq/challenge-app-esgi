@@ -33,7 +33,7 @@ const router = createRouter({
     { path: '/reset-password-input/:token', name: 'reset-password-input', component: ResetPasswordInputView, meta: { requiresUnauth: false }},
     { path: '/demandes/:id', name: 'show-demande', meta: { requiresUnauth: false }},
     { path: '/demande_histories/:id', name: 'show-demande-histories', meta: { requiresUnauth: false }},
-    { path: '/userprofile', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
+    { path: '/userprofile/:id', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
   ]
 })
 

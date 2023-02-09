@@ -176,39 +176,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
     private Collection $resetPasswords;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $associationName = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profession = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commercialName = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $postalCode = null;
 
-    #[Groups(['user:write','user:read','user-update:write'])]
+    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
