@@ -32,37 +32,37 @@
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="firstname">First Name</label>
-                          <input id="firstname" class="form-input w-full" type="text" value="Patrick" />
+                          <input id="firstname" class="form-input w-full" type="text"  v-model="user.firstName" />
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="lastname">Last Name</label>
-                          <input id="lastname" class="form-input w-full" type="text" value="Sullivan" />
+                          <input id="lastname" class="form-input w-full" type="text" v-model="user.lastName" />
                         </div>
                       </div>
                       <!-- 2nd row -->
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="address">E-mail:</label>
-                          <input id="address" class="form-input w-full" type="text" />
+                          <input id="address" class="form-input w-full" type="text" v-model="user.email"/>
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-city">Phone Number</label>
-                          <input id="card-city" class="form-input w-full" type="text" />
+                          <input id="card-city" class="form-input w-full"  v-model="user.phoneNumber" type="text" />
                         </div>
                       </div>
                       <!-- 3rd row -->
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-country">Profession: <span class="text-rose-500">*</span></label>
-                          <input id="card-state" class="form-input w-full" type="text" />
+                          <input id="card-state" class="form-input w-full" type="text" v-model="user.proffesion"/>
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-state">Association name</label>
-                          <input id="card-state" class="form-input w-full" type="text" />
+                          <input id="card-state" class="form-input w-full" type="text"  v-model="user.associationname"/>commercialname
                         </div>  
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-country">Commercial name: <span class="text-rose-500">*</span></label>
-                          <input id="card-state" class="form-input w-full" type="text" />
+                          <input id="card-state" class="form-input w-full" type="text"  v-model="user.commercialname"/>
                         </div>
                       </div>
                       <!-- Divider -->
@@ -71,15 +71,15 @@
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-vat">Street Address:</label>
-                          <input id="card-vat" class="form-input w-full" type="text" />
+                          <input id="card-vat" class="form-input w-full" type="text"  v-model="user.streetaddress"/>
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-vat">City</label>
-                          <input id="card-vat" class="form-input w-full" type="text" />
+                          <input id="card-vat" class="form-input w-full" type="text"  v-model="user.city"/>
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-postcode">Postcode</label>
-                          <input id="card-postcode" class="form-input w-full" type="text" />
+                          <input id="card-postcode" class="form-input w-full" type="text"  v-model="user.postcode"/>
                         </div>
                         
                       </div>
@@ -117,15 +117,21 @@
       Sidebar,
       Header,
     }, 
-    setup() {
-  
-      const sidebarOpen = ref(false)
-      const profileSidebarOpen = ref(false)
-  
-      return {
-        sidebarOpen,
-        profileSidebarOpen,
-      }  
-    }
+    data() {
+    return {
+      user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        streetaddress: "",
+        postcode: "",
+        city:"",
+        associationname:"",
+        commercialname:"",
+        proffesion:""
+      }
   }
+  }
+}
   </script>
