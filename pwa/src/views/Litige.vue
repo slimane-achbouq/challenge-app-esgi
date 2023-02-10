@@ -231,6 +231,9 @@ export default {
         return {}
     },
     async created() {
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
