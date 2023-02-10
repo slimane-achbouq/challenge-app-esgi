@@ -20,7 +20,8 @@ class UsersFixtures extends Fixture
     {
         $user = (new User())
             ->setEmail('slimane321@gmail.com')
-            ->setRoles(['ROLE_ADMIN']);
+            ->setRoles(['ROLE_ADMIN'])
+            ->setIsVerified(true);
         $password = $this->passwordHasher->hashPassword(
             $user,
             'slachslach'
