@@ -71,6 +71,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 )]
 #[Put(
     denormalizationContext: ['groups' => ['edit_litige:write']],
+    security: 'is_granted("ROLE_ADMIN")',
 )]
 class Litige
 {

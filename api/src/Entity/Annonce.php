@@ -44,9 +44,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`annonce`')]
 #[Get]
 #[GetCollection]
-//#[Delete]
+#[Delete]
 #[Patch(
-    denormalizationContext: ['groups' => ['patch_status_annonce:write']]
+    denormalizationContext: ['groups' => ['patch_status_annonce:write']],
+    security: 'is_granted("ROLE_ADMIN")'
 )]
 #[Put(
     denormalizationContext: ['groups' => ['edit_annonce:write']]
