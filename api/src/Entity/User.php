@@ -220,12 +220,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['demande_history:read', 'demande:read'])]
     private Collection $demandeHistories;
 
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class)]
+    private Collection $paiements;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->resetPasswords = new ArrayCollection();
         $this->demandes = new ArrayCollection();
         $this->demandeHistories = new ArrayCollection();
+        $this->paiements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -566,6 +570,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($demandeHistory->getOwner() === $this) {
                 $demandeHistory->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Paiement>
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): self
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements->add($paiement);
+            $paiement->setLocataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): self
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getLocataire() === $this) {
+                $paiement->setLocataire(null);
             }
         }
 

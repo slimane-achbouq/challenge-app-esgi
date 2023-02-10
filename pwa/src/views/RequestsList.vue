@@ -149,20 +149,25 @@
                                                     @click="onOpenModal(demande)">
                                                 Respond
                                             </button>
-                                            <button class="btn bg-green-700 text-white" style="margin-right: 10px"
-                                                    v-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid">
-                                                Pay
-                                            </button>
-                                            <router-link :to="{ name: 'show-demande-histories', params: { id: demande.id }}">
+
+                                            <router-link
+                                                :to="{ name: 'show-request', params: { id: demande.id }}">
+                                                <button class="btn bg-green-600 text-white" style="margin-right: 10px"
+                                                        v-if="demande.status == 1 && demande.locataire.email === useremail && !demande.isPaid">
+                                                    Pay
+                                                </button>
+                                                <button class="btn bg-green-600 text-white" style="margin-right: 10px"
+                                                        v-if="demande.status == 1 && demande.isPaid">
+                                                    View
+                                                </button>
+                                            </router-link>
+                                            <router-link
+                                                :to="{ name: 'show-demande-histories', params: { id: demande.id }}">
                                                 <button class="btn bg-blue-600 text-white">
                                                     History
                                                 </button>
                                             </router-link>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -292,7 +297,7 @@ export default {
             const response = await request.json();
             console.log(response);
 
-            this.updateDemandeData();
+            await this.updateDemandeData();
             this.modalOpen = false;
         },
         handleModifyRequest: async function () {
@@ -388,13 +393,18 @@ export default {
 
             let finalDemandes = [];
             for (let demande of data) {
-                if (demande.annonce.owner.email === this.useremail || demande.locataire.email === this.useremail) {
-                    let date = new Date(demande.createdAt);
-                    demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                    date = new Date(demande.dateStart);
-                    demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                    date = new Date(demande.dateEnd);
-                    demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                console.log(demande);
+                let date = new Date(demande.createdAt);
+                demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                date = new Date(demande.dateStart);
+                demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                date = new Date(demande.dateEnd);
+                demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+                if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
+                    console.log("ici")
+                    finalDemandes.push(demande);
+                }
+                else if(demande.locataire.email == this.useremail) {
                     finalDemandes.push(demande);
                 }
             }
@@ -437,14 +447,18 @@ export default {
 
         let finalDemandes = [];
         for (let demande of data) {
-            console.log(demande)
-            if (demande.annonce.owner.email === this.useremail || demande.locataire.email === this.useremail) {
-                let date = new Date(demande.createdAt);
-                demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                date = new Date(demande.dateStart);
-                demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-                date = new Date(demande.dateEnd);
-                demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            console.log(demande);
+            let date = new Date(demande.createdAt);
+            demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            date = new Date(demande.dateStart);
+            demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            date = new Date(demande.dateEnd);
+            demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+            if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
+                console.log("ici")
+                finalDemandes.push(demande);
+            }
+            else if(demande.locataire.email == this.useremail) {
                 finalDemandes.push(demande);
             }
         }
