@@ -43,6 +43,7 @@ jobs:
           docker compose exec -T php bin/console d:d:c --env=test
           docker compose exec -T php bin/console d:s:u --force --no-interaction --env=test
           docker compose exec -T php bin/console d:f:l --env=test --no-interaction
+          docker compose exec -T php bin/console lexik:jwt:generate-keypair
       - name: PHPUnit
         run: docker compose exec -T php bin/phpunit
       - name: Doctrine Schema Validator
