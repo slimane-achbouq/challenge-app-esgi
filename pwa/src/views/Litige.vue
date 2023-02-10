@@ -206,7 +206,19 @@ export default {
                 },
             });
 
+            if(response.status == 404) {
+                this.$router.push('/dashboard/disputes');
+            }
+
             let res = await response.json();
+            if (this.role != "Admin") {
+                if (this.useremail != res.annonce.owner.email) {
+                    if (this.useremail != res.locataire.email) {
+                        this.$router.push('/dashboard/disputes');
+                    }
+                }
+            }
+
             let date = new Date(res.createdAt);
             res.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
 
@@ -232,7 +244,19 @@ export default {
             },
         });
 
+        if(response.status == 404) {
+            this.$router.push('/dashboard/disputes');
+        }
+
         let res = await response.json();
+        if (this.role != "Admin") {
+            if (this.useremail != res.annonce.owner.email) {
+                if (this.useremail != res.locataire.email) {
+                    this.$router.push('/dashboard/disputes');
+                }
+            }
+        }
+
         let date = new Date(res.createdAt);
         res.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
 

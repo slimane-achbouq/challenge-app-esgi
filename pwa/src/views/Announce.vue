@@ -433,7 +433,16 @@ export default {
                 },
             });
 
+            if(response.status == 404) {
+                this.$router.push('/dashboard/announces');
+            }
+
             let data = await response.json();
+            if (this.role != "Admin") {
+                if (this.useremail != data.owner.email && data.status != 1) {
+                    this.$router.push('/dashboard/announces');
+                }
+            }
             this.title = data.title;
             this.description = data.description;
             this.isPerHour = data.isPerHour;
@@ -547,7 +556,18 @@ export default {
             },
         });
 
+        if(response.status == 404) {
+            this.$router.push('/dashboard/announces');
+        }
+
         let data = await response.json();
+        console.log(response.status)
+        if (this.role != "Admin") {
+            if (this.useremail != data.owner.email && data.status != 1) {
+                this.$router.push('/dashboard/announces');
+            }
+        }
+
         this.id = data.id
         this.title = data.title;
         this.description = data.description;
