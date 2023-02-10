@@ -190,7 +190,8 @@
                                     </div>
                                     <div v-else-if="status == 1" class="mb-4">
                                         <router-link to="#">
-                                            <button v-if="canOrder" @click.prevent="this.isBeingOrdered = true"
+                                            <button v-if="canOrder && this.role != 'Admin'"
+                                                    @click.prevent="this.isBeingOrdered = true"
                                                     class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">
                                                 Order
                                                 Now
@@ -226,6 +227,11 @@
                                 <div v-if="isAlreadyOrdered">
                                     <span class="text-green-500">
                                         You have already orderded this article.
+                                        <div style="margin-top: 20px">
+                                            <router-link :to="{ name: 'new-dispute', params: {id: this.id}}">
+                                                <button class="btn bg-red-500 text-white">File a dispute</button>
+                                            </router-link>
+                                    </div>
                                     </span>
                                 </div>
                             </div>
@@ -235,7 +241,10 @@
                             <div class="bg-white p-5 shadow-lg rounded-sm border border-slate-200 lg:w-72 xl:w-80">
                                 <div class="flex justify-between space-x-1 mb-5">
                                     <div class="text-sm text-slate-800 font-semibold">
-                                        Requests - <button>See all</button>
+                                        Requests -
+                                        <router-link to="/dashboard/requests">
+                                            <button>See all</button>
+                                        </router-link>
                                     </div>
                                 </div>
                                 <ul class="space-y-3">
@@ -243,7 +252,9 @@
                                         <div class="flex justify-between">
                                             <div class="grow flex items-center">
                                                 <div class="truncate">
-                                                    <span class="text-sm font-medium text-slate-800">{{ demande.locataire.email }} - {{ demande.createdAt }}</span>
+                                                    <span class="text-sm font-medium text-slate-800">{{
+                                                            demande.locataire.email
+                                                        }} - {{ demande.createdAt }}</span>
                                                 </div>
                                             </div>
                                         </div>

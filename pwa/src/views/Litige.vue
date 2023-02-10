@@ -10,12 +10,12 @@
             <main>
                 <div class="px-4 sm:px-6 lg:px-8 py-8 w-full">
 
-                    <div class="max-w-5xl mx-auto flex flex-col lg:flex-row lg:space-x-8 xl:space-x-16" v-if="demande">
+                    <div class="max-w-5xl mx-auto flex flex-col lg:flex-row lg:space-x-8 xl:space-x-16" v-if="dispute">
                         <!-- Content -->
                         <div>
                             <header class="mb-4 flex justify-between">
-                                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">Request : Announce
-                                    "{{ annonce.title }}"</h1>
+                                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">Announce
+                                    <span class="text-indigo-500">{{ dispute.annonce.title }}</span></h1>
                             </header>
 
                             <!-- Meta -->
@@ -39,46 +39,35 @@
                             <!-- Product content -->
                             <div>
                                 <h2 class="text-xl leading-snug text-slate-800 font-bold mb-2">Description</h2>
-                                <p class="mb-6">{{ annonce.description }}</p>
+                                <p class="mb-6">{{ dispute.annonce.description }}</p>
                             </div>
 
                             <hr class="my-6 border-t border-slate-200"/>
                         </div>
                         <div class="float-right">
                             <header class="mb-4 flex justify-between">
-                                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">Request details</h1>
+                                <h1 class="text-2xl md:text-3xl text-slate-800 font-bold mb-2 ">Dispute details</h1>
                             </header>
                             <div>
-                                <p>
-                                    Definitive dates <br><br>
-                                    From : <span class="text-blue-500">{{ demande.dateStart }}</span> <br>
-                                    To : <span class="text-blue-500">{{ demande.dateEnd }}</span>
-
-                                    <br><br>
-
-                                    Total price : <span class="text-blue-500">{{ annonce.price }}€</span>
-                                </p>
-
-                                <div v-if="sessionId && !demande.isPaid">
-                                    <stripe-checkout
-                                        ref="checkoutRef"
-                                        :pk="publishableKey"
-                                        :sessionId="sessionId"
-                                    />
-                                    <button class="btn bg-green-700 text-white inline"
-                                            style="margin-top: 50px"
-                                            @click="submit">
-                                        Proceed to checkout
-                                    </button>
+                                <div v-if="dispute.image">
+                                    <figure class="mb-6">
+                                        <img class="rounded-sm"
+                                             :src="disputeSrc"
+                                             width="640" height="360" alt="Product"/>
+                                    </figure>
                                 </div>
-                                <div v-else style="margin-top: 50px">
-                                    <span class="text-green-500">Currently renting</span>
-
-                                    <div style="margin-top: 40px">
-                                        <button class="btn bg-red-500 text-white">File a dispute</button>
-                                    </div>
+                                <div>
+                                    <h2 class="text-xl leading-snug text-slate-800 font-bold mb-2">Reason</h2>
+                                    <p class="mb-6">{{ dispute.raison }}</p>
                                 </div>
-
+                                <div>
+                                    <h2 class="text-xl leading-snug text-slate-800 font-bold mb-2">Description</h2>
+                                    <p class="mb-6">{{ dispute.description }}</p>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl leading-snug text-slate-800 font-bold mb-2">Disputed by</h2>
+                                    <p class="mb-6">{{ dispute.locataire.email }} <br> {{ dispute.locataire.phoneNumber}}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -100,48 +89,20 @@ import ModalBasic from '../components/Modal.vue';
 import {StripeCheckout} from "@vue-stripe/vue-stripe";
 
 export default {
-    name: 'Request',
+    name: 'Litige',
     components: {
         Header,
         ModalBasic,
         Sidebar,
-        StripeCheckout,
     },
     data() {
         return {
-            publishableKey: "pk_test_51MZYljHiiKajDgAsKTAGtexDySSMf7qJ1VxyjEIebTMcEcttRWeCGMnXtXgtCdEf0iN5k60WuXQxGlAva3xG0Yvo00ImgD98YH",
-            sessionId: null,
-            owner: null,
-            demande: null,
-            annonce: null,
+            dispute: null,
             src: "",
+            disputeSrc: "",
         }
     },
     methods: {
-        getStripeSession: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
-            let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
-
-            const formData = new FormData();
-            formData.append('title', this.annonce.title);
-            formData.append('price', this.annonce.price);
-            formData.append('image', this.annonce.image);
-            formData.append('token', token);
-            formData.append('request_id', id);
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/stripe/getSession`, {
-                method: 'POST',
-                headers: {
-                    // 'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: formData
-            });
-
-            const response = await request.json();
-            console.log(response);
-
-            this.sessionId = response.id;
-        },
         submit: function () {
             this.$refs.checkoutRef.redirectToCheckout();
         },
@@ -154,8 +115,8 @@ export default {
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
         this.useremail = this.$store.getters["auth/email"]
-
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+        console.log(id)
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/litiges/${id}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -164,19 +125,13 @@ export default {
         });
 
         let res = await response.json();
-        let data = res.demande;
-        console.log(data)
+        let date = new Date(res.createdAt);
+        res.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
 
-        let date = new Date(res.dateStart);
-        res.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-        date = new Date(res.dateEnd);
-        res.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-
-        this.demande = res;
-        this.annonce = res.annonce;
+        this.dispute = res;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + res.annonce.image;
+        this.disputeSrc = import.meta.env.VITE_API_URL + '/uploads/images_litiges/' + res.image;
         console.log(res)
-        await this.getStripeSession();
     }
 }
 </script>
