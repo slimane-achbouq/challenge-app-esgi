@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Controller\CreateLitigeController;
+use App\Controller\UpdateLitigeController;
 use App\Repository\LitigeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -69,7 +70,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     denormalizationContext: ['groups' => ['patch_status_litige:write']]
 )]
 #[Put(
-    denormalizationContext: ['groups' => ['edit_litige:write']]
+    denormalizationContext: ['groups' => ['edit_litige:write']],
 )]
 class Litige
 {
@@ -117,6 +118,14 @@ class Litige
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['litige:read', 'annonce:read', 'user:read', 'demande:read', 'edit_litige:write'])]
+    private ?string $decision = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['litige:read', 'annonce:read', 'user:read', 'demande:read', 'edit_litige:write'])]
+    private ?string $decisionExplanation = null;
 
     public function getId(): ?int
     {
@@ -252,6 +261,30 @@ class Litige
     public function setFile(File $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function getDecision(): ?string
+    {
+        return $this->decision;
+    }
+
+    public function setDecision(?string $decision): self
+    {
+        $this->decision = $decision;
+
+        return $this;
+    }
+
+    public function getDecisionExplanation(): ?string
+    {
+        return $this->decisionExplanation;
+    }
+
+    public function setDecisionExplanation(?string $decisionExplanation): self
+    {
+        $this->decisionExplanation = $decisionExplanation;
 
         return $this;
     }

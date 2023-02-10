@@ -1,6 +1,7 @@
 <template>
     <div class="flex h-screen overflow-hidden">
 
+        <Sidebar :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false"/>
         <!-- Content area -->
         <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
@@ -349,11 +350,13 @@
 import Header from '../partials/Header.vue'
 import ModalBasic from '../components/Modal.vue'
 import axios from 'axios'
+import Sidebar from "@/partials/Sidebar.vue";
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
     name: 'Announce',
     components: {
+        Sidebar,
         Header,
         ModalBasic
     },

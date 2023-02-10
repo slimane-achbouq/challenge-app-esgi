@@ -65,6 +65,8 @@
                                     <thead
                                         class="text-xs font-semibold uppercase text-slate-500 bg-slate-50 border-t border-b border-slate-200">
                                     <tr>
+                                        <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Status
+                                        </th>
                                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Reason
                                         </th>
                                         <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">Announce</th>
@@ -75,6 +77,10 @@
                                     </thead>
                                     <tbody v-if="litiges" class="text-sm divide-y divide-slate-200">
                                     <tr v-for="litige in litiges" v-bind:key="litige.id">
+                                        <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+                                            <span v-if="litige.status == 0" class="text-orange-500">Open</span>
+                                            <span v-else class="text-green-500">Closed</span>
+                                        </td>
                                         <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                             {{ litige.raison }}
                                         </td>
