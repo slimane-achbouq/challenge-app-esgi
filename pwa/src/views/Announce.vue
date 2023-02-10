@@ -387,7 +387,8 @@ export default {
             if (this.startingDate && this.endingDate && this.startingDate <= this.endingDate) {
                 const formData = new FormData();
                 formData.append('annonce', id);
-                console.log("ID : " + id);
+                formData.append('dateStart', this.startingDate);
+                formData.append('dateEnd', this.endingDate);
                 formData.append('locataire', this.useremail);
                 const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
                     method: 'POST',
