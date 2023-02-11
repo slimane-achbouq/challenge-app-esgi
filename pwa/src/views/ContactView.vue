@@ -156,17 +156,21 @@
                 return;
             
             }
-              const actionPayload = {
+              this.dataPayload = {
                   name: this.name,
                   familyName: this.familyName,
                   email: this.email,
                   message: this.message
               };
-
-              console.log(actionPayload);
   
               try {
-                  // await this.$store.dispatch('contact', actionPayload);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify(this.dataPayload)
+                });
               } catch (error) {
                   this.error = error.message || 'Failed to authenticated, try later.';
               }
