@@ -126,8 +126,12 @@
 
                                             </div>
                                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                                <button type="submit"
-                                                        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                <button type="submit" v-if="file"
+                                                        class="nline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                      
+                                                    Submit
+                                                </button>
+                                                <button type="submit" disabled v-if="!file" class="px-8 py-3 text-white bg-gray-300 rounded focus:outline-none">
                                                     Submit
                                                 </button>
                                             </div>
@@ -173,9 +177,11 @@ export default {
     },
     methods: {
         handleFile(event) {
+            console.log("1")
             this.file = event.target.files[0];
             this.previewSrc = URL.createObjectURL(event.target.files[0]);
             this.hideImageField = true;
+            console.log("2")
         },
         submitForm: async function () {
             const formData = new FormData();
@@ -198,7 +204,7 @@ export default {
                 });
 
                 const responseData = await response.json();
-                const redirectUrl = responseData['@id'];
+                let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
                 this.$router.replace(redirectUrl);
             } catch (e) {
                 console.log(e.message)
