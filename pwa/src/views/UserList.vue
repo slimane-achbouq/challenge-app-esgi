@@ -63,7 +63,7 @@
                           </div>
                           <div class="col-span-1">
                             <label class="block text-sm font-medium mb-1" for="name">Status <span class="text-rose-500">*</span></label>
-                            <select class="form-select" v-model="isVerifiedv">
+                            <select class="form-select" :value="selectedItems.isVerified ? true:false">
                                 <option value="true">Actived</option>
                                 <option value="false">Not Actived</option>
                             </select>
@@ -162,15 +162,11 @@
       function onOpenModal (selected){
         modalOpen.value=true
         selectedItems.value = selected
+        console.log(selectedItems.value)
       }
 
       function updateUser(){
           
-          // Get the form data from the inputs
-          //const name = this.$refs.name.value
-          //const prenom = this.$refs.prenom.value
-          //const location = this.$refs.location.value
-          //const status = this.$refs.status.value
           try {
           // Get the form data from the inputs
           
