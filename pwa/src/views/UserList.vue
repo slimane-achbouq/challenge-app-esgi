@@ -219,12 +219,17 @@
       }
 
       function onModaDeletelOpen(selected){
+        
+                
+
+        console.log(redirectUrl)
         console.log(selected)
         modaDeletelOpen.value=true
         console.log(selectedItems.value)
       }
 
       async function deleteItem(){
+        
 
         console.log(this.selectedItems)
         try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}` , {
