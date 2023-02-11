@@ -37,7 +37,13 @@
                 </header>
                 <!-- Billing Information -->
                 <div>
-                  <div class="text-slate-800 font-semibold mb-4">Edit Information</div>
+                  <div class="mb-4 flex justify-between" >
+                    <div class="text-slate-800 font-semibold mb-4">Edit Information</div>
+                    <router-link :to="{ name: 'userannounces', params: { lastName: user.lastName }}">
+                      <a class="text-slate-800 font-semibold mb-4">See all announces</a>
+                    </router-link>
+                  </div>
+                  
                   <form>
                     <div class="space-y-4">
                       <!-- 1st row -->

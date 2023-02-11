@@ -17,7 +17,8 @@
                     <div class="mb-5">
 
                         <!-- Title -->
-                        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">My List of announcements ✨</h1>
+                        <h1 v-if="currentRole!=='Admin'" class="text-2xl md:text-3xl text-slate-800 font-bold">My List of announcements ✨</h1>
+                        <h1 v-if="currentRole=='Admin'" class="text-2xl md:text-3xl text-slate-800 font-bold">List of announcements of this user </h1>
 
                     </div>
 
@@ -29,29 +30,11 @@
                         <div>
 
 
-                            <div class="text-sm text-slate-500 italic mb-4">67.975 Items</div>
+                            <div class="text-sm text-slate-500 italic mb-4"></div>
 
-                            <div class="mb-5">
-                                <!-- Start -->
-                                <form>
-                                    <label class=" block text-sm font-medium mb-1" for="form-search"></label>
-                                    <div class="relative">
-                                        <input id="form-search" class="form-input w-full pl-9" type="search"/>
-                                        <button class="absolute inset-0 right-auto group" type="submit"
-                                                aria-label="Search">
-                                            <svg
-                                                class="w-4 h-4 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3 mr-2"
-                                                viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z"/>
-                                                <path
-                                                    d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </form>
-                                <!-- End -->
-                            </div>
+                            <!-- Divider -->
+                            <!-- Divider -->
+                            <hr class="my-2 border-t border-slate-200" />
 
 
                             <!-- Cards 1 (Video Courses) -->
@@ -131,7 +114,7 @@ export default {
         },
         async updateData() {
             let token = this.$store.getters["auth/token"]
-            let currentRole = this.$store.getters["auth/role"]
+            let currentRole = this.$store.getters["auth/role"] 
             let urlFetch = "";
 
             if (currentRole == "Admin") {
@@ -163,6 +146,7 @@ export default {
         let token = this.$store.getters["auth/token"]
         let email = this.$store.getters["auth/email"]
         let currentRole = this.$store.getters["auth/role"]
+        this.currentRole=currentRole
         let urlFetch = "";
 
         let response
