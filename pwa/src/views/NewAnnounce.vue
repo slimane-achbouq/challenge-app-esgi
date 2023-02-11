@@ -50,10 +50,10 @@
                                                 <br>
                                                 <div class="col-span-6 sm:col-span-4">
                                                     <label for="message"
-                                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description
+                                                           class="block text-sm font-medium mb-1">Description
                                                         <span class="text-rose-500">*</span></label>
                                                     <textarea id="message" rows="4" v-model.trim="description" required
-                                                              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                              class="form-input w-full"
                                                               placeholder="Write the description here..."></textarea>
                                                 </div>
                                                 <br>
@@ -96,7 +96,7 @@
                                                 <div class="flex items-center justify-center w-full"
                                                      v-if="!hideImageField">
                                                     <label for="dropzone-file"
-                                                           class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                           class="form-input w-full">
                                                         <div
                                                             class="flex flex-col items-center justify-center pt-5 pb-6">
                                                             <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400"
