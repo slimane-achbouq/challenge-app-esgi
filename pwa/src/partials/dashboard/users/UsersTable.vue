@@ -183,10 +183,16 @@
             Authorization: `Bearer ${token}`
           }
         })
-        customers.value = await response.data["hydra:member"];
+        if(response.data["hydra:member"]){
+          customers.value = await response.data["hydra:member"];
+        }
+        
         customersList.value= await customers.value
         totalResult.value=await response.data["hydra:totalItems"];
-        lastPage.value=await response.data["hydra:view"]["hydra:last"].split("page=")[1];;
+        console.log(response.data)
+        if(response.data["hydra:view"]){
+          lastPage.value=await response.data["hydra:view"]["hydra:last"].split("page=")[1];;
+        }
         loading.value = false
       } catch (error) {
         console.error(error)

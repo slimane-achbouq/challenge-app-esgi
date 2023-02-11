@@ -126,7 +126,9 @@ async created() {
         });
 
         let data = await response.json();
-        this.user = await data["hydra:member"][0];
+        if(data["hydra:member"]){
+          this.user = await data["hydra:member"][0];
+        }
         this.loading=false
     }
 }
