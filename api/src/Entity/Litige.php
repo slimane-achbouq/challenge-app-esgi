@@ -78,7 +78,7 @@ class Litige
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['litige:read'])]
+    #[Groups(['litige:read', 'litige:write'])]
     private ?int $id = null;
 
     #[Vich\UploadableField(mapping: "litige_imageFile", fileNameProperty: "image")]
