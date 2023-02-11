@@ -44,9 +44,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`annonce`')]
 #[Get]
 #[GetCollection]
-//#[Delete]
+#[Delete]
 #[Patch(
-    denormalizationContext: ['groups' => ['patch_status_annonce:write']]
+    denormalizationContext: ['groups' => ['patch_status_annonce:write']],
+    security: 'is_granted("ROLE_ADMIN")'
 )]
 #[Put(
     denormalizationContext: ['groups' => ['edit_annonce:write']]
@@ -97,19 +98,19 @@ class Annonce
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['annonce:read', 'demande:read'])]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read'])]
     private ?int $id = null;
 
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Groups(['annonce:read', 'demande:read'])]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['annonce:read', 'demande:read'])]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Vich\UploadableField(mapping: "annonce_imageFile", fileNameProperty: "image")]
@@ -121,27 +122,27 @@ class Annonce
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
-    #[Groups(['annonce:read', 'user:read', 'demande:read'])]
+    #[Groups(['annonce:read', 'user:read', 'demande:read', 'litige:read'])]
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
+    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true, options: ["default" => false])]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
     private ?bool $isPerHour = null;
 
     #[ORM\Column]
-    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read'])]
     private ?int $status = null;
 
     #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]
@@ -150,9 +151,13 @@ class Annonce
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Paiement::class)]
     private Collection $paiements;
 
+    #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Litige::class)]
+    private Collection $litiges;
+
     public function __construct()
     {
         $this->paiements = new ArrayCollection();
+        $this->litiges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -354,6 +359,36 @@ class Annonce
             // set the owning side to null (unless already changed)
             if ($paiement->getAnnonce() === $this) {
                 $paiement->setAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Litige>
+     */
+    public function getLitiges(): Collection
+    {
+        return $this->litiges;
+    }
+
+    public function addLitige(Litige $litige): self
+    {
+        if (!$this->litiges->contains($litige)) {
+            $this->litiges->add($litige);
+            $litige->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLitige(Litige $litige): self
+    {
+        if ($this->litiges->removeElement($litige)) {
+            // set the owning side to null (unless already changed)
+            if ($litige->getAnnonce() === $this) {
+                $litige->setAnnonce(null);
             }
         }
 

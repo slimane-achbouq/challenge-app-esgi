@@ -18,7 +18,7 @@
 
                     <!-- Page header -->
                     <div class="mb-8">
-                        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Create new announce ✨</h1>
+                        <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Create new dispute ✨</h1>
                     </div>
 
                     <div class="border-t border-slate-200">
@@ -28,10 +28,9 @@
                                 <div class="md:col-span-1">
                                     <div class="px-4 sm:px-0">
                                         <br>
-                                        <h3 class="text-lg font-medium leading-6 text-gray-900">Annouce
-                                            information</h3>
-                                        <p class="mt-1 text-sm text-gray-600">Note : The announce will be published only
-                                            when an administrator verifies it.</p>
+                                        <h3 class="text-lg font-medium leading-6 text-gray-900">Dispute information</h3>
+                                        <p class="mt-1 text-sm text-gray-600">An administrator will review the dispute
+                                            before taking a decision.</p>
                                     </div>
                                 </div>
 
@@ -40,59 +39,53 @@
                                     <form @submit.prevent="submitForm" enctype="multipart/form-data" method="post">
                                         <div class="overflow-hidden shadow sm:rounded-md">
                                             <div class="bg-white px-4 py-5 sm:p-6">
-                                                <div>
-                                                    <label class="block text-sm font-medium mb-1" for="mandatory">Title
+                                                <div v-if="annonce">
+                                                    <h3 class="text-lg md:text-2xl text-slate-800 font-bold">File a
+                                                        dispute for the announce <span
+                                                            class="text-indigo-500">{{ annonce.title }}</span></h3>
+
+                                                    <div style="margin-top: 20px">
+                                                        <router-link :to="{name: 'announce', params: {id: annonce.id}}">
+                                                            <button class="btn bg-indigo-500 text-white">View announce
+                                                            </button>
+                                                        </router-link>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-top: 40px">
+                                                    <label class="block text-sm font-medium mb-1" for="mandatory">Reason
                                                         <span class="text-rose-500">*</span></label>
-                                                    <input id="mandatory" class="form-input w-full" type="text"
-                                                           v-model.trim="title"
-                                                           required/>
+                                                    <select name="reason_select" id="reason_select" v-model="reason"
+                                                            class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                        <option value="damaged_article" selected>Damaged article
+                                                        </option>
+                                                        <option value="defective">Defective/Not as described</option>
+                                                        <option value="delay">Not returned on time/Returned very late
+                                                        </option>
+                                                        <option value="other">Other</option>
+                                                    </select>
+
+                                                    <div style="margin-top: 20px" v-if="reason == 'other'">
+                                                        <input
+                                                            class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                                            type="text" id="otherReason" name="otherReason"
+                                                            placeholder="Please type your reason"
+                                                            v-model.trim="otherReason">
+                                                    </div>
                                                 </div>
                                                 <br>
                                                 <div class="col-span-6 sm:col-span-4">
                                                     <label for="message"
-                                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description
+                                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details
                                                         <span class="text-rose-500">*</span></label>
                                                     <textarea id="message" rows="4" v-model.trim="description" required
                                                               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                              placeholder="Write the description here..."></textarea>
-                                                </div>
-                                                <br>
-                                                <div class="col-span-6 sm:col-span-3">
-                                                    <label for="country"
-                                                           class="block text-sm font-medium text-gray-700">Flexible
-                                                        price</label>
-                                                    <select id="country" name="country" autocomplete="country-name"
-                                                            v-model.trim="isPerHour"
-                                                            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
-                                                        <option value="true">Per hour (flexible)</option>
-                                                        <option value="false">Fixed</option>
-                                                    </select>
+                                                              placeholder="Write some details here"></textarea>
                                                 </div>
 
-                                                <br>
-
-                                                <div>
-                                                    <label for="price" class="block text-sm font-medium text-gray-700">Price
-                                                        <span class="text-rose-500">*</span></label>
-                                                    <div class="relative mt-1 rounded-md shadow-sm">
-                                                        <div
-                                                            class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                            <span class="text-gray-500 sm:text-sm">€</span>
-                                                        </div>
-                                                        <input type="number" name="price" id="price" min="0" step="0.01"
-                                                               v-model.trim="price"
-                                                               required
-                                                               class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                               placeholder="0.00">
-                                                        <div class="absolute inset-y-0 right-0 flex items-center">
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <br>
-
-
+                                                <label style="margin-top: 25px"
+                                                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                    Photo (optional)
+                                                </label>
                                                 <div class="flex items-center justify-center w-full"
                                                      v-if="!hideImageField">
                                                     <label for="dropzone-file"
@@ -114,7 +107,7 @@
                                                             <p class="text-xs text-gray-500 dark:text-gray-400">
                                                                 REQUIRED</p>
                                                         </div>
-                                                        <input id="dropzone-file" type="file" class="hidden" required
+                                                        <input id="dropzone-file" type="file" class="hidden"
                                                                @change="handleFile"/>
                                                     </label>
                                                 </div>
@@ -122,13 +115,11 @@
                                                      v-if="hideImageField">
                                                     <img :src="previewSrc" alt="Preview image" id="previewImg">
                                                 </div>
-
-
                                             </div>
                                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                                 <button type="submit"
                                                         class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                                    Submit
+                                                    Submit dispute
                                                 </button>
                                             </div>
                                         </div>
@@ -136,18 +127,11 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-
-
             </main>
-
         </div>
-
     </div>
-
 </template>
 
 <script>
@@ -155,20 +139,20 @@ import Header from '@/partials/Header.vue'
 import Sidebar from '../partials/Sidebar.vue'
 
 export default {
-    name: 'NewAnnounce',
+    name: 'NewLitige',
     components: {
         Header,
         Sidebar
     },
     data() {
         return {
-            title: '',
-            description: '',
-            price: null,
-            isPerHour: false,
+            reason: "",
+            otherReason: null,
+            description: "",
             file: null,
             hideImageField: false,
             previewSrc: "",
+            annonce: null
         }
     },
     methods: {
@@ -178,17 +162,16 @@ export default {
             this.hideImageField = true;
         },
         submitForm: async function () {
-            const formData = new FormData();
-            formData.append('title', this.title);
-            formData.append('description', this.description);
-            formData.append('isPerHour', this.isPerHour);
-            formData.append('price', this.price);
-            formData.append('file', this.file);
-            formData.append('isAvailable', 0);
-
             let token = this.$store.getters["auth/token"]
+            const formData = new FormData();
+            formData.append('reason', this.reason);
+            formData.append('otherReason', this.otherReason);
+            formData.append('description', this.description);
+            formData.append('file', this.file);
+            formData.append('annonce', this.annonce.id);
+
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/litiges`, {
                     method: 'POST',
                     headers: {
                         // 'Content-Type': 'multipart/form-data',
@@ -207,6 +190,24 @@ export default {
     },
     setup() {
         return {}
+    },
+    async created() {
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
+        let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
+        let token = this.$store.getters["auth/token"]
+
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        let data = await response.json();
+        this.annonce = data;
     }
 }
 </script>

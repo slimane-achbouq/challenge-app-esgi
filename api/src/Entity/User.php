@@ -137,18 +137,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'demande_history:read'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'demande_history:read', 'litige:read'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Groups(['user:read', 'user:read:verification_account_token', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:read', 'user:read:verification_account_token', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column]
     private array $roles = [];
 
-    #[Groups(['user:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'annonce:read', 'demande:read', 'litige:read'])]
     private string $role;
 
     #[Groups(['user:write:verification_account_token'])]
@@ -169,46 +169,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
     private Collection $annonces;
 
-    #[Groups(['user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(name: 'is_verified', type: Types::BOOLEAN, nullable: true, options: ["default" => false])]
     private ?bool $isVerified = null;
 
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
     private Collection $resetPasswords;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $associationName = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profession = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commercialName = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $postalCode = null;
 
-    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
@@ -223,6 +223,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class)]
     private Collection $paiements;
 
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Litige::class)]
+    private Collection $litiges;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -230,6 +233,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->demandes = new ArrayCollection();
         $this->demandeHistories = new ArrayCollection();
         $this->paiements = new ArrayCollection();
+        $this->litiges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -600,6 +604,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($paiement->getLocataire() === $this) {
                 $paiement->setLocataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Litige>
+     */
+    public function getLitiges(): Collection
+    {
+        return $this->litiges;
+    }
+
+    public function addLitige(Litige $litige): self
+    {
+        if (!$this->litiges->contains($litige)) {
+            $this->litiges->add($litige);
+            $litige->setLocataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLitige(Litige $litige): self
+    {
+        if ($this->litiges->removeElement($litige)) {
+            // set the owning side to null (unless already changed)
+            if ($litige->getLocataire() === $this) {
+                $litige->setLocataire(null);
             }
         }
 

@@ -1,6 +1,7 @@
 <template>
     <div class="flex h-screen overflow-hidden">
 
+        <Sidebar :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false"/>
         <!-- Content area -->
         <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
@@ -190,7 +191,8 @@
                                     </div>
                                     <div v-else-if="status == 1" class="mb-4">
                                         <router-link to="#">
-                                            <button v-if="canOrder" @click.prevent="this.isBeingOrdered = true"
+                                            <button v-if="canOrder && this.role != 'Admin'"
+                                                    @click.prevent="this.isBeingOrdered = true"
                                                     class="btn w-full bg-indigo-500 hover:bg-indigo-600 text-white">
                                                 Order
                                                 Now
@@ -226,6 +228,11 @@
                                 <div v-if="isAlreadyOrdered">
                                     <span class="text-green-500">
                                         You have already orderded this article.
+                                        <div style="margin-top: 20px">
+                                            <router-link :to="{ name: 'new-dispute', params: {id: this.id}}">
+                                                <button class="btn bg-red-500 text-white">File a dispute</button>
+                                            </router-link>
+                                    </div>
                                     </span>
                                 </div>
                             </div>
@@ -235,7 +242,10 @@
                             <div class="bg-white p-5 shadow-lg rounded-sm border border-slate-200 lg:w-72 xl:w-80">
                                 <div class="flex justify-between space-x-1 mb-5">
                                     <div class="text-sm text-slate-800 font-semibold">
-                                        Requests - <button>See all</button>
+                                        Requests -
+                                        <router-link to="/dashboard/requests">
+                                            <button>See all</button>
+                                        </router-link>
                                     </div>
                                 </div>
                                 <ul class="space-y-3">
@@ -243,7 +253,9 @@
                                         <div class="flex justify-between">
                                             <div class="grow flex items-center">
                                                 <div class="truncate">
-                                                    <span class="text-sm font-medium text-slate-800">{{ demande.locataire.email }} - {{ demande.createdAt }}</span>
+                                                    <span class="text-sm font-medium text-slate-800">{{
+                                                            demande.locataire.email
+                                                        }} - {{ demande.createdAt }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -338,11 +350,13 @@
 import Header from '../partials/Header.vue'
 import ModalBasic from '../components/Modal.vue'
 import axios from 'axios'
+import Sidebar from "@/partials/Sidebar.vue";
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
     name: 'Announce',
     components: {
+        Sidebar,
         Header,
         ModalBasic
     },
@@ -419,7 +433,16 @@ export default {
                 },
             });
 
+            if(response.status == 404) {
+                this.$router.push('/dashboard/announces');
+            }
+
             let data = await response.json();
+            if (this.role != "Admin") {
+                if (this.useremail != data.owner.email && data.status != 1) {
+                    this.$router.push('/dashboard/announces');
+                }
+            }
             this.title = data.title;
             this.description = data.description;
             this.isPerHour = data.isPerHour;
@@ -520,6 +543,9 @@ export default {
         return {}
     },
     async created() {
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
         this.useremail = this.$store.getters["auth/email"]
@@ -533,7 +559,18 @@ export default {
             },
         });
 
+        if(response.status == 404) {
+            this.$router.push('/dashboard/announces');
+        }
+
         let data = await response.json();
+        console.log(response.status)
+        if (this.role != "Admin") {
+            if (this.useremail != data.owner.email && data.status != 1) {
+                this.$router.push('/dashboard/announces');
+            }
+        }
+
         this.id = data.id
         this.title = data.title;
         this.description = data.description;

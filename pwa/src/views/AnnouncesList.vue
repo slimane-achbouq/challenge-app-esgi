@@ -193,6 +193,9 @@ export default {
         }
     },
     async created() {
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
         let token = this.$store.getters["auth/token"]
         let currentRole = this.$store.getters["auth/role"]
         let urlFetch = "";
