@@ -198,8 +198,7 @@ export default {
                 });
 
                 const responseData = await response.json();
-                const redirectUrl = responseData['@id'];
-                this.$router.replace(redirectUrl);
+                this.$router.replace('/announces/' + responseData['id']);
             } catch (e) {
                 console.log(e.message)
             }
