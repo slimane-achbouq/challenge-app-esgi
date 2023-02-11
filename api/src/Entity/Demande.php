@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
@@ -30,6 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: DemandeRepository::class)]
 #[ORM\Table(name: '`demande`')]
 #[GetCollection]
+#[Get]
 #[Patch(
     denormalizationContext: ['groups' => ['patch_status:write']]
 )]
@@ -48,17 +50,20 @@ class Demande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups(['demande:read'])]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['patch_status:write', 'demande:read'])]
-    private ?string $status = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['patch_status:write', 'demande:read', 'edit_demande:write', 'demande_history:read'])]
+    private ?int $status = null;
 
     #[ORM\Column]
+    #[Groups(['demande:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['demande:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -69,17 +74,25 @@ class Demande
     #[Groups(['demande:write', 'edit_demande:write', 'demande:read'])]
     private ?\DateTimeInterface $dateEnd = null;
 
-    #[ORM\OneToOne(inversedBy: 'demande', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(inversedBy: 'demande')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['demande:read'])]
+    #[Groups(['demande:read', 'annonce:read'])]
     private ?Annonce $annonce = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandes')]
-    #[Groups(['demande:read'])]
+    #[Groups(['demande:read', 'user:read'])]
     private ?User $locataire = null;
 
     #[ORM\OneToMany(mappedBy: 'demand', targetEntity: DemandeHistory::class)]
+    #[Groups(['demande:read'])]
     private Collection $demandeHistories;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['demande:read', 'patch_status:write'])]
+    private ?bool $isPaid = null;
+
+    #[ORM\OneToOne(mappedBy: 'demande', cascade: ['persist', 'remove'])]
+    private ?Paiement $paiement = null;
 
     public function __construct()
     {
@@ -91,12 +104,12 @@ class Demande
         return $this->id;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -180,6 +193,7 @@ class Demande
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->status = 0;
+        $this->isPaid = false;
     }
 
     #[ORM\PreUpdate]
@@ -214,6 +228,40 @@ class Demande
                 $demandeHistory->setDemand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsPaid(): ?bool
+    {
+        return $this->isPaid;
+    }
+
+    public function setIsPaid(?bool $isPaid): self
+    {
+        $this->isPaid = $isPaid;
+
+        return $this;
+    }
+
+    public function getPaiement(): ?Paiement
+    {
+        return $this->paiement;
+    }
+
+    public function setPaiement(?Paiement $paiement): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($paiement === null && $this->paiement !== null) {
+            $this->paiement->setDemande(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($paiement !== null && $paiement->getDemande() !== $this) {
+            $paiement->setDemande($this);
+        }
+
+        $this->paiement = $paiement;
 
         return $this;
     }

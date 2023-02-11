@@ -94,17 +94,20 @@
 
 
                             <!-- Cards 1 (Video Courses) -->
-                            <div >
+                            <div>
                                 <div>
                                     <div class="grid grid-cols-12 gap-6">
-                                        <AnnonceCards v-for="announce in announces" :key="announce['@id'].match(/\d+/)[0]" v-bind="announce" :url="url"
+                                        <AnnonceCards v-for="announce in announces"
+                                                      :key="announce['@id'].match(/\d+/)[0]" v-bind="announce"
+                                                      :url="url"
                                                       :src="url + '/uploads/images_annonces/' + announce.image"
-                                                      :id="announce['@id'].match(/\d+/)[0]"/>
+                                                      :id="announce['@id'].match(/\d+/)[0]" :currentRole="currentRole"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-6">
-                                <Pagination @increasePage="handleNextPagination" @decreasePage="handlePreviousPagination" :page="page"/>
+                                <Pagination @increasePage="handleNextPagination"
+                                            @decreasePage="handlePreviousPagination" :page="page"/>
                             </div>
 
                         </div>
@@ -140,7 +143,8 @@ export default {
         return {
             announces: null,
             url: "",
-            page: 1
+            page: 1,
+            currentRole: null,
         }
     },
     setup() {
@@ -155,21 +159,26 @@ export default {
         handleNextPagination(n) {
             this.page += n;
             this.updateData();
-            console.log(this.page)
             provide('pageChange', this.page)
         },
         handlePreviousPagination(n) {
             if (this.page > 1) {
                 this.page -= n;
                 this.updateData();
-                console.log(this.page)
                 provide('pageChange', this.page)
             }
         },
         async updateData() {
             let token = this.$store.getters["auth/token"]
+            let currentRole = this.$store.getters["auth/role"]
+            let urlFetch = "";
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}&itemsPerPage=5&status=1`, {
+            if (currentRole == "Admin") {
+                urlFetch = import.meta.env.VITE_API_URL + "/annonces?page=" + this.page + "&itemsPerPage=5";
+            } else {
+                urlFetch = import.meta.env.VITE_API_URL + "/annonces?page=" + this.page + "&itemsPerPage=5&status=1";
+            }
+            const response = await fetch(urlFetch, {
                 method: 'GET',
                 headers: {
                     // 'Content-Type': 'multipart/form-data',
@@ -179,12 +188,21 @@ export default {
 
             let data = await response.json();
             this.announces = data['hydra:member'];
+            this.url = import.meta.env.VITE_API_URL;
+            this.currentRole = currentRole;
         }
     },
     async created() {
         let token = this.$store.getters["auth/token"]
+        let currentRole = this.$store.getters["auth/role"]
+        let urlFetch = "";
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces?page=${this.page}&itemsPerPage=5&status=1`, {
+        if (currentRole == "Admin") {
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?page=" + this.page + "&itemsPerPage=5";
+        } else {
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?page=" + this.page + "&itemsPerPage=5&status=1";
+        }
+        const response = await fetch(urlFetch, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -195,6 +213,7 @@ export default {
         let data = await response.json();
         this.announces = data['hydra:member'];
         this.url = import.meta.env.VITE_API_URL;
+        this.currentRole = currentRole;
     }
 }
 </script>

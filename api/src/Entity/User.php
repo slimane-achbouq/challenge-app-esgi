@@ -144,18 +144,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read','user:read:verification_account_token'])]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write','annonce:read'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'demande_history:read'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Groups(['user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:read', 'user:read:verification_account_token', 'annonce:read', 'demande:read'])]
     #[ORM\Column]
     private array $roles = [];
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'annonce:read', 'demande:read'])]
     private string $role;
 
     #[Groups(['user:write:verification_account_token'])]
@@ -176,54 +176,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
     private Collection $annonces;
 
-    #[Groups(['user:read', 'user:read:verification_account_token','user-update:write'])]
+    #[Groups(['user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read'])]
     #[ORM\Column(name: 'is_verified', type: Types::BOOLEAN, nullable: true, options: ["default" => false])]
     private ?bool $isVerified = null;
 
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
     private Collection $resetPasswords;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $associationName = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profession = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commercialName = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $postalCode = null;
 
-    #[Groups(['user:write','user:read','user-update:write','user:read:verification_account_token'])]
+    #[Groups(['user:write','user:read','user-update:write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
     #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class)]
+    #[Groups(['demande_history:read'])]
     private Collection $demandes;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class)]
+    #[Groups(['demande_history:read', 'demande:read'])]
     private Collection $demandeHistories;
+
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class)]
+    private Collection $paiements;
 
     public function __construct()
     {
@@ -231,6 +236,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->resetPasswords = new ArrayCollection();
         $this->demandes = new ArrayCollection();
         $this->demandeHistories = new ArrayCollection();
+        $this->paiements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -464,7 +470,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStreet(?string $street): self
     {
         $this->street = $street;
-        return $this;
     }
 
     /**
@@ -495,7 +500,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCity(?string $city): self
     {
         $this->city = $city;
-        return $this;
     }
 
     public function removeDemande(Demande $demande): self
@@ -571,6 +575,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($demandeHistory->getOwner() === $this) {
                 $demandeHistory->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Paiement>
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): self
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements->add($paiement);
+            $paiement->setLocataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): self
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getLocataire() === $this) {
+                $paiement->setLocataire(null);
             }
         }
 
