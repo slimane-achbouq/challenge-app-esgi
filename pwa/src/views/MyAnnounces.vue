@@ -168,7 +168,7 @@ export default {
         let response
         if(lastname==="myannouncement"){
 
-             response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${email}`, {
+            response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${email}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
