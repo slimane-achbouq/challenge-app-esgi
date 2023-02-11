@@ -31,7 +31,7 @@
               </div>
             </div>
   
-            <div class="max-w-sm mx-auto px-4 py-8">
+            <div class="max-w-sm mx-auto px-4 py-8" v-if="!isSuccess">
               <h1 class="text-3xl text-slate-800 font-bold mb-6">Contact Us</h1>
               <Banner type="error" :open="!!error">
                 {{ error }}
@@ -94,6 +94,21 @@
                 </div>
               </form>
             </div>
+
+          <div v-if="isSuccess">
+          <div class="max-w-sm mx-auto px-4 py-8 text-center">
+                    <div class="success-checkmark">
+                        <div class="check-icon">
+                            <span class="icon-line line-tip"></span>
+                            <span class="icon-line line-long"></span>
+                            <div class="icon-circle"></div>
+                            <div class="icon-fix"></div>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl text-slate-800 font-bold mb-8">{{ successMesage }}</h1>
+                  <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white" to="/dashboard">Go to Dashboard -&gt;</router-link>
+                </div>
+           </div>
   
           </div>
         </div>
@@ -112,10 +127,13 @@
   <script>
   import { emailValidation } from "@/utils/utils-common-function";
   import Banner from '@/components/Banner.vue'
+  import successMessageView from './successMessageView.vue';
+
   
   export default {
       components: {
-        Banner
+        Banner,
+        successMessageView
       },
       data() {
           return {
@@ -126,6 +144,8 @@
               formIsValid: true,
               isLoading: false,
               error: null,
+              isSuccess: false,
+              successMesage: '',
               errors: {
                 name: "",
                 familyName: "",
@@ -139,6 +159,8 @@
               this.formIsValid = true;
               this.error = null;
               this.isLoading = true;
+              this.isSuccess = false;
+
 
               if (!emailValidation(this.email)) {
                 this.formValid = false;
@@ -171,6 +193,10 @@
                     },
                     body: JSON.stringify(this.dataPayload)
                 });
+                if (response.ok) {
+                  this.isSuccess = true;
+                  this.successMesage = 'votre message a été bien envoyer.'
+                }
               } catch (error) {
                   this.error = error.message || 'Failed to authenticated, try later.';
               }
