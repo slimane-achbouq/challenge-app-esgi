@@ -135,7 +135,7 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 
-#[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'exact','lastName'=>'exact'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

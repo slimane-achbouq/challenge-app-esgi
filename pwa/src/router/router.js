@@ -5,6 +5,7 @@ import UserList from '@/views/UserList.vue';
 import AnnouncesList from '@/views/AnnouncesList.vue';
 import Announce from '@/views/Announce.vue';
 import NewAnnounce from '@/views/NewAnnounce.vue';
+import MyAnnounce from '@/views/MyAnnounces.vue';
 import AccountVerificationView from '@/views/AccountVerificationView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
 import successMessageView from '@/views/successMessageView.vue';
@@ -48,6 +49,7 @@ const router = createRouter({
     { path: '/disputes/:id', name: 'show-dispute', component: Litige, meta: { requiresUnauth: false }},
     { path: '/demande_histories/:id', name: 'show-demande-histories', meta: { requiresUnauth: false }},
     { path: '/userprofile/:id', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
+    { path: '/userannounces/:lastName', name: 'userannounces', component: MyAnnounce, meta: { requiresUnauth: false } },
   ]
 })
 
