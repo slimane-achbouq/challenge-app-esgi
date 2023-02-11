@@ -89,7 +89,7 @@
                           </div>
                           <div class="col-span-1">
                             <label class="block text-sm font-medium mb-1" for="name">Status <span class="text-rose-500">*</span></label>
-                            <select class="form-select" :value="selectedItems.isVerified ? true:false">
+                            <select class="form-select"  v-model="selectedItems.isVerified">
                                 <option value="true">Actived</option>
                                 <option value="false">Not Actived</option>
                             </select>
@@ -278,7 +278,7 @@
             email: this.selectedItems.email,
             firstName: this.selectedItems.firstName,
             lastName: this.selectedItems.lastName,
-            isVerified: isVerifiedv["_value"] ? true:false,
+            isVerified: this.selectedItems.isVerified ? true:false,
             phoneNumber: this.selectedItems.phoneNumber  }
           console.log(data)
 
