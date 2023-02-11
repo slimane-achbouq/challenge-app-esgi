@@ -427,6 +427,12 @@ export default {
         }
     },
     async created() {
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
         this.useremail = this.$store.getters["auth/email"]

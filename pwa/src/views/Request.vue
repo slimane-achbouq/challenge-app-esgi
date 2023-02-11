@@ -73,6 +73,10 @@
                                 </div>
                                 <div v-else style="margin-top: 50px">
                                     <span class="text-green-500">Currently renting</span>
+
+                                    <div style="margin-top: 40px">
+                                        <button class="btn bg-red-500 text-white">File a dispute</button>
+                                    </div>
                                 </div>
 
                             </div>
@@ -134,8 +138,6 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
-
             this.sessionId = response.id;
         },
         submit: function () {
@@ -146,6 +148,9 @@ export default {
         return {}
     },
     async created() {
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
@@ -159,9 +164,18 @@ export default {
             },
         });
 
+        if(response.status == 404) {
+            this.$router.push('/dashboard/requests');
+        }
+
         let res = await response.json();
-        let data = res.demande;
-        console.log(data)
+        if (this.role != "Admin") {
+            if (this.useremail != res.annonce.owner.email) {
+                if (this.useremail != res.locataire.email) {
+                    this.$router.push('/dashboard/requests');
+                }
+            }
+        }
 
         let date = new Date(res.dateStart);
         res.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
@@ -171,7 +185,7 @@ export default {
         this.demande = res;
         this.annonce = res.annonce;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + res.annonce.image;
-        console.log(res)
+
         await this.getStripeSession();
     }
 }
