@@ -116,6 +116,15 @@
                                             </a>
                                         </li>
                                     </router-link>
+
+                                    <router-link to="/dashboard/announces" custom v-slot="{ href, navigate, isExactActive }" >
+                                        <li class="mb-1 last:mb-0" v-if="role==='Client'">
+                                            <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate" :class="isExactActive && '!text-indigo-500'" :href="href" @click="navigate">
+                                                <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">My announces list</span>
+                                            </a>
+                                        </li>
+                                    </router-link>
+
                                     <router-link to="/announces/new" custom v-slot="{ href, navigate, isExactActive }">
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate" :class="isExactActive && '!text-indigo-500'" :href="href" @click="navigate">
@@ -225,6 +234,12 @@ export default {
     components: {
         SidebarLinkGroup,
     },
+    data() {
+    return {
+      role: null,
+     
+  }
+  },
     setup(props, { emit }) {
 
         const trigger = ref(null)
@@ -278,5 +293,11 @@ export default {
             currentRoute,
         }
     },
+
+    async created() {
+        this.role = this.$store.getters["auth/role"]
+        console.log(this.role)
+        
+    }
 }
 </script>
