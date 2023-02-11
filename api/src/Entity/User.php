@@ -23,6 +23,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\Delete;
 
 
 
@@ -94,6 +95,7 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     name: 'users_registration',
     processor: UserPostProcessor::class,
 )]
+#[Delete]
 #[Get(
     uriTemplate: '/address/{address}',
     controller: AddressController::class,
@@ -173,7 +175,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[Groups(['user:read'])]
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class,cascade: ['remove'], orphanRemoval: true)]
     private Collection $annonces;
 
     #[Groups(['user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
@@ -219,18 +221,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class)]
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class,cascade: ['remove'], orphanRemoval: true)]
     #[Groups(['demande_history:read'])]
     private Collection $demandes;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class,cascade: ['remove'], orphanRemoval: true)]
     #[Groups(['demande_history:read', 'demande:read'])]
     private Collection $demandeHistories;
 
-    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class)]
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class,cascade: ['remove'], orphanRemoval: true)]
     private Collection $paiements;
 
-    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Litige::class)]
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Litige::class,cascade: ['remove'], orphanRemoval: true)]
     private Collection $litiges;
 
     public function __construct()

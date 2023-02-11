@@ -32,13 +32,17 @@
               <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
               
                 <!-- Delete button -->
-                <DeleteButton :selectedItems="selectedItems" @click="modaDeletelOpen=true"/>       
+                <DeleteButton :selectedItems="selectedItems" @click="onModaDeletelOpen"/>       
               </div>
   
             </div>
             
             <Banner type="success" class="mb-4"  :open="true" v-if="updated">
                     User information updated successfully.
+              </Banner> 
+
+              <Banner type="success" class="mb-4"  :open="true" v-if="deleted">
+                    User deleted successfully.
               </Banner> 
             <!-- Table -->
             <CustomersTable @change-selection="updateSelectedItems($event)" @edit="onOpenModal"/>
@@ -143,7 +147,7 @@
 
                       <div class="flex flex-wrap justify-end space-x-2 m-6">
                             <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click.stop="modaDeletelOpen=false">Cancel</button>
-                            <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white">Yes, Delete it</button>
+                            <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white" @click="deleteItem">Yes, Delete it</button>
                       </div>
                     </ModalBasic>
       
@@ -200,6 +204,7 @@
       const emailExist=ref(false)
       const loading=ref(false)
       const updated=ref(false)
+      const deleted=ref(false)
   
                          
   
@@ -213,9 +218,31 @@
         console.log(selectedItems.value)
       }
 
-      async function updateUser(){
+      function onModaDeletelOpen(selected){
+        console.log(selected)
+        modaDeletelOpen.value=true
+        console.log(selectedItems.value)
+      }
+
+      async function deleteItem(){
+
+        console.log(this.selectedItems)
+        try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}` , {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+              }
+          })
+        modaDeletelOpen.value=false
+        deleted.value=true
+        }
+        catch(e){
+          modaDeletelOpen.value=false
+          deleted.value=true
+        }
         
-          
+      }
+
+      async function updateUser(){
           try {
           // Get the form data from the inputs
 
@@ -288,7 +315,10 @@
         error,
         emailExist,
         loading,
-        updated
+        updated,
+        deleteItem,
+        deleted,
+        onModaDeletelOpen
       }  
     }
   }
