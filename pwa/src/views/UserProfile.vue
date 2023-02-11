@@ -55,7 +55,7 @@
 
                           <div v-if="errors.familyName" class="text-xs mt-1 text-rose-500">
                           {{ errors.familyName }}
-                        </div>
+                          </div>
                                         </div>
                       </div>
                       <!-- 2nd row -->
@@ -70,7 +70,7 @@
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-city">Phone Number</label>
                           <input id="card-city" class="form-input w-full"  v-model="user.phoneNumber" type="text" />
-                          <div v-if="error" class="text-xs mt-1 text-rose-500">{{ e }}</div>
+                          <div v-if="error" class="text-xs mt-1 text-rose-500">{{ error }}</div>
                         </div>
                       </div>
                       <!-- 3rd row -->
@@ -223,7 +223,7 @@
   },
   methods:{
     async updateUser(){
-        this.loading=true
+        
         console.log(this.user.firstName)
         if (!this.user.firstName) {
           this.errors.name = "Veuillez revérifier votre nom";
@@ -246,6 +246,8 @@
           "Veuillez revérifier votre numéro de téléphone s'il est valide";
         return;
       }
+
+      this.loading=true
 
     try {
           let userInformations ={
