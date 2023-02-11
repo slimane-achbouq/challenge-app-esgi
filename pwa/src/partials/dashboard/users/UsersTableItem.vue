@@ -1,5 +1,7 @@
 <template>
+ 
     <tr>
+      
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
         <div class="flex items-center">
           <label class="inline-flex">
@@ -9,10 +11,12 @@
         </div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+        <router-link :to="{ name: 'user-profile', params: { id: customer.id }}">
         <div class="flex items-center">
           
           <div class="font-medium text-slate-800">{{customer.firstName}} {{customer.lastName}}</div>
         </div>
+      </router-link>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
         <div class="text-left">{{customer.email}}</div>
@@ -33,6 +37,7 @@
         <div class="text-center">{{customer.associationName}}</div>
       </td>
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
+
         <!-- Menu button -->
         <button class="text-slate-400 hover:text-slate-500 rounded-full" @click="edit">
           <span class="sr-only">Edit</span>
@@ -41,7 +46,9 @@
           </svg>
         </button>
       </td>
+    
     </tr>  
+  
   </template>
   
   <script>
