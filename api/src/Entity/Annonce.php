@@ -154,6 +154,10 @@ class Annonce
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Litige::class)]
     private Collection $litiges;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','user:read'])]
+    private ?string $category = null;
+
     public function __construct()
     {
         $this->paiements = new ArrayCollection();
@@ -391,6 +395,18 @@ class Annonce
                 $litige->setAnnonce(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
