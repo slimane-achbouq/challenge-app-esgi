@@ -21,6 +21,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+
 
 
 /* TODO
@@ -127,14 +130,18 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     write: false,
     name: 'address_search'
 )]
+
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','user:read:verification_account_token'])]
     private ?int $id = null;
 
     #[Groups(['user:write', 'user:read', 'user:read:verification_account_token','user-update:write','annonce:read'])]
