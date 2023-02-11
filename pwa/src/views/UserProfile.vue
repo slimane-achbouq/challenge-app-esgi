@@ -310,6 +310,7 @@
         this.loading=true
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
+        console.log(this.$store.getters["auth/id"])
         this.useremail = this.$store.getters["auth/email"]
 
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
