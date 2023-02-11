@@ -165,7 +165,10 @@ export default {
         let currentRole = this.$store.getters["auth/role"]
         let urlFetch = "";
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/users?lastName=${lastname}`, {
+        let response
+        if(lastname==="myannouncement"){
+
+             response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${email}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -173,6 +176,18 @@ export default {
             },
         });
 
+        }
+
+        else {
+         response = await fetch(`${import.meta.env.VITE_API_URL}/users?lastName=${lastname}`, {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+    }
         let data = await response.json();
         this.announces = await data["hydra:member"][0].annonces
     }
