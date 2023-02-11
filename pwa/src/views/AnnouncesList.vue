@@ -75,7 +75,7 @@
                                 <form>
                                     <label class=" block text-sm font-medium mb-1" for="form-search"></label>
                                     <div class="relative">
-                                        <input id="form-search" class="form-input w-full pl-9" type="search"/>
+                                        <input id="form-search" class="form-input w-full pl-9" type="search" v-model="searchTerm" @input="searchCustomers"/>
                                         <button class="absolute inset-0 right-auto group" type="submit"
                                                 aria-label="Search">
                                             <svg
@@ -145,6 +145,7 @@ export default {
             url: "",
             page: 1,
             currentRole: null,
+            searchTerm:""
         }
     },
     setup() {
@@ -190,7 +191,28 @@ export default {
             this.announces = data['hydra:member'];
             this.url = import.meta.env.VITE_API_URL;
             this.currentRole = currentRole;
+        },
+
+        async searchCustomers () {
+            console.log(this.searchTerm)
+            let token = this.$store.getters["auth/token"]
+            let urlFetch = import.meta.env.VITE_API_URL + "/annonces?title=" + this.searchTerm;
+            console.log(urlFetch)
+            const response = await fetch(urlFetch, {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        let data = await response.json()
+        this.announces=data['hydra:member']
+        console.log(data['hydra:member'])
+             return ;
+            
         }
+
     },
     async created() {
         if (!this.$store.getters["auth/isAuthenticated"]) {
