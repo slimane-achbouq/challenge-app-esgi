@@ -52,7 +52,7 @@
             
           </li>
           <li>
-            <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" to="/signin" @click="dropdownOpen = false">Sign Out</router-link>
+            <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" to="/signout" @click="dropdownOpen = false">Sign Out</router-link>
           </li>
         </ul>
       </div> 
