@@ -83,6 +83,9 @@ jobs:
 #          push: true
 #          tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}
       
+      - name: Check Docker Version
+        run: docker --version
+        
       - name: Build container image for DigitalOcean
         run: docker build -t $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
         working-directory: ./api
