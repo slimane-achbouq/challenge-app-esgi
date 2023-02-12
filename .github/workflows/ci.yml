@@ -64,7 +64,7 @@ jobs:
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./api
           push: true
           tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}
           
