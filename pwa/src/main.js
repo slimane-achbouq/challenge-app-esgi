@@ -9,13 +9,11 @@ const app = createApp(App)
 
 
 const token = store.state.auth.token
-const routes = ["/login","/register","/dashboard/users","/userannounces/myannouncement","/announces/new","/dashboard","/dashboard/announces","/dashboard/announces","/dashboard/announces","dashboard/requests","dashboard/disputes","/pagnotfound"]
+const routes = ["/login","/register","/dashboard/users","/userannounces/myannouncement","/announces/new","/dashboard","/dashboard/announces","/dashboard/announces","/dashboard/announces","dashboard/requests","dashboard/disputes","/pagnotfound","/organisme","/announces/","/account-verification/","/reset-password","/demandes","/requests","/disputes","/userprofile","/userannounces"]
 
 router.beforeEach((to,from)=>{
 
-    if (!routes.includes(to.fullPath)){
-        console.log("404")
-        router.push('/pagnotfound')}
+    
 
     console.log(store.state.auth.roles[0])
     if (!token){
@@ -23,6 +21,16 @@ router.beforeEach((to,from)=>{
     }
 
     else {
+
+        if (!routes.some(element => to.fullPath.startsWith(element))){
+            console.log("404")
+            router.push('/pagnotfound')
+            return;
+        
+        }
+        
+        
+            
         const role = store.state.auth.roles[0]
 
 
@@ -35,9 +43,6 @@ router.beforeEach((to,from)=>{
         }
         
     }
-    console.log(store.state.auth)
-    console.log(to)
-    console.log(from)
     return true
 })
 
