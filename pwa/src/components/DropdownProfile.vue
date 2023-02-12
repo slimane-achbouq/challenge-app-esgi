@@ -109,6 +109,9 @@ export default {
       dropdownOpen,
       trigger,
       dropdown,
+      email:null,
+      role:null,
+      user:{id:null},
     }
   }
 ,

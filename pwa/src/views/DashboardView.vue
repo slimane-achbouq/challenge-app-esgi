@@ -51,12 +51,75 @@
               </svg>
             </div>
             <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">Getting Started</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
+            <h3 class="text-lg font-semibold text-slate-800 mb-1">Announces</h3>
+            <div class="text-sm">Here you will find all the ads on our site.</div>
           </div>
           <!-- Link -->
           <div>
-            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</a>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/dashboard/announces">Explore -&gt;</router-link>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item -->
+      <div class="bg-slate-100 rounded-sm text-center p-5" v-if="role == 'Client'">
+        <div class="flex flex-col h-full">
+          <div class="grow mb-2">
+            <!-- Icon -->
+            <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
+              <svg class="w-12 h-12" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon4-a">
+                    <stop stop-color="#FFF" offset="0%" />
+                    <stop stop-color="#A5B4FC" offset="100%" />
+                  </linearGradient>
+                </defs>
+                <g fill-rule="nonzero" fill="none">
+                  <path d="M34.327 18.194H10.12c-.495 0-.897.358-.897.798v14.404c0 .44.402.798.897.798h24.207c.495 0 .896-.357.896-.798V18.992c0-.44-.401-.798-.896-.798Z" fill="#4F46E5" opacity=".88" />
+                  <path d="M29.09 0H4.883c-.494 0-.896.357-.896.798v14.404c0 .44.402.798.896.798H29.09c.495 0 .897-.357.897-.798V.798c0-.44-.402-.798-.897-.798Z" fill="url(#icon4-a)" transform="rotate(-8 126.748 -40.297)" />
+                  <path d="M25.194 25.777a3 3 0 1 1-.835-5.942 3 3 0 0 1 .835 5.942Z" fill="#6366F1" opacity=".72" />
+                </g>
+              </svg>
+            </div>
+            <!-- Content -->
+            <h3 class="text-lg font-semibold text-slate-800 mb-1">My announces</h3>
+            <div class="text-sm">You will find here all your ads.</div>
+          </div>
+          <!-- Link -->
+          <div>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/dashboard/announces">Explore -&gt;</router-link>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item -->
+      <div class="bg-slate-100 rounded-sm text-center p-5" v-if="role == 'Client'">
+        <div class="flex flex-col h-full">
+          <div class="grow mb-2">
+            <!-- Icon -->
+            <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
+              <svg class="w-12 h-12" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon3-a">
+                    <stop stop-color="#FFF" offset="0%" />
+                    <stop stop-color="#A5B4FC" offset="100%" />
+                  </linearGradient>
+                </defs>
+                <g fill-rule="nonzero" fill="none">
+                  <circle fill="url(#icon3-a)" cx="30.5" cy="17.5" r="4.5" />
+                  <circle fill="#4F46E5" opacity=".88" cx="17.5" cy="17.5" r="4.5" />
+                  <circle fill="#4F46E5" opacity=".88" cx="30.5" cy="30.5" r="4.5" />
+                  <circle fill="url(#icon3-a)" cx="17.5" cy="30.5" r="4.5" />
+                </g>
+              </svg>
+            </div>
+            <!-- Content -->
+            <h3 class="text-lg font-semibold text-slate-800 mb-1">Create Announce</h3>
+            <div class="text-sm">Here you can create an ad.</div>
+          </div>
+          <!-- Link -->
+          <div>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/announces/new">Explore -&gt;</router-link>
           </div>
         </div>
       </div>
@@ -81,105 +144,43 @@
               </svg>
             </div>
             <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">In-app Messaging</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
+            <h3 class="text-lg font-semibold text-slate-800 mb-1">Disputes</h3>
+            <div class="text-sm">Here you can consult the list of disputes.</div>
           </div>
           <!-- Link -->
           <div>
-            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</a>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/dashboard/disputes">Explore -&gt;</router-link>
           </div>
         </div>
       </div>
 
       <!-- Item -->
-      <div class="bg-slate-100 rounded-sm text-center p-5">
+      <div class="bg-slate-100 rounded-sm text-center p-5" v-if="role == 'Admin'">
         <div class="flex flex-col h-full">
           <div class="grow mb-2">
             <!-- Icon -->
             <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
-              <svg class="w-12 h-12" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon3-a">
-                    <stop stop-color="#FFF" offset="0%" />
-                    <stop stop-color="#A5B4FC" offset="100%" />
-                  </linearGradient>
-                </defs>
-                <g fill-rule="nonzero" fill="none">
-                  <circle fill="url(#icon3-a)" cx="30.5" cy="17.5" r="4.5" />
-                  <circle fill="#4F46E5" opacity=".88" cx="17.5" cy="17.5" r="4.5" />
-                  <circle fill="#4F46E5" opacity=".88" cx="30.5" cy="30.5" r="4.5" />
-                  <circle fill="url(#icon3-a)" cx="17.5" cy="30.5" r="4.5" />
-                </g>
-              </svg>
-            </div>
-            <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">Apps & Tools</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
-          </div>
-          <!-- Link -->
-          <div>
-            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</a>
-          </div>
-        </div>
-      </div>
+              <svg class="w-12 h-12" viewBox="0 -6 25 40" xmlns="http://www.w3.org/2000/svg">
+                <defs>                   
 
-      <!-- Item -->
-      <div class="bg-slate-100 rounded-sm text-center p-5">
-        <div class="flex flex-col h-full">
-          <div class="grow mb-2">
-            <!-- Icon -->
-            <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
-              <svg class="w-12 h-12" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon4-a">
-                    <stop stop-color="#FFF" offset="0%" />
-                    <stop stop-color="#A5B4FC" offset="100%" />
-                  </linearGradient>
-                </defs>
-                <g fill-rule="nonzero" fill="none">
-                  <path d="M34.327 18.194H10.12c-.495 0-.897.358-.897.798v14.404c0 .44.402.798.897.798h24.207c.495 0 .896-.357.896-.798V18.992c0-.44-.401-.798-.896-.798Z" fill="#4F46E5" opacity=".88" />
-                  <path d="M29.09 0H4.883c-.494 0-.896.357-.896.798v14.404c0 .44.402.798.896.798H29.09c.495 0 .897-.357.897-.798V.798c0-.44-.402-.798-.897-.798Z" fill="url(#icon4-a)" transform="rotate(-8 126.748 -40.297)" />
-                  <path d="M25.194 25.777a3 3 0 1 1-.835-5.942 3 3 0 0 1 .835 5.942Z" fill="#6366F1" opacity=".72" />
-                </g>
-              </svg>
-            </div>
-            <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">Billing & Invoices</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
-          </div>
-          <!-- Link -->
-          <div>
-            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Item -->
-      <div class="bg-slate-100 rounded-sm text-center p-5">
-        <div class="flex flex-col h-full">
-          <div class="grow mb-2">
-            <!-- Icon -->
-            <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
-              <svg class="w-12 h-12" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <defs>
                   <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon5-a">
                     <stop stop-color="#FFF" offset="0%" />
                     <stop stop-color="#A5B4FC" offset="100%" />
                   </linearGradient>
                 </defs>
                 <g fill-rule="nonzero" fill="none">
-                  <path d="M31.074 20.692a5.516 5.516 0 0 0-7.878-1.107c-.172.133-.311.293-.463.44-.106-.184-.196-.375-.324-.55a5.516 5.516 0 0 0-7.878-1.108c-2.49 1.932-3 5.56-1.14 8.103l7.142 9.207 9.402-6.882c2.49-1.931 3-5.56 1.139-8.103Z" fill="#4F46E5" opacity=".88" />
-                  <path d="M20.353 2.998a5.516 5.516 0 0 0-7.955 0c-.152.156-.268.333-.398.5-.13-.167-.246-.344-.398-.5a5.516 5.516 0 0 0-7.955 0c-2.196 2.26-2.196 5.924 0 8.183L12 19.304l8.353-8.123c2.196-2.26 2.196-5.924 0-8.183Z" fill="url(#icon5-a)" transform="rotate(16 -34.482 60.533)" />
+                    <path class="fill-current text-slate-400" :class=" 'text-indigo-500'" d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z" />
+                    <path class="fill-current text-slate-200" :class=" 'text-indigo-300'" d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z" />                    
                 </g>
               </svg>
             </div>
             <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">Support</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
+            <h3 class="text-lg font-semibold text-slate-800 mb-1" >Users</h3>
+            <div class="text-sm">Here you can consult the list of users.</div>
           </div>
           <!-- Link -->
           <div>
-            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</a>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/dashboard/users">Explore -&gt;</router-link>
           </div>
         </div>
       </div>
@@ -190,7 +191,7 @@
           <div class="grow mb-2">
             <!-- Icon -->
             <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
-              <svg class="w-12 h-12" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <svg class="w-12 h-12" viewBox="-4 -5 25 30" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon6-a">
                     <stop stop-color="#FFF" offset="0%" />
@@ -198,56 +199,23 @@
                   </linearGradient>
                 </defs>
                 <g fill-rule="nonzero" fill="none">
-                  <path d="M33.83 16.57 9.803 19.52c-.491.06-.846.464-.793.901l1.756 14.297c.054.437.496.743.987.683l24.026-2.95c.492-.06.847-.464.793-.901l-1.755-14.297c-.054-.438-.496-.743-.987-.683Z" fill="#4F46E5" opacity=".88" />
-                  <path d="M28.712 0H4.505c-.495 0-.897.357-.897.798v14.404c0 .44.402.798.897.798h24.207c.494 0 .896-.357.896-.798V.798c0-.44-.402-.798-.896-.798Z" fill="url(#icon6-a)" transform="rotate(8 -86.45 77.005)" />
-                  <path fill="#6366F1" opacity=".72" d="m23.646 19.765 4.533 3.667-5.368 2.275z" />
-                </g>
+                    <path class="fill-current text-slate-200" :class=" 'text-indigo-300'" d="M12.311 9.527c-1.161-.393-1.85-.825-2.143-1.175A3.991 3.991 0 0012 5V4c0-2.206-1.794-4-4-4S4 1.794 4 4v1c0 1.406.732 2.639 1.832 3.352-.292.35-.981.782-2.142 1.175A3.942 3.942 0 001 13.26V16h14v-2.74c0-1.69-1.081-3.19-2.689-3.733zM6 4c0-1.103.897-2 2-2s2 .897 2 2v1c0 1.103-.897 2-2 2s-2-.897-2-2V4zm7 10H3v-.74c0-.831.534-1.569 1.33-1.838 1.845-.624 3-1.436 3.452-2.422h.436c.452.986 1.607 1.798 3.453 2.422A1.943 1.943 0 0113 13.26V14z"/>
+                 </g>
               </svg>
             </div>
             <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">Multimedia / Files</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
+            <h3 class="text-lg font-semibold text-slate-800 mb-1">My Profile</h3>
+            <div class="text-sm">Here you can access your profile information.</div>
           </div>
           <!-- Link -->
           <div>
-            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</a>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" :to="{ name: 'user-profile', params: { id: user.id }}">Explore -&gt;</router-link>
           </div>
         </div>
       </div>
 
       <!-- Item -->
-      <div class="bg-slate-100 rounded-sm text-center p-5">
-        <div class="flex flex-col h-full">
-          <div class="grow mb-2">
-            <!-- Icon -->
-            <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
-              <svg class="w-12 h-12" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon7-a">
-                    <stop stop-color="#FFF" offset="0%" />
-                    <stop stop-color="#A5B4FC" offset="100%" />
-                  </linearGradient>
-                </defs>
-                <g transform="translate(-.186 -.042)" fill-rule="nonzero" fill="none">
-                  <circle fill="#554FE8" cx="20" cy="26.993" r="10" />
-                  <circle fill="url(#icon7-a)" cx="25.122" cy="24" r="11" />
-                  <path fill="#6366F1" opacity=".72" d="m26.255 22.605-1.569-3.586-.922 3.804-3.735.327 3.26 2.195-.864 3.91 2.927-2.626 3.339 2.078-1.53-3.7 2.83-2.729z" />
-                </g>
-              </svg>
-            </div>
-            <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">App Rewards</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
-          </div>
-          <!-- Link -->
-          <div>
-            <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Item -->
-      <div class="bg-slate-100 rounded-sm text-center p-5">
+      <div class="bg-slate-100 rounded-sm text-center p-5" v-if="role == 'Client'">
         <div class="flex flex-col h-full">
           <div class="grow mb-2">
             <!-- Icon -->
@@ -267,126 +235,28 @@
             </div>
             <!-- Content -->
             <h3 class="text-lg font-semibold text-slate-800 mb-1">Contact Us</h3>
-            <div class="text-sm">Lorem ipsum dolor sit consectetur adipiscing elit sed do.</div>
+            <div class="text-sm">Here you can contact us.</div>
           </div>
           <!-- Link -->
           <div>
-            <router-link to="/contact" class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">Explore -&gt;</router-link>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/contact">Explore -&gt;</router-link>
           </div>
         </div>
       </div>
 
-    </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+      </div>
+
+      <!-- Cards Deleted -->
+
   </div>
-
-  <!-- Popular Guides -->
-  <div>
-    <div class="mb-5">
-      <h2 class="text-xl text-slate-800 font-bold">Popular Guides</h2>
-    </div>
-    <!-- Grid -->
-    <div class="grid sm:grid-cols-2 gap-6">
-
-      <!-- Item -->
-      <div class="w-full p-3 rounded-sm text bg-white border border-slate-200">
-        <div class="flex h-full">
-          <!-- Icon -->
-          <svg class="w-4 h-4 shrink-0 fill-indigo-400 mt-[3px] mr-3" viewBox="0 0 16 16">
-            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm1 12H7V7h2v5zM8 6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" />
-          </svg>
-          <div class="flex flex-col h-full">
-            <!-- Content -->
-            <div class="grow mb-2">
-              <div class="font-semibold text-slate-800 mb-1">Documents For Business Verification</div>
-              <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing sed do eiusmod tempor incididunt ut labore et dolore.</div>
-            </div>
-            <!-- Link -->
-            <div>
-              <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">View -&gt;</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Item -->
-      <div class="w-full p-3 rounded-sm text bg-white border border-slate-200">
-        <div class="flex h-full">
-          <!-- Icon -->
-          <svg class="w-4 h-4 shrink-0 fill-indigo-400 mt-[3px] mr-3" viewBox="0 0 16 16">
-            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm1 12H7V7h2v5zM8 6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" />
-          </svg>
-          <div class="flex flex-col h-full">
-            <!-- Content -->
-            <div class="grow mb-2">
-              <div class="font-semibold text-slate-800 mb-1">Delayed Or Missing Payouts</div>
-              <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing sed do eiusmod tempor incididunt ut labore et dolore.</div>
-            </div>
-            <!-- Link -->
-            <div>
-              <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">View -&gt;</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Item -->
-      <div class="w-full p-3 rounded-sm text bg-white border border-slate-200">
-        <div class="flex h-full">
-          <!-- Icon -->
-          <svg class="w-4 h-4 shrink-0 fill-indigo-400 mt-[3px] mr-3" viewBox="0 0 16 16">
-            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm1 12H7V7h2v5zM8 6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" />
-          </svg>
-          <div class="flex flex-col h-full">
-            <!-- Content -->
-            <div class="grow mb-2">
-              <div class="font-semibold text-slate-800 mb-1">Update Existing Bank Account Information</div>
-              <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing sed do eiusmod tempor incididunt ut labore et dolore.</div>
-            </div>
-            <!-- Link -->
-            <div>
-              <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">View -&gt;</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Item -->
-      <div class="w-full p-3 rounded-sm text bg-white border border-slate-200">
-        <div class="flex h-full">
-          <!-- Icon -->
-          <svg class="w-4 h-4 shrink-0 fill-indigo-400 mt-[3px] mr-3" viewBox="0 0 16 16">
-            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm1 12H7V7h2v5zM8 6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" />
-          </svg>
-          <div class="flex flex-col h-full">
-            <!-- Content -->
-            <div class="grow mb-2">
-              <div class="font-semibold text-slate-800 mb-1">Close A Mosaic Account</div>
-              <div class="text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing sed do eiusmod tempor incididunt ut labore et dolore.</div>
-            </div>
-            <!-- Link -->
-            <div>
-              <a class="text-sm font-medium text-indigo-500 hover:text-indigo-600" href="#0">View -&gt;</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+  </main>
   </div>
-
-</div>
-
-</div>
-                    </div>
-
-                    <!-- Cards Deleted -->
-
-                </div>
-            </main>
-
-        </div>
-
-    </div>
+  </div>
 </template>
 
 
@@ -409,13 +279,36 @@ export default {
         FilterButton,
         Datepicker
     },
+    data() {
+      this.role = this.$store.getters["auth/role"]
+      console.log(this.role);
+    return {
+      role:null,
+      user:{id:null},
+      }
+    },  
     setup() {
 
         const sidebarOpen = ref(false)
 
         return {
             sidebarOpen,
+            role:null,
         }
-    }
+    },
+    async created() {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${this.$store.getters["auth/email"]}`, {
+          method: 'GET',
+          headers: {
+              // 'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
+          },
+      });
+
+      let data = await response.json();
+      if(data["hydra:member"]){
+        this.user = await data["hydra:member"][0];
+      }        
+  }
 }
 </script>
