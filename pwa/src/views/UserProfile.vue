@@ -195,7 +195,7 @@
       searchedAddresses: [],
       user: {
         firstName: "",
-        lastName: "",
+        lastName: "myannouncement",
         email: "",
         phoneNumber: "",
         street: "",
@@ -224,7 +224,8 @@
       },
       error: null,
       updated:false,
-      loading:false
+      loading:false,
+      basedEmail:""
   }
   },
   methods:{
@@ -267,6 +268,9 @@
               profession:this.user.profession,
                 }
           console.log(userInformations)
+          
+
+
           const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.user.id}`,userInformations , {
               headers: {
                   'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
@@ -278,6 +282,13 @@
               console.error(error)
           }
 
+          if(this.basedEmail != this.user.email){
+      
+            await localStorage.clear();
+             this.$router.replace("/login");
+ 
+           }
+          
           this.loading=false
               
       
@@ -319,6 +330,7 @@
         this.role = this.$store.getters["auth/role"]
         console.log(this.$store.getters["auth/id"])
         this.useremail = this.$store.getters["auth/email"]
+        this.basedEmail=this.useremail
 
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
         console.log(id)
