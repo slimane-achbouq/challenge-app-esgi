@@ -7,6 +7,9 @@ on:
   pull_request: ~
   workflow_dispatch: ~
 
+env:
+  IMAGE_NAME: "challenge-app-esgi"
+
 jobs:
   tests:
     name: Tests
@@ -14,10 +17,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
       - name: Pull images
         run: docker compose pull --ignore-pull-failures || true
+      
       - name: Start services
         run: docker compose up --build -d
+      
       - name: Wait for services
         run: |
           while status="$(docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" "$(docker compose ps -q php)")"; do
@@ -32,39 +38,95 @@ jobs:
             esac
           done
           exit 1
+      
       - name: Check HTTP reachability
         run: curl -v -o /dev/null http://localhost
+      
       - name: Check API reachability
         run: curl -vk -o /dev/null https://localhost
+      
       - name: Check PWA reachability
         run: "curl -vk -o /dev/null -H 'Accept: text/html' https://localhost"
+      
       - name: Create test database
         run: |
           docker compose exec -T php bin/console d:d:c --env=test
           docker compose exec -T php bin/console d:s:u --force --no-interaction --env=test
           docker compose exec -T php bin/console d:f:l --env=test --no-interaction
           docker compose exec -T php bin/console lexik:jwt:generate-keypair
+      
       - name: PHPUnit
         run: docker compose exec -T php bin/phpunit
+      
       - name: Doctrine Schema Validator
         run: docker compose exec -T php bin/console doctrine:schema:validate --skip-sync
-  build-container:
+  build-and-push:
     # just for test
     if: always()
-    name: Build container
+    name: Build Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v2
         with:
           context: ./api
           push: true
-          tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}
-          
+          tags: slimane2/$(echo $IMAGE_NAME):latest, slimane2/$(echo $IMAGE_NAME):${{ github.run_number }}
+      
+      - name: Build container image for DigitalOcean
+        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+      
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Remove all old images
+        run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
+
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: build-and-push
+
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA
+          script: |
+            # Login to registry
+            docker login -u ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} -p ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} registry.digitalocean.com
+            
+            # Stop running container
+            docker stop $(echo $IMAGE_NAME)
+            
+            # Remove old container
+            docker rm $(echo $IMAGE_NAME)
+            
+            # Run a new container from a new image
+            docker run -d \
+            --restart always \
+            --env-file .env \
+            -p 80:80 \
+            --name $(echo $IMAGE_NAME) \
+            $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
