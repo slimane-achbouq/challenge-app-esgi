@@ -76,31 +76,40 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       
-      - name: Build and push to Docker Hub
+      - name: Build and push PHP Image
         uses: docker/build-push-action@v2
         with:
           context: ./api
+          target: app_php
           push: true
-          tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}
+          tags: slimane2/challenge-app-esgi-php:latest, slimane2/challenge-app-esgi-php:${{ github.run_number }}
+          
+      - name: Build and push Caddy Image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./api
+          target: app_caddy
+          push: true
+          tags: slimane2/challenge-app-esgi-caddy:latest, slimane2/challenge-app-esgi-caddy:${{ github.run_number }}
         
 #      - name: Build container image for DigitalOcean
 #        run: docker build -t $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
 #        working-directory: ./api
       
-      - name: DigitalOcean deployment
-        uses: digitalocean/app_action@main
-        with:
-          app_name: my_DO_app
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          images: '[
-                    {
-                      "name": "challenge-app-esgi-php",
-                      "image":{
-                        "registry_type": "DOCKER_HUB",
-                        "registry": "slimane2",
-                        "repository": "challenge-app-esgi"
-                      },
-                  ]'
+#      - name: DigitalOcean deployment
+#        uses: digitalocean/app_action@main
+#        with:
+#          app_name: my_DO_app
+#          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+#          images: '[
+#                    {
+#                      "name": "challenge-app-esgi-php",
+#                      "image":{
+#                        "registry_type": "DOCKER_HUB",
+#                        "registry": "slimane2",
+#                        "repository": "challenge-app-esgi"
+#                      },
+#                  ]'
 
 #  deploy:
 #    runs-on: ubuntu-latest
