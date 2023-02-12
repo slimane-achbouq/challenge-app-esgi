@@ -35,6 +35,7 @@ security:
          # Allows accessing the Swagger UI 
         - { path: ^/reset/password, roles: PUBLIC_ACCESS }
         - { path: ^/update/password, roles: PUBLIC_ACCESS }
+        - { path: ^/contact, roles: PUBLIC_ACCESS }
         - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI docs
         - { path: ^/auth, roles: PUBLIC_ACCESS }
         - { path: /address, roles: PUBLIC_ACCESS }

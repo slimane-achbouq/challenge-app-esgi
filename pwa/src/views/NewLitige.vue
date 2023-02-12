@@ -181,8 +181,7 @@ export default {
                 });
 
                 const responseData = await response.json();
-                const redirectUrl = responseData['@id'];
-                this.$router.replace(redirectUrl);
+                this.$router.replace('/disputes/' + responseData['id']);
             } catch (e) {
                 console.log(e.message)
             }

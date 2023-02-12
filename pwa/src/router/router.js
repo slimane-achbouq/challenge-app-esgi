@@ -23,6 +23,8 @@ import NewLitige from "@/views/NewLitige.vue";
 import DisputesList from "@/views/DisputesList.vue";
 import Litige from "@/views/Litige.vue";
 import PageNotFound from "@/views/PageNotFound.vue";
+import signOut from "@/components/logout/lougout.vue"
+import contact from "@/views/ContactView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +53,8 @@ const router = createRouter({
     { path: '/userprofile/:id', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
     { path: '/userannounces/:lastName', name: 'userannounces', component: MyAnnounce, meta: { requiresUnauth: false } },
     { path: '/pagnotfound/', name: 'pagnotfound', component: PageNotFound, meta: { requiresUnauth: false } },
+    { path: '/signout', name: 'signout', component: signOut, meta: { requiresUnauth: false } },
+    { path: '/contact', name: 'contact', component: contact, meta: { requiresUnauth: false } },
     { path: '/:pathMatch(.*)*', name: 'pagnotfound', component: PageNotFound, meta: { requiresUnauth: false } },
   ]
 })

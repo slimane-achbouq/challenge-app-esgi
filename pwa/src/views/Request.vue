@@ -75,7 +75,9 @@
                                     <span class="text-green-500">Currently renting</span>
 
                                     <div style="margin-top: 40px">
-                                        <button class="btn bg-red-500 text-white">File a dispute</button>
+                                        <router-link :to="{ name: 'new-dispute', params: {id: demande.annonce.id}}">
+                                            <button class="btn bg-red-500 text-white">File a dispute</button>
+                                        </router-link>
                                     </div>
                                 </div>
 

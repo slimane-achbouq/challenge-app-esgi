@@ -133,7 +133,11 @@ export default {
                 const redirectUrl = '/' + (this.$route.query.redirect || 'dashboard');
                 this.$router.replace(redirectUrl);
             } catch (error) {
+              if(error.message == 'Error: Invalid credentials.') {
+                this.error = 'Your password or email is incorrect';
+              } else {
                 this.error = error.message || 'Failed to authenticated, try later.';
+              }
             }
 
             this.isLoading = false;

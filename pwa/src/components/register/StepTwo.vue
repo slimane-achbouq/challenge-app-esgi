@@ -163,7 +163,7 @@
         v-model.trim="phoneNumber"
         required
       />
-      <div v-if="errorEmail" class="text-xs mt-1 text-rose-500">{{ e }}</div>
+      <div v-if="errors.phoneNumber" class="text-xs mt-1 text-rose-500">{{ errors.phoneNumber }}</div>
     </div>
 
     <!-- Email Code -->
@@ -299,12 +299,12 @@ export default {
       if (this.state == "individual") {
         if (this.name.length < 2) {
           this.formValid = false;
-          this.errors.name = "Veuillez revérifier votre nom";
+          this.errors.name = "Please check your name";
           return;
         }
         if (this.familyName.length < 2) {
           this.formValid = false;
-          this.errors.familyName = "Veuillez revérifier votre prénom";
+          this.errors.familyName = "Please check your first name";
           return;
         }
       }
@@ -312,7 +312,7 @@ export default {
       if (this.state == "self-employed/independent") {
         if (this.profession.length < 2) {
           this.formValid = false;
-          this.errors.profession = "Veuillez revérifier le nom de profession";
+          this.errors.profession = "Please check the profession name";
           return;
         }
       }
@@ -320,7 +320,7 @@ export default {
       if (this.state == "company") {
         if (this.comercialName.length < 2) {
           this.formValid = false;
-          this.errors.comercialName = "Veuillez revérifier le nom d'enreprise";
+          this.errors.comercialName = "Please check the company name";
           return;
         }
       }
@@ -329,46 +329,46 @@ export default {
         if (this.associationName.length < 2) {
           this.formValid = false;
           this.errors.associationName =
-            "Veuillez revérifier le nom de l'association";
+            "Please check the name of the association";
           return;
         }
       }
 
       if (this.city.length < 2) {
         this.formValid = false;
-        this.errors.city = "Veuillez revérifier le nom de la city";
+        this.errors.city = "Please check the city name";
         return;
       }
 
       if (this.street.length < 2) {
         this.formValid = false;
-        this.errors.street = "Veuillez revérifier votre adresse";
+        this.errors.street = "Please verify your address";
         return;
       }
 
       if (this.postalCode.length < 5) {
         this.formValid = false;
-        this.errors.postalCode = "Veuillez revérifier votre code postale";
+        this.errors.postalCode = "Please check your postal code";
         return;
       }
 
       if (!passwordValidation(this.password)) {
         this.formValid = false;
         this.errors.password =
-          "Veuillez revérifier le mot de passe s'il est valide";
+          "Please check the password if it is valid";
         return;
       }
 
       if (!emailValidation(this.email)) {
         this.formValid = false;
-        this.errors.email = "Veuillez revérifier votre email s'il est valide";
+        this.errors.email = "Please check your email if it is valid";
         return;
       }
 
       if (!phoneValidation(this.phoneNumber)) {
         this.formValid = false;
-        this.error =
-          "Veuillez revérifier votre numéro de téléphone s'il est valide";
+        this.errors.phoneNumber =
+          "Please check your phone number if it is valid";
         return;
       }
 
@@ -377,8 +377,8 @@ export default {
         associationName: this.associationName,
         profession: this.profession,
         comercialName: this.comercialName,
-        name: this.name,
-        familyName: this.familyName,
+        firstName: this.name,
+        lastName: this.familyName,
         street: this.street,
         city: this.city,
         postalCode: this.postalCode,
@@ -389,36 +389,35 @@ export default {
       this.isLoading = true;
 
       try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                    body: JSON.stringify(this.dataPayload)
-                });
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(this.dataPayload)
+            });
 
-                if (response.ok) {
-                    this.$emit('nextStep', {
-                        id: 3,
-                        label: '',
-                        selectedTab: 'StepThreeSuccess'
-                      })
-		            } else {
-                  let responseBody = await response.json();
-                  this.error = responseBody['hydra:description'] || 'Failed to register try again later.';
-                    this.$emit('nextStep', {
-                        id: 3,
-                        label: this.error,
-                        selectedTab: 'StepThreeError'
-                      })
-                }
+            if (response.ok) {
+                this.$emit('nextStep', {
+                    id: 3,
+                    label: '',
+                    selectedTab: 'StepThreeSuccess'
+                  })
+            } else {
+              this.error = 'You already have an account on our platform';
+                this.$emit('nextStep', {
+                    id: 3,
+                    label: this.error,
+                    selectedTab: 'StepThreeError'
+                  })
+            }
             } catch (error) {
-              this.error = error.message || 'Failed to register try again later.';
-                    this.$emit('nextStep', {
-                        id: 3,
-                        label: 'Error',
-                        selectedTab: 'StepThreeError'
-                      })
+              this.error = 'Failed to register try again later.';
+                this.$emit('nextStep', {
+                    id: 3,
+                    label: 'Error',
+                    selectedTab: 'StepThreeError'
+                  })
       }
 
       this.isLoading = false;

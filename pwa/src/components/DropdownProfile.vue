@@ -43,7 +43,7 @@
                 </svg>
                 <div v-else>
                 <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" :to="{ name: 'user-profile', params: { id: user.id }}"> 
-                  <p> My Profil</p>
+                  <p> My profile</p>
                 </router-link>
               
               </div>
@@ -52,7 +52,7 @@
             
           </li>
           <li>
-            <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" to="/signin" @click="dropdownOpen = false">Sign Out</router-link>
+            <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" to="/signout" @click="dropdownOpen = false">Sign Out</router-link>
           </li>
         </ul>
       </div> 
@@ -109,6 +109,9 @@ export default {
       dropdownOpen,
       trigger,
       dropdown,
+      email:null,
+      role:null,
+      user:{id:null},
     }
   }
 ,

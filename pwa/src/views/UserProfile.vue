@@ -81,15 +81,15 @@
                       </div>
                       <!-- 3rd row -->
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
-                        <div class="flex-1">
+                        <div class="flex-1" v-if="user.profession">
                           <label class="block text-sm font-medium mb-1" for="card-country">Profession: <span class="text-rose-500">*</span></label>
                           <input id="card-state" class="form-input w-full" type="text" v-model="user.profession"/>
                         </div>
-                        <div class="flex-1">
+                        <div class="flex-1" v-if="user.associationName">
                           <label class="block text-sm font-medium mb-1" for="card-state">Association name</label>
                           <input id="card-state" class="form-input w-full" type="text"  v-model="user.associationName"/>
                         </div>  
-                        <div class="flex-1">
+                        <div class="flex-1" v-if="user.commercialName">
                           <label class="block text-sm font-medium mb-1" for="card-country">Commercial name: <span class="text-rose-500">*</span></label>
                           <input id="card-state" class="form-input w-full" type="text"  v-model="user.commercialName"/>
                         </div>
