@@ -28,7 +28,7 @@ services:
       NEXT_PUBLIC_ENTRYPOINT: http://caddy
 
   caddy:
-    image: slimane2/challenge-app-esgi-caddy
+    image: slimane2/challenge-app-esgi-caddy:latest
     depends_on:
       - php
       - pwa
