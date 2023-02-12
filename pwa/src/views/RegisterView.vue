@@ -53,7 +53,7 @@
                 Have an account?
                 <router-link
                   class="font-medium text-indigo-500 hover:text-indigo-600"
-                  to="/signin"
+                  to="/login"
                   >Sign In</router-link
                 >
               </div>
@@ -69,24 +69,21 @@
                   ></div>
                   <ul class="relative flex justify-between w-full">
                     <li>
-                      <router-link
+                      <a
                         class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold bg-indigo-500 text-white"
-                        to="/onboarding-01"
-                        >1</router-link
+                        >1</a
                       >
                     </li>
                     <li>
-                      <router-link
+                      <a
                         class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold" :class="step.id >= 2 ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'"
-                        to="/onboarding-02"
-                        >2</router-link
+                        >2</a
                       >
                     </li>
                     <li>
-                      <router-link
+                      <a
                         class="flex items-center justify-center w-6 h-6 rounded-full text-xs font-semibold" :class="step.id >= 3 ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-500'"
-                        to="/onboarding-03"
-                        >3</router-link
+                        >3</a
                       >
                     </li>
                   </ul>

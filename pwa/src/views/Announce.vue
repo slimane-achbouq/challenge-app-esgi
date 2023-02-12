@@ -16,19 +16,15 @@
                         <!-- Content -->
                         <div>
                             <div v-if="status == 0">
-                                <div
-                                    class="bg-orange-500 text-center flex items-center justify-center mb-5"
-                                    style="border-radius: 10px; height: 50px">
-                            <span class="text-white">
+                            <BannerTwo type="warning" :open="banner2WarningOpen" v-if="role != 'Admin'">
                                 The announce is being verified by an administrator. Thank you for waiting.
-                            </span>
-                                </div>
+                            </BannerTwo>
                                 <div class="flex justify-evenly" v-if="role==='Admin'">
-                                    <button class="bg-green-600" style="width: 30%; height: 40px;border-radius: 5px;"
+                                    <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white"
                                             @click="handleValidAnnounce">
                                         Accept the announce
                                     </button>
-                                    <button class="bg-red-500" style="width: 30%; height: 40px;border-radius: 5px;"
+                                    <button class="btn bg-rose-500 hover:bg-rose-600 text-white"
                                             @click="handleRefuseAnnounce">
                                         Refuse the announce
                                     </button>
@@ -347,10 +343,13 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue'
-import ModalBasic from '../components/Modal.vue'
+import { ref } from 'vue'
+import Header from '@/partials/Header.vue'
+import ModalBasic from '@/components/Modal.vue'
 import axios from 'axios'
 import Sidebar from "@/partials/Sidebar.vue";
+import BannerTwo from "@/components/BannerTwo.vue";
+
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
@@ -358,11 +357,12 @@ export default {
     components: {
         Sidebar,
         Header,
-        ModalBasic
+        ModalBasic,
+        BannerTwo
     },
     data() {
         return {
-            title: "",
+            titcle: "",
             description: "",
             price: null,
             isPerHour: null,
@@ -540,7 +540,11 @@ export default {
         },
     },
     setup() {
-        return {}
+        const banner2WarningOpen = ref(true)
+
+        return {
+            banner2WarningOpen
+        }
     },
     async created() {
         if (!this.$store.getters["auth/isAuthenticated"]) {

@@ -204,7 +204,7 @@
               </svg>
             </div>
             <!-- Content -->
-            <h3 class="text-lg font-semibold text-slate-800 mb-1">My Profile</h3>
+            <h3 class="text-lg font-semibold text-slate-800 mb-1">My profile</h3>
             <div class="text-sm">Here you can access your profile information.</div>
           </div>
           <!-- Link -->

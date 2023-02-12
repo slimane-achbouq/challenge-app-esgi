@@ -299,12 +299,12 @@ export default {
       if (this.state == "individual") {
         if (this.name.length < 2) {
           this.formValid = false;
-          this.errors.name = "Veuillez revérifier votre nom";
+          this.errors.name = "Please check your name";
           return;
         }
         if (this.familyName.length < 2) {
           this.formValid = false;
-          this.errors.familyName = "Veuillez revérifier votre prénom";
+          this.errors.familyName = "Please double check your first name";
           return;
         }
       }
@@ -312,7 +312,7 @@ export default {
       if (this.state == "self-employed/independent") {
         if (this.profession.length < 2) {
           this.formValid = false;
-          this.errors.profession = "Veuillez revérifier le nom de profession";
+          this.errors.profession = "Please check the profession name";
           return;
         }
       }
@@ -320,7 +320,7 @@ export default {
       if (this.state == "company") {
         if (this.comercialName.length < 2) {
           this.formValid = false;
-          this.errors.comercialName = "Veuillez revérifier le nom d'enreprise";
+          this.errors.comercialName = "Please check the company name";
           return;
         }
       }
@@ -329,46 +329,46 @@ export default {
         if (this.associationName.length < 2) {
           this.formValid = false;
           this.errors.associationName =
-            "Veuillez revérifier le nom de l'association";
+            "Please check the name of the association";
           return;
         }
       }
 
       if (this.city.length < 2) {
         this.formValid = false;
-        this.errors.city = "Veuillez revérifier le nom de la city";
+        this.errors.city = "Please check the city name";
         return;
       }
 
       if (this.street.length < 2) {
         this.formValid = false;
-        this.errors.street = "Veuillez revérifier votre adresse";
+        this.errors.street = "Please verify your address";
         return;
       }
 
       if (this.postalCode.length < 5) {
         this.formValid = false;
-        this.errors.postalCode = "Veuillez revérifier votre code postale";
+        this.errors.postalCode = "Please check your postal code";
         return;
       }
 
       if (!passwordValidation(this.password)) {
         this.formValid = false;
         this.errors.password =
-          "Veuillez revérifier le mot de passe s'il est valide";
+          "Please check the password if it is valid";
         return;
       }
 
       if (!emailValidation(this.email)) {
         this.formValid = false;
-        this.errors.email = "Veuillez revérifier votre email s'il est valide";
+        this.errors.email = "Please check your email if it is valid";
         return;
       }
 
       if (!phoneValidation(this.phoneNumber)) {
         this.formValid = false;
         this.error =
-          "Veuillez revérifier votre numéro de téléphone s'il est valide";
+          "Please check your phone number if it is valid";
         return;
       }
 

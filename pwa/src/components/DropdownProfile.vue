@@ -43,7 +43,7 @@
                 </svg>
                 <div v-else>
                 <router-link class="font-medium text-sm text-indigo-500 hover:text-indigo-600 flex items-center py-1 px-3" :to="{ name: 'user-profile', params: { id: user.id }}"> 
-                  <p> My Profil</p>
+                  <p> My profile</p>
                 </router-link>
               
               </div>
