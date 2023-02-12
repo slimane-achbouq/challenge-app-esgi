@@ -76,19 +76,16 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       
-#      - name: Build and push to Docker Hub
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: ./api
-#          push: true
-#          tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}
-      
-      - name: Check Docker Version
-        run: docker --version
+      - name: Build and push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          context: ./api
+          push: true
+          tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}, $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
         
-      - name: Build container image for DigitalOcean
-        run: docker build -t $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
-        working-directory: ./api
+#      - name: Build container image for DigitalOcean
+#        run: docker build -t $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+#        working-directory: ./api
       
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
