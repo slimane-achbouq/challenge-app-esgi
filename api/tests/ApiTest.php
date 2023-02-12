@@ -42,6 +42,9 @@ class ApiTest extends ApiTestCase
      */
     public function testCreateAnnonce(string $jwtToken)
     {
+        $url = 'https://fastly.picsum.photos/id/146/200/300.jpg?hmac=SbgvjELdBXByeF4AV3A384JFrIvNAhXlCtOmep9DmKE';
+        $img = __DIR__.'/resources/annonce_img.jpg';
+        file_put_contents($img, file_get_contents($url));
         $client = static::createClient();
 
         $uploadedFile = new UploadedFile(
@@ -49,7 +52,7 @@ class ApiTest extends ApiTestCase
             'annonce_img.jpg'
         );
 
-        $response = $client->request(
+        $client->request(
             'POST',
             '/annonces',
             [
@@ -72,6 +75,6 @@ class ApiTest extends ApiTestCase
             ]
         );
 
-        var_dump($response);die();
+        $this->assertResponseIsSuccessful();
     }
 }
