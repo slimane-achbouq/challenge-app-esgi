@@ -125,7 +125,7 @@
                                         </li>
                                     </router-link>
 
-                                    <router-link to="/announces/new" custom v-slot="{ href, navigate, isExactActive }">
+                                    <router-link to="/announces/new" custom v-slot="{ href, navigate, isExactActive }" v-if="role != 'Admin'">
                                         <li class="mb-1 last:mb-0">
                                             <a class="block text-slate-400 hover:text-slate-200 transition duration-150 truncate" :class="isExactActive && '!text-indigo-500'" :href="href" @click="navigate">
                                                 <span class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Create Announce</span>

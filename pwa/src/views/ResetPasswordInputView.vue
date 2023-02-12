@@ -114,11 +114,13 @@ export default {
             if(this.newPassword != this.confirmPassword) {
                 this.isLoading = false;
                 this.error = "Passwords do not match";
+                return;
             }
 
             if(!passwordValidation(this.newPassword)) {
                 this.isLoading = false;
                 this.error = "Passwords do not match";
+                return;
             }
 
             try {

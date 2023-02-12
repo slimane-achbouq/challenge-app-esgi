@@ -163,7 +163,7 @@
         v-model.trim="phoneNumber"
         required
       />
-      <div v-if="errorEmail" class="text-xs mt-1 text-rose-500">{{ e }}</div>
+      <div v-if="errors.phoneNumber" class="text-xs mt-1 text-rose-500">{{ errors.phoneNumber }}</div>
     </div>
 
     <!-- Email Code -->
@@ -304,7 +304,7 @@ export default {
         }
         if (this.familyName.length < 2) {
           this.formValid = false;
-          this.errors.familyName = "Please double check your first name";
+          this.errors.familyName = "Please check your first name";
           return;
         }
       }
@@ -367,7 +367,7 @@ export default {
 
       if (!phoneValidation(this.phoneNumber)) {
         this.formValid = false;
-        this.error =
+        this.errors.phoneNumber =
           "Please check your phone number if it is valid";
         return;
       }
@@ -389,36 +389,35 @@ export default {
       this.isLoading = true;
 
       try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                    body: JSON.stringify(this.dataPayload)
-                });
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(this.dataPayload)
+            });
 
-                if (response.ok) {
-                    this.$emit('nextStep', {
-                        id: 3,
-                        label: '',
-                        selectedTab: 'StepThreeSuccess'
-                      })
-		            } else {
-                  let responseBody = await response.json();
-                  this.error = responseBody['hydra:description'] || 'Failed to register try again later.';
-                    this.$emit('nextStep', {
-                        id: 3,
-                        label: this.error,
-                        selectedTab: 'StepThreeError'
-                      })
-                }
+            if (response.ok) {
+                this.$emit('nextStep', {
+                    id: 3,
+                    label: '',
+                    selectedTab: 'StepThreeSuccess'
+                  })
+            } else {
+              this.error = 'You already have an account on our platform';
+                this.$emit('nextStep', {
+                    id: 3,
+                    label: this.error,
+                    selectedTab: 'StepThreeError'
+                  })
+            }
             } catch (error) {
-              this.error = error.message || 'Failed to register try again later.';
-                    this.$emit('nextStep', {
-                        id: 3,
-                        label: 'Error',
-                        selectedTab: 'StepThreeError'
-                      })
+              this.error = 'Failed to register try again later.';
+                this.$emit('nextStep', {
+                    id: 3,
+                    label: 'Error',
+                    selectedTab: 'StepThreeError'
+                  })
       }
 
       this.isLoading = false;
