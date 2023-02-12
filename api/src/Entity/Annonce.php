@@ -88,7 +88,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     deserialize: false,
     name: 'Create Annonce with image upload'
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'description' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'description' => 'ipartial','category' => 'ipartial'])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isPerHour'])]
@@ -155,7 +155,7 @@ class Annonce
     private Collection $litiges;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','user:read'])]
+    #[Groups(['annonce:write','user:read','patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','edit_annonce:write'])]
     private ?string $category = null;
 
     public function __construct()

@@ -35,6 +35,7 @@ class CreateAnnonceController extends AbstractController
         $annonce->setPrice($request->get('price'));
         $annonce->setIsPerHour($request->get('isPerHour'));
         $annonce->setIsAvailable($request->get('isAvailable'));
+        $annonce->setCategory($request->get('category'));
 
         return $annonce;
     }

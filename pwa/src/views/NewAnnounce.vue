@@ -56,6 +56,20 @@
                                                               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                               placeholder="Write the description here..."></textarea>
                                                 </div>
+                                                <div class="col-span-6 sm:col-span-4">
+                                                    <label for="countries_disabled" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Category</label>
+                                                    <select  v-model.trim="category" required id="countries_disabled" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option selected>Choose a category</option>
+                                                        <option value="electromenager">Électroménager</option>
+                                                        <option value="informatique">Informatique</option>
+                                                        <option value="livre">Livre</option>
+                                                        <option value="vetements">Vetements</option>
+                                                        <option value="jardinage">Jardinage</option>
+                                                        <option value="meuble">Meuble</option>
+                                                        <option value="Vehicule">Vehicule</option>
+                                                        <option value="alimentaire">Alimentaire</option>
+                                                    </select>
+                                                </div>
                                                 <br>
                                                 <div class="col-span-6 sm:col-span-3">
                                                     <label for="country"
@@ -173,6 +187,7 @@ export default {
             file: null,
             hideImageField: false,
             previewSrc: "",
+            category:""
         }
     },
     methods: {
@@ -191,6 +206,7 @@ export default {
             formData.append('price', this.price);
             formData.append('file', this.file);
             formData.append('isAvailable', 0);
+            formData.append('category', this.category);
 
             let token = this.$store.getters["auth/token"]
             try {
