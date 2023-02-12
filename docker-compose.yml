@@ -2,7 +2,9 @@ version: "3.4"
 
 services:
   php:
-    image: slimane2/challenge-app-esgi-php:latest
+    build:
+      context: ./api
+      target: app_php
     depends_on:
       - database
     restart: unless-stopped
@@ -28,7 +30,9 @@ services:
       NEXT_PUBLIC_ENTRYPOINT: http://caddy
 
   caddy:
-    image: slimane2/challenge-app-esgi-caddy:latest
+    build:
+      context: api/
+      target: app_caddy
     depends_on:
       - php
       - pwa
