@@ -87,6 +87,9 @@
 <script>
 import Banner from '@/components/Banner.vue';
 import successMessageView from './successMessageView.vue';
+import {
+  passwordValidation,
+} from "@/utils/utils-common-function";
 
 
 export default {
@@ -108,10 +111,14 @@ export default {
             this.isSuccess = false;
             this.error = null;
 
-            // we need to verify if the new password is valide (validation password from utils)
             if(this.newPassword != this.confirmPassword) {
                 this.isLoading = false;
-                this.error = "Les mots de passe ne correspondent pas";
+                this.error = "Passwords do not match";
+            }
+
+            if(!passwordValidation(this.newPassword)) {
+                this.isLoading = false;
+                this.error = "Passwords do not match";
             }
 
             try {
@@ -127,7 +134,7 @@ export default {
               });
 
               this.isSuccess = true;
-              this.successMesage = 'votre mot de passe a été bien modifier.'
+              this.successMesage = 'Your password has been successfully changed.'
 
             } catch (ex) {
                 this.error = new Error(ex || 'Failed to change password. Check you have already an compte.');
