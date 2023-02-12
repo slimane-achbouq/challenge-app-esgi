@@ -120,7 +120,7 @@
   import { useStore } from 'vuex';
   import { mapGetters } from 'vuex';
   import axios from 'axios'
-  import Pagination from '../../../components/Pagination.vue'
+  import Pagination from '@/components/Pagination.vue'
   
   
   

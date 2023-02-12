@@ -250,10 +250,10 @@
 </template>
 
 <script>
-import Sidebar from '../partials/Sidebar.vue'
-import Header from '../partials/Header.vue'
-import Pagination from '../components/Pagination.vue'
-import ModalBasic from '../components/Modal.vue'
+import Sidebar from '@/partials/Sidebar.vue'
+import Header from '@/partials/Header.vue'
+import Pagination from '@/components/Pagination.vue'
+import ModalBasic from '@/components/Modal.vue'
 import CustomersTable from "@/partials/dashboard/users/UsersTable.vue";
 import {ref} from "vue";
 

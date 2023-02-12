@@ -387,11 +387,11 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue'
-import ModalBasic from '../components/Modal.vue'
+import Header from '@/partials/Header.vue'
+import ModalBasic from '@/components/Modal.vue'
 import axios from 'axios'
 import Sidebar from "@/partials/Sidebar.vue";
-import Banner from "../components/Banner.vue"
+import Banner from "@/components/Banner.vue"
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {

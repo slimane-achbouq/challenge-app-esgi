@@ -140,9 +140,9 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue';
-import Sidebar from '../partials/Sidebar.vue';
-import ModalBasic from '../components/Modal.vue';
+import Header from '@/partials/Header.vue';
+import Sidebar from '@/partials/Sidebar.vue';
+import ModalBasic from '@/components/Modal.vue';
 import {StripeCheckout} from "@vue-stripe/vue-stripe";
 
 export default {

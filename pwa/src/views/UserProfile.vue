@@ -171,9 +171,9 @@
   
   <script>
   import { ref } from 'vue'
-  import Sidebar from '../partials/Sidebar.vue'
-  import Header from '../partials/Header.vue'
-  import Banner from "../components/Banner.vue"
+  import Sidebar from '@/partials/Sidebar.vue'
+  import Header from '@/partials/Header.vue'
+  import Banner from "@/components/Banner.vue"
   import axios from 'axios'
   import {
     phoneValidation,

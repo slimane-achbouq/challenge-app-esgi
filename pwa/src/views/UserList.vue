@@ -161,14 +161,14 @@
   
 <script>
   import { ref } from 'vue'
-  import Sidebar from '../partials/Sidebar.vue'
-  import Header from '../partials/Header.vue'
-  import DeleteButton from '../components/DeleteButton.vue'
-  import CustomersTable from '../partials/dashboard/users/UsersTable.vue'
+  import Sidebar from '@/partials/Sidebar.vue'
+  import Header from '@/partials/Header.vue'
+  import DeleteButton from '@/components/DeleteButton.vue'
+  import CustomersTable from '@/partials/dashboard/users/UsersTable.vue'
   
-  import ModalBasic from '../components/Modal.vue'
+  import ModalBasic from '@/components/Modal.vue'
   import axios from 'axios'
-  import Banner from "../components/Banner.vue"
+  import Banner from "@/components/Banner.vue"
 
   import {
     phoneValidation,

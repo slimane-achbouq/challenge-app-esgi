@@ -71,9 +71,9 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue'
-import Sidebar from '../partials/Sidebar.vue'
-import ModalBasic from '../components/Modal.vue'
+import Header from '@/partials/Header.vue'
+import Sidebar from '@/partials/Sidebar.vue'
+import ModalBasic from '@/components/Modal.vue'
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
