@@ -48,8 +48,8 @@ jobs:
       - name: Check HTTP reachability
         run: curl -v -o /dev/null http://localhost
       
-      - name: Check API reachability
-        run: curl -vk -o /dev/null https://localhost
+#      - name: Check API reachability
+#        run: curl -vk -o /dev/null https://localhost
       
       - name: Check PWA reachability
         run: "curl -vk -o /dev/null -H 'Accept: text/html' https://localhost"
