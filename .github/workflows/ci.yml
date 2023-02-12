@@ -75,15 +75,15 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       
-      - name: Build and push to Docker Hub
-        uses: docker/build-push-action@v2
-        with:
-          context: ./api
-          push: true
-          tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}
+#      - name: Build and push to Docker Hub
+#        uses: docker/build-push-action@v2
+#        with:
+#          context: ./api
+#          push: true
+#          tags: slimane2/challenge-app-esgi:latest, slimane2/challenge-app-esgi:${{ github.run_number }}
       
       - name: Build container image for DigitalOcean
-        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
       
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -97,7 +97,7 @@ jobs:
         run: if [ ! -z "$(doctl registry repository list | grep "$(echo $IMAGE_NAME)")" ]; then doctl registry repository delete-manifest $(echo $IMAGE_NAME) $(doctl registry repository list-tags $(echo $IMAGE_NAME) | grep -o "sha.*") --force; else echo "No repository"; fi
 
       - name: Push image to DigitalOcean Container Registry
-        run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+        run: docker push $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
   deploy:
     runs-on: ubuntu-latest
@@ -129,4 +129,4 @@ jobs:
             --env-file .env \
             -p 80:80 \
             --name $(echo $IMAGE_NAME) \
-            $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+            $(echo $DIGITALOCEAN_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
