@@ -264,6 +264,7 @@
               associationName:this.user.associationName,
               commercialName:this.user.commercialName,
               street:this.user.street,
+              profession:this.user.profession,
                 }
           console.log(userInformations)
           const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.user.id}`,userInformations , {
