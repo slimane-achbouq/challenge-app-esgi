@@ -80,7 +80,7 @@ jobs:
         with:
           context: ./api
           push: true
-          tags: slimane2/${{ IMAGE_NAME }}:latest, slimane2/${{ IMAGE_NAME }}:${{ github.run_number }}
+          tags: slimane2/$IMAGE_NAME:latest, slimane2/$IMAGE_NAME:${{ github.run_number }}
       
       - name: Build container image for DigitalOcean
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
