@@ -154,7 +154,7 @@
       const customersList = ref([])
       const totalResult = ref(0)
       const lastPage = ref(0)
-      const perPage = ref(2)
+      const perPage = ref(5)
       const page = ref(1)
       const searchTerm = ref([])
       const loading=ref(true)

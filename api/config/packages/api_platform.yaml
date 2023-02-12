@@ -19,4 +19,4 @@ api_platform:
         stateless: true
         cache_headers:
             vary: [ 'Content-Type', 'Authorization', 'Origin' ]
-        pagination_items_per_page: 2
+        pagination_items_per_page: 5
