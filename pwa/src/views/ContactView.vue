@@ -1,12 +1,12 @@
 <template>
     <main class="bg-white">
-  
+
       <div class="relative flex">
-  
+
         <!-- Content -->
         <div class="w-full md:w-1/2">
           <div class="min-h-screen h-full flex flex-col after:flex-1">
-  
+
             <div class="flex-0">
               <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
                 <!-- Logo -->
@@ -30,7 +30,7 @@
                 </router-link>
               </div>
             </div>
-  
+
             <div class="max-w-sm mx-auto px-4 py-8" v-if="!isSuccess">
               <h1 class="text-3xl text-slate-800 font-bold mb-6">Contact Us</h1>
               <Banner type="error" :open="!!error">
@@ -79,7 +79,7 @@
                     </div>
                     <div>
                     <label class="block text-sm font-medium mb-1" for="message"
-                    >Your message: <span class="text-rose-500">*</span></label>                  
+                    >Your message: <span class="text-rose-500">*</span></label>
                      <textarea id="message" rows="4" class="form-input w-full" placeholder="Write your thoughts here..." required v-model.trim="message"></textarea>
                     </div>
                 </div>
@@ -112,27 +112,27 @@
                   <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white" to="/dashboard">Go to Dashboard -&gt;</router-link>
                 </div>
            </div>
-  
+
           </div>
         </div>
-  
+
         <!-- Image -->
         <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
           <img class="object-cover object-center w-full h-full" src="../images/contactUs.png" width="500" height="1024" alt="Authentication" />
           <!-- <img class="absolute top-1/4 left-0 -translate-x-1/2 ml-8 hidden lg:block" src="../images/auth-decoration.png" width="218" height="224" alt="Authentication decoration" /> -->
         </div>
-  
+
       </div>
-  
+
     </main>
   </template>
-  
+
   <script>
   import { emailValidation } from "@/utils/utils-common-function";
   import Banner from '@/components/Banner.vue'
   import successMessageView from './successMessageView.vue';
 
-  
+
   export default {
       components: {
         Banner,
@@ -179,7 +179,7 @@
                 this.formValid = false;
                 this.errors.familyName = "Veuillez revérifier votre prénom";
                 return;
-            
+
             }
               this.dataPayload = {
                   name: this.name,
@@ -187,9 +187,9 @@
                   email: this.email,
                   message: this.message
               };
-  
+
               try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
+                const response = await fetch(`https://api.zaidalaahazim.fr/contact`, {
                     method: 'POST',
                     headers: {
                         'Content-type': 'application/json',
@@ -203,10 +203,9 @@
               } catch (error) {
                   this.error = error.message || 'Failed to send message, try later.';
               }
-  
+
               this.isLoading = false;
           }
       }
   }
   </script>
-  

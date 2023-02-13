@@ -390,7 +390,7 @@ export default {
       console.log(this.dataPayload);
 
       try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
+            const response = await fetch(`https://api.zaidalaahazim.fr/users`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',

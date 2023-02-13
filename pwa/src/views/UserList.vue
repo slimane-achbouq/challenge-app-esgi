@@ -227,7 +227,7 @@
       async function deleteItem(){
 
 
-        try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}` , {
+        try {const response = await axios.delete(`https://api.zaidalaahazim.fr/users/${this.selectedItems.id}` , {
               headers: {
                   'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
               }
@@ -276,7 +276,7 @@
             phoneNumber: this.selectedItems.phoneNumber  }
 
           try {
-          const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}`,  data , {
+          const response = await axios.patch(`https://api.zaidalaahazim.fr/users/${this.selectedItems.id}`,  data , {
               headers: {
                   'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
               }

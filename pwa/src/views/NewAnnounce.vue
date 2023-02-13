@@ -208,7 +208,7 @@ export default {
 
             let token = this.$store.getters["auth/token"]
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces`, {
+                const response = await fetch(`https://api.zaidalaahazim.fr/annonces`, {
                     method: 'POST',
                     headers: {
                         // 'Content-Type': 'multipart/form-data',

@@ -406,7 +406,7 @@ export default {
                 formData.append('dateStart', this.startingDate);
                 formData.append('dateEnd', this.endingDate);
                 formData.append('locataire', this.useremail);
-                const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+                const request = await fetch(`https://api.zaidalaahazim.fr/demandes`, {
                     method: 'POST',
                     headers: {
                         // 'Content-Type': 'application/json',
@@ -426,7 +426,7 @@ export default {
             let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+            const response = await fetch(`https://api.zaidalaahazim.fr/annonces/${id}`, {
                 method: 'GET',
                 headers: {
                     // 'Content-Type': 'multipart/form-data',
@@ -454,7 +454,7 @@ export default {
             this.owner = data.owner;
             this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
 
-            const response2 = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+            const response2 = await fetch(`https://api.zaidalaahazim.fr/demandes`, {
                 method: 'GET',
                 headers: {
                     // 'Content-Type': 'multipart/form-data',
@@ -483,7 +483,7 @@ export default {
             let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+            const request = await fetch(`https://api.zaidalaahazim.fr/annonces/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -503,7 +503,7 @@ export default {
             let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+            const request = await fetch(`https://api.zaidalaahazim.fr/annonces/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -527,7 +527,7 @@ export default {
         async deleteItem() {
 
             try {
-                const response = await axios.delete(`${import.meta.env.VITE_API_URL}/annonces/${this.id}`, {
+                const response = await axios.delete(`https://api.zaidalaahazim.fr/annonces/${this.id}`, {
                     headers: {
                         'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
                     }
@@ -558,7 +558,7 @@ export default {
                 isPerHour: this.isPerHour === true ? true : false
             }
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+            const response = await fetch(`https://api.zaidalaahazim.fr/annonces/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -591,7 +591,7 @@ export default {
         this.useremail = this.$store.getters["auth/email"]
 
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+        const response = await fetch(`https://api.zaidalaahazim.fr/annonces/${id}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -622,7 +622,7 @@ export default {
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
         this.isOwner = this.useremail === data.owner.email;
 
-        const response2 = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+        const response2 = await fetch(`https://api.zaidalaahazim.fr/demandes`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',

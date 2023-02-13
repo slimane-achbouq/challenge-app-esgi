@@ -3,7 +3,7 @@ import VueJwtDecode from 'vue-jwt-decode';
 export default {
     async login(context, payload) {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth`, {
+            const response = await fetch(`https://api.zaidalaahazim.fr/auth`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

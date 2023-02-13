@@ -310,7 +310,7 @@ export default {
                 }
 
 
-                const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.user.id}`, userInformations, {
+                const response = await axios.patch(`https://api.zaidalaahazim.fr/users/${this.user.id}`, userInformations, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
                     }
@@ -369,7 +369,7 @@ export default {
         this.basedEmail = this.useremail
 
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${id}`, {
+        const response = await fetch(`https://api.zaidalaahazim.fr/users/${id}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',

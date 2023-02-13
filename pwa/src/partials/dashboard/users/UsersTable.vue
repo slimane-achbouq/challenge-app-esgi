@@ -178,7 +178,7 @@
       const fetchUsers = async() => {
       try {
         loading.value = true
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/users?page=${page.value}`, {
+        const response = await axios.get(`https://api.zaidalaahazim.fr/users?page=${page.value}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

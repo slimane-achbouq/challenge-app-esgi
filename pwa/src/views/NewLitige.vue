@@ -175,7 +175,7 @@ export default {
             formData.append('annonce', this.annonce.id);
 
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/litiges`, {
+                const response = await fetch(`https://api.zaidalaahazim.fr/litiges`, {
                     method: 'POST',
                     headers: {
                         // 'Content-Type': 'multipart/form-data',
@@ -201,7 +201,7 @@ export default {
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
         let token = this.$store.getters["auth/token"]
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+        const response = await fetch(`https://api.zaidalaahazim.fr/annonces/${id}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',

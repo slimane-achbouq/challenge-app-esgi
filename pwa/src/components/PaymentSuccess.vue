@@ -71,7 +71,7 @@ export default {
         this.role = this.$store.getters["auth/role"]
         this.useremail = this.$store.getters["auth/email"]
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+        const response = await fetch(`https://api.zaidalaahazim.fr/demandes/${id}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -100,7 +100,7 @@ export default {
         }
         data.append('locataire', this.useremail);
         data.append('idDemande', this.demande.id);
-        const request = await fetch(`${import.meta.env.VITE_API_URL}/paiements`, {
+        const request = await fetch(`https://api.zaidalaahazim.fr/paiements`, {
             method: 'POST',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -111,7 +111,7 @@ export default {
 
         let res2 = await request.json();
 
-        const req = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${this.demande.id}`, {
+        const req = await fetch(`https://api.zaidalaahazim.fr/demandes/${this.demande.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

@@ -179,7 +179,7 @@ export default {
             formData.append('image', this.annonce.image);
             formData.append('token', token);
             formData.append('request_id', id);
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/stripe/getSession`, {
+            const request = await fetch(`https://api.zaidalaahazim.fr/stripe/getSession`, {
                 method: 'POST',
                 headers: {
                     // 'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ export default {
         this.role = this.$store.getters["auth/role"]
         this.useremail = this.$store.getters["auth/email"]
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+        const response = await fetch(`https://api.zaidalaahazim.fr/demandes/${id}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',

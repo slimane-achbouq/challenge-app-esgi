@@ -148,7 +148,7 @@ export default {
         let response
         if(lastname==="myannouncement"){
 
-            response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${email}`, {
+            response = await fetch(`https://api.zaidalaahazim.fr/users?email=${email}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -159,7 +159,7 @@ export default {
         }
 
         else {
-         response = await fetch(`${import.meta.env.VITE_API_URL}/users?lastName=${lastname}`, {
+         response = await fetch(`https://api.zaidalaahazim.fr/users?lastName=${lastname}`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',

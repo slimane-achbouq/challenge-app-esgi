@@ -56,7 +56,7 @@
 export default {
   name: 'WelcomeBanner',
   data() {
-    
+
     return {
       name: '',
       user:{id:null},
@@ -64,7 +64,7 @@ export default {
   },
   async created() {
     this.role = this.$store.getters["auth/role"]
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${this.$store.getters["auth/email"]}`, {
+    const response = await fetch(`https://api.zaidalaahazim.fr/users?email=${this.$store.getters["auth/email"]}`, {
         method: 'GET',
         headers: {
             // 'Content-Type': 'multipart/form-data',
@@ -76,7 +76,7 @@ export default {
     if(data["hydra:member"]){
       this.user = await data["hydra:member"][0];
       this.name = this.user['firstName'];
-    }        
+    }
   }
 }
 </script>

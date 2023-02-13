@@ -263,7 +263,7 @@ export default {
         handleRefuseRequest: async function (id) {
             let token = localStorage.getItem('esgi-ws-token');
 
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+            const request = await fetch(`https://api.zaidalaahazim.fr/demandes/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -284,7 +284,7 @@ export default {
         },
         handleSubmitRequest: async function (id) {
             let token = localStorage.getItem('esgi-ws-token');
-            const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+            const request = await fetch(`https://api.zaidalaahazim.fr/demandes/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -315,7 +315,7 @@ export default {
             }
 
             if (this.newDateStart && this.newDateEnd && this.newDateStart <= this.newDateEnd) {
-                const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
+                const request = await fetch(`https://api.zaidalaahazim.fr/demandes/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ export default {
                 let formData = new FormData();
                 formData.append('owner', this.useremail);
                 formData.append('demand', id);
-                const request2 = await fetch(`${import.meta.env.VITE_API_URL}/demande_histories`, {
+                const request2 = await fetch(`https://api.zaidalaahazim.fr/demande_histories`, {
                     method: 'POST',
                     headers: {
                         // 'Content-Type': 'application/json',
@@ -353,7 +353,7 @@ export default {
             this.role = this.$store.getters["auth/role"]
             this.useremail = this.$store.getters["auth/email"]
 
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+            const response = await fetch(`https://api.zaidalaahazim.fr/demandes`, {
                 method: 'GET',
                 headers: {
                     // 'Content-Type': 'multipart/form-data',
@@ -415,7 +415,7 @@ export default {
         this.role = this.$store.getters["auth/role"]
         this.useremail = this.$store.getters["auth/email"]
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
+        const response = await fetch(`https://api.zaidalaahazim.fr/demandes`, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
