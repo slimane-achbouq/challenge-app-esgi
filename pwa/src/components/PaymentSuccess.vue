@@ -59,7 +59,6 @@ export default {
         let token = document.URL.split('/')[7];
         let userToken = this.$store.getters["auth/token"]
 
-        console.log(token)
 
         this.userTokenCheck = userToken;
         this.token = token;
@@ -92,7 +91,6 @@ export default {
         });
 
         let res2 = await request.json();
-        console.log(res2);
 
         const req = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${this.demande.id}`, {
             method: 'PATCH',
