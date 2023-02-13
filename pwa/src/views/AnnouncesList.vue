@@ -36,28 +36,28 @@
                                         <a class="text-indigo-500" href="#0">View All</a>
                                     </li>
                                     <li>
-                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('electromenager')">Électroménager</a>
+                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('electromenager')">Home appliance</a>
                                     </li>
                                     <li>
-                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('informatique')">Informatique</a>
+                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('informatique')">Computer/Smartphone/Console</a>
                                     </li>
                                     <li>
-                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('livre')">Livre</a>
+                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('livre')">Book</a>
                                     </li>
                                     <li>
-                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('vetements')">Vêtements</a>
+                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('vetements')">Clothing</a>
                                     </li>
                                     <li>
-                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('jardinage')">Jardinage</a>
+                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('jardinage')">Gardening</a>
                                     </li>
                                     <li>
-                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('meuble')">Meuble</a>
+                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('meuble')">Furniture</a>
                                     </li>
                                     <li>
                                         <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('Vehicule')">Véhicule</a>
                                     </li>
                                     <li>
-                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('alimentaire')">Alimentaire</a>
+                                        <a class="text-slate-600 hover:text-slate-700" href="#0" @click="filterTerm('alimentaire')">Alimentary</a>
                                     </li>
                                     </ul>
                                 </div>

@@ -59,15 +59,15 @@
                                                 <div class="col-span-6 sm:col-span-4">
                                                     <label for="countries_disabled" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Category</label>
                                                     <select  v-model.trim="category" required id="countries_disabled" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                        <option selected>Choose a category</option>
-                                                        <option value="electromenager">Électroménager</option>
-                                                        <option value="informatique">Informatique</option>
-                                                        <option value="livre">Livre</option>
-                                                        <option value="vetements">Vetements</option>
-                                                        <option value="jardinage">Jardinage</option>
-                                                        <option value="meuble">Meuble</option>
+                                                        <option selected disabled>Choose a category</option>
+                                                        <option value="electromenager">Home appliance</option>
+                                                        <option value="informatique">Computer/Smartphone/Console</option>
+                                                        <option value="livre">Book</option>
+                                                        <option value="vetements">Clothing</option>
+                                                        <option value="jardinage">Gardening</option>
+                                                        <option value="meuble">Furniture</option>
                                                         <option value="Vehicule">Vehicule</option>
-                                                        <option value="alimentaire">Alimentaire</option>
+                                                        <option value="alimentaire">Alimentary</option>
                                                     </select>
                                                 </div>
                                                 <br>
@@ -142,7 +142,7 @@
                                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                                 <button type="submit" v-if="file"
                                                         class="nline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                                      
+
                                                     Submit
                                                 </button>
                                                 <button type="submit" disabled v-if="!file" class="px-8 py-3 text-white bg-gray-300 rounded focus:outline-none">

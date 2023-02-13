@@ -103,7 +103,7 @@
                     </div>
                     <!-- Position -->
                     <div>
-                      <div class="font-medium text-slate-800">Addresse : </div>
+                      <div class="font-medium text-slate-800">Address : </div>
                       <div class="flex flex-nowrap items-center space-x-2 whitespace-nowrap">
                         <div>{{this.annonce.owner.street}}</div>
                         <div class="text-slate-600">·</div>

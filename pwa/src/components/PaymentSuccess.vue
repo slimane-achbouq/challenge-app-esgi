@@ -11,7 +11,6 @@
             </div>
             <h1 class="text-3xl text-slate-800 font-bold mb-8">Payment successful !</h1>
             <p>
-                Transaction number : <span class="text-indigo-500" v-if="transactionId">{{ transactionId }}€</span> <br><br>
                 Total amount : <span class="text-indigo-500" v-if="annonce">{{ annonce.price }}€</span>
             </p>
             <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white" style="margin-top: 50px"
