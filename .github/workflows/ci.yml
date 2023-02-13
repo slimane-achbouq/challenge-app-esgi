@@ -9,6 +9,7 @@ on:
 
 env:
   IMAGE_NAME: "challenge-app-esgi"
+  IMAGE_NAME_TWO: "challenge-app-esgi"
   DIGITALOCEAN_REGISTRY: ${{ secrets.DIGITALOCEAN_REGISTRY }}
 
 jobs:
