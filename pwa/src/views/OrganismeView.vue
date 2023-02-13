@@ -1,9 +1,9 @@
 <template>
         <!-- Content -->
         <div class="w-full md:w-1/2">
-  
+
           <div class="min-h-screen h-full flex flex-col after:flex-1">
-  
+
             <div class="flex-1">
 
 <!-- Header -->
@@ -52,7 +52,7 @@
   </div>
 </div>
 </div>
-  
+
             <div class="px-4 py-8">
               <div class="max-w-md mx-auto">
                 <h1 class="text-3xl text-slate-800 font-bold mb-6">Information</h1>
@@ -73,7 +73,7 @@
                     <div class="flex space-x-4" v-if="state == 'Company' || state == 'SelfEmployed'">
                       <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="profession">Profession: <span class="text-rose-500">*</span></label>
-                          <input id="profession" class="form-input w-full" type="text" v-model.trim="profession" required/>          
+                          <input id="profession" class="form-input w-full" type="text" v-model.trim="profession" required/>
                           <div v-if="errors.profession" class="text-xs mt-1 text-rose-500">{{ errors.profession }}</div>
                       </div>
                       <div class="flex-1">
@@ -105,7 +105,7 @@
                     </div>
 
                     <!-- City and Postal Code -->
-                    
+
                     <div class="flex space-x-4">
                       <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="city">City: <span class="text-rose-500">*</span></label>
@@ -134,7 +134,7 @@
                     </div>
 
                     <!-- Password Code -->
-                    <div> 
+                    <div>
                       <label class="block text-sm font-medium mb-1" for="password">Password: <span class="text-rose-500">*</span></label>
                       <input id="password" class="form-input w-full" type="password" v-model.trim="password" required/>
                     </div>
@@ -151,26 +151,26 @@
                     <button v-else class="btn bg-indigo-500 hover:bg-indigo-600 text-white ml-auto" type="submit">Next Step -&gt;</button>
                   </div>
                 </form>
-  
+
               </div>
             </div>
-  
+
           </div>
-  
+
         </div>
-  
+
         <!-- Image -->
         <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
             <img class="object-cover object-center w-full h-full" src="../images/registerBackGound.jpg" width="760" height="1024" alt="Onboarding" />
         </div>
   </template>
-  
+
   <script>
   import { phoneValidation, passwordValidation, emailValidation } from '../utils/utils-common-function';
   import Banner from '@/components/Banner.vue'
 
 
-  
+
   export default {
     props: ['state'],
     data(){
@@ -253,7 +253,7 @@
             this.errors.city = "Veuillez revérifier le nom de la city";
             return;
         }
-        
+
         if (this.street.length <2) {
           this.formValid = false;
           this.errors.street = "Veuillez revérifier votre adresse";
@@ -265,7 +265,7 @@
             this.errors.postalCode = "Veuillez revérifier votre code postale";
             return;
         }
-        
+
 
         if (!passwordValidation(this.password)) {
           this.formValid = false;
@@ -302,12 +302,11 @@
         this.isLoading = true;
 
         try{
-          console.log(this.dataPayload);
-          // here you apply your api for register 
+          // here you apply your api for register
           // await this.$store.dispatch('regist/singup', dataPayload);
           // const redirectUrl = '/' + (this.$route.query.redirect || 'login');
           // this.$router.replace(redirectUrl);
-         
+
         } catch (error) {
           this.error = error.message || 'Failed to register, verify your information';
         }

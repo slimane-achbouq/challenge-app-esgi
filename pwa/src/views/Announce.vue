@@ -16,24 +16,27 @@
                         <!-- Content -->
                         <div>
                             <div v-if="status == 0">
-                                <div
-                                    class="bg-orange-500 text-center flex items-center justify-center mb-5"
-                                    style="border-radius: 10px; height: 50px">
-                            <span class="text-white">
+                            <BannerTwo type="warning" :open="banner2WarningOpen" v-if="role != 'Admin'">
                                 The announce is being verified by an administrator. Thank you for waiting.
-                            </span>
-                                </div>
+                            </BannerTwo>
                                 <div class="flex justify-evenly" v-if="role==='Admin'">
-                                    <button class="bg-green-600" style="width: 30%; height: 40px;border-radius: 5px;"
+                                    <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white"
                                             @click="handleValidAnnounce">
                                         Accept the announce
                                     </button>
-                                    <button class="bg-red-500" style="width: 30%; height: 40px;border-radius: 5px;"
+                                    <button class="btn bg-rose-500 hover:bg-rose-600 text-white"
                                             @click="handleRefuseAnnounce">
                                         Refuse the announce
                                     </button>
                                 </div>
                             </div>
+                            <Banner type="success" class="mb-4"  :open="true" v-if="updated">
+                                    Announce information updated successfully.
+                            </Banner>
+
+                            <Banner type="success" class="mb-4"  :open="true" v-if="deleted">
+                                    Announce deleted successfully.
+                            </Banner>
                             <div v-else-if="status == 2"
                                  class="bg-red-500 text-center flex items-center justify-center mb-5"
                                  style="border-radius: 10px; height: 50px">
@@ -64,7 +67,7 @@
                                             <path
                                                 d="M5 7h2v6H5V7zm4 0h2v6H9V7zm3-6v2h4v2h-1v10c0 .6-.4 1-1 1H2c-.6 0-1-.4-1-1V5H0V3h4V1c0-.6.4-1 1-1h6c.6 0 1 .4 1 1zM6 2v1h4V2H6zm7 3H3v9h10V5z"/>
                                         </svg>
-                                        <span class="ml-2">Delete</span>
+                                        <span class="ml-2" @click.stop="onModaDeletelOpen">Delete</span>
                                     </button>
                                 </div>
                             </header>
@@ -339,6 +342,39 @@
                     </div>
                 </ModalBasic>
 
+                <ModalBasic id="danger-modal" :modalOpen="modaDeletelOpen" >
+                      <div class="p-5 flex w-full space-x-4">
+                        <!-- Icon -->
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-rose-100">
+                          <svg class="w-4 h-4 shrink-0 fill-current text-rose-500" viewBox="0 0 16 16">
+                            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z" />
+                          </svg>
+                        </div>
+                        <!-- Content -->
+                        <div>
+                          <!-- Modal header -->
+                          <div class="mb-2">
+                            <div class="text-lg font-semibold text-slate-800">Delete 1 announce?</div>
+                          </div>
+                          <!-- Modal content -->
+                          <div class="text-sm mb-10">
+                            <div class="">
+                              <p>Are you sure you want to delete this announce ?</p>
+                            </div>
+                          </div>
+                          <!-- Modal footer -->
+
+                        </div>
+
+
+                      </div>
+
+                      <div class="flex flex-wrap justify-end space-x-2 m-6">
+                            <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click.stop="modaDeletelOpen=false">Cancel</button>
+                            <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white" @click="deleteItem">Yes, Delete it</button>
+                      </div>
+                    </ModalBasic>
+
             </main>
 
         </div>
@@ -347,10 +383,13 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue'
-import ModalBasic from '../components/Modal.vue'
+import { ref } from 'vue'
+import Header from '@/partials/Header.vue'
+import ModalBasic from '@/components/Modal.vue'
 import axios from 'axios'
 import Sidebar from "@/partials/Sidebar.vue";
+import BannerTwo from "@/components/BannerTwo.vue";
+
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
@@ -358,11 +397,12 @@ export default {
     components: {
         Sidebar,
         Header,
-        ModalBasic
+        ModalBasic,
+        BannerTwo
     },
     data() {
         return {
-            title: "",
+            titcle: "",
             description: "",
             price: null,
             isPerHour: null,
@@ -382,7 +422,10 @@ export default {
             id: null,
             isAlreadyOrdered: false,
             demandes: null,
-            canOrder: true
+            canOrder: true,
+            modaDeletelOpen:false,
+            updated:false,
+            deleted:false
         }
     },
     methods: {
@@ -414,7 +457,6 @@ export default {
                 });
 
                 const response = await request.json();
-                console.log(response);
 
                 this.isBeingOrdered = false;
                 this.validOrder = true;
@@ -465,7 +507,6 @@ export default {
             const demandes = res['hydra:member'];
             let finalDemandes = [];
             for (let demande of demandes) {
-                console.log(demande)
                 if (demande.annonce.id === parseInt(id)) {
                     finalDemandes.push(demande);
                     let date = new Date(demande.createdAt);
@@ -476,9 +517,9 @@ export default {
                     this.canOrder = false;
                 }
             }
-            console.log(finalDemandes);
             this.demandes = finalDemandes;
         },
+
         handleValidAnnounce: async function () {
             let token = localStorage.getItem('esgi-ws-token');
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
@@ -495,7 +536,6 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateData();
 
@@ -516,14 +556,41 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateData();
+        },
+
+        onModaDeletelOpen(){
+        this.modaDeletelOpen=true
+
+        },
+
+        async deleteItem(){
+
+        try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/annonces/${this.id}` , {
+              headers: {
+                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+              }
+          })
+          this.deleted=true
+          this.modaDeletelOpen=false
+          let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
+          this.$router.replace(redirectUrl);
+        }
+        catch(e){
+          this.deleted=true
+          this.modaDeletelOpen=false
+          let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
+          this.$router.replace(redirectUrl);
+        }
+
+
         },
         onOpenModal() {
             this.modalOpen = true
         },
-        updateAnnounce() {
+        async updateAnnounce() {
+
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
             const data = {
                 title: this.title,
@@ -531,16 +598,22 @@ export default {
                 price: this.price,
                 isPerHour: this.isPerHour === true ? true : false
             }
-            const response = axios.patch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, data, {
+            const response = await axios.patch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, data, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
                 }
             })
+            this.updated=true
             this.modalOpen = false
+
         },
     },
     setup() {
-        return {}
+        const banner2WarningOpen = ref(true)
+
+        return {
+            banner2WarningOpen
+        }
     },
     async created() {
         if (!this.$store.getters["auth/isAuthenticated"]) {
@@ -564,7 +637,6 @@ export default {
         }
 
         let data = await response.json();
-        console.log(response.status)
         if (this.role != "Admin") {
             if (this.useremail != data.owner.email && data.status != 1) {
                 this.$router.push('/dashboard/announces');
@@ -579,11 +651,9 @@ export default {
         this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
         this.price = data.price;
         this.status = data.status;
-        console.log(data.owner)
         this.owner = data.owner;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
         this.isOwner = this.useremail === data.owner.email;
-        console.log(this.isOwner)
 
         const response2 = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
             method: 'GET',
@@ -595,10 +665,8 @@ export default {
 
         const res = await response2.json();
         const demandes = res['hydra:member'];
-        console.log(res)
         let finalDemandes = [];
         for (let demande of demandes) {
-            console.log(demande)
             if (demande.annonce.id === parseInt(id)) {
                 let date = new Date(demande.createdAt);
                 demande.createdAt = date.toLocaleDateString();
@@ -609,7 +677,6 @@ export default {
                 this.canOrder = false;
             }
         }
-        console.log(finalDemandes);
         this.demandes = finalDemandes;
     }
 }

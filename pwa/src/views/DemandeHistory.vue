@@ -71,9 +71,9 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue'
-import Sidebar from '../partials/Sidebar.vue'
-import ModalBasic from '../components/Modal.vue'
+import Header from '@/partials/Header.vue'
+import Sidebar from '@/partials/Sidebar.vue'
+import ModalBasic from '@/components/Modal.vue'
 
 let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 export default {
@@ -117,7 +117,6 @@ export default {
         let data = res.demandeHistories
         let finalDemandesHistory = [];
         for (let demandeHistory of data) {
-            console.log(demandeHistory)
             let date = new Date(demandeHistory.createdAt);
             demandeHistory.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             finalDemandesHistory.push(demandeHistory);

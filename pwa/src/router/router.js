@@ -5,12 +5,14 @@ import UserList from '@/views/UserList.vue';
 import AnnouncesList from '@/views/AnnouncesList.vue';
 import Announce from '@/views/Announce.vue';
 import NewAnnounce from '@/views/NewAnnounce.vue';
+import MyAnnounce from '@/views/MyAnnounces.vue';
 import AccountVerificationView from '@/views/AccountVerificationView.vue';
 import ResetPassword from '@/views/ResetPasswordView.vue';
 import successMessageView from '@/views/successMessageView.vue';
 import ResetPasswordInputView from '@/views/ResetPasswordInputView.vue';
 import DashboardView from '@/views/DashboardView.vue';
 import OrganizmeView from '@/views/OrganismeView.vue';
+import UserProfile from '@/views/UserProfile.vue';
 
 import RegisterView from '@/views/RegisterView.vue';
 import RequestsList from "@/views/RequestsList.vue";
@@ -20,6 +22,9 @@ import PaymentSuccess from "@/components/PaymentSuccess.vue";
 import NewLitige from "@/views/NewLitige.vue";
 import DisputesList from "@/views/DisputesList.vue";
 import Litige from "@/views/Litige.vue";
+import PageNotFound from "@/views/PageNotFound.vue";
+import signOut from "@/components/logout/lougout.vue"
+import contact from "@/views/ContactView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +50,12 @@ const router = createRouter({
     { path: '/disputes/new/:id', name: 'new-dispute', component: NewLitige, meta: { requiresUnauth: false }},
     { path: '/dashboard/disputes', name: 'disputes', component: DisputesList, meta: { requiresUnauth: false }},
     { path: '/disputes/:id', name: 'show-dispute', component: Litige, meta: { requiresUnauth: false }},
+    { path: '/userprofile/:id', name: 'user-profile', component: UserProfile, meta: { requiresUnauth: false }},
+    { path: '/userannounces/:lastName', name: 'userannounces', component: MyAnnounce, meta: { requiresUnauth: false } },
+    { path: '/pagnotfound/', name: 'pagnotfound', component: PageNotFound, meta: { requiresUnauth: false } },
+    { path: '/signout', name: 'signout', component: signOut, meta: { requiresUnauth: false } },
+    { path: '/contact', name: 'contact', component: contact, meta: { requiresUnauth: false } },
+    { path: '/:pathMatch(.*)*', name: 'pagnotfound', component: PageNotFound, meta: { requiresUnauth: false } },
   ]
 })
 

@@ -50,11 +50,25 @@
                                                 <br>
                                                 <div class="col-span-6 sm:col-span-4">
                                                     <label for="message"
-                                                           class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description
+                                                           class="block text-sm font-medium mb-1">Description
                                                         <span class="text-rose-500">*</span></label>
                                                     <textarea id="message" rows="4" v-model.trim="description" required
-                                                              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                              class="form-input w-full"
                                                               placeholder="Write the description here..."></textarea>
+                                                </div>
+                                                <div class="col-span-6 sm:col-span-4">
+                                                    <label for="countries_disabled" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Category</label>
+                                                    <select  v-model.trim="category" required id="countries_disabled" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                        <option selected disabled>Choose a category</option>
+                                                        <option value="electromenager">Home appliance</option>
+                                                        <option value="informatique">Computer/Smartphone/Console</option>
+                                                        <option value="livre">Book</option>
+                                                        <option value="vetements">Clothing</option>
+                                                        <option value="jardinage">Gardening</option>
+                                                        <option value="meuble">Furniture</option>
+                                                        <option value="Vehicule">Vehicule</option>
+                                                        <option value="alimentaire">Alimentary</option>
+                                                    </select>
                                                 </div>
                                                 <br>
                                                 <div class="col-span-6 sm:col-span-3">
@@ -96,7 +110,7 @@
                                                 <div class="flex items-center justify-center w-full"
                                                      v-if="!hideImageField">
                                                     <label for="dropzone-file"
-                                                           class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                           class="form-input w-full">
                                                         <div
                                                             class="flex flex-col items-center justify-center pt-5 pb-6">
                                                             <svg aria-hidden="true" class="w-10 h-10 mb-3 text-gray-400"
@@ -126,8 +140,12 @@
 
                                             </div>
                                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                                <button type="submit"
-                                                        class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                <button type="submit" v-if="file"
+                                                        class="nline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+
+                                                    Submit
+                                                </button>
+                                                <button type="submit" disabled v-if="!file" class="px-8 py-3 text-white bg-gray-300 rounded focus:outline-none">
                                                     Submit
                                                 </button>
                                             </div>
@@ -152,7 +170,7 @@
 
 <script>
 import Header from '@/partials/Header.vue'
-import Sidebar from '../partials/Sidebar.vue'
+import Sidebar from '@/partials/Sidebar.vue'
 
 export default {
     name: 'NewAnnounce',
@@ -169,6 +187,7 @@ export default {
             file: null,
             hideImageField: false,
             previewSrc: "",
+            category:""
         }
     },
     methods: {
@@ -185,6 +204,7 @@ export default {
             formData.append('price', this.price);
             formData.append('file', this.file);
             formData.append('isAvailable', 0);
+            formData.append('category', this.category);
 
             let token = this.$store.getters["auth/token"]
             try {
@@ -198,9 +218,8 @@ export default {
                 });
 
                 const responseData = await response.json();
-                this.$router.replace('/announces/' + responseData['id']);
+                this.$router.replace('/announces/' + responseData.id);
             } catch (e) {
-                console.log(e.message)
             }
         }
     },

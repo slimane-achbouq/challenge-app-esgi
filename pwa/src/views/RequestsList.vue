@@ -236,10 +236,7 @@
                         </div>
                     </ModalBasic>
 
-                    <!-- Pagination -->
-                    <div class="mt-8">
-                        <Pagination/>
-                    </div>
+
 
                 </div>
             </main>
@@ -250,10 +247,10 @@
 </template>
 
 <script>
-import Sidebar from '../partials/Sidebar.vue'
-import Header from '../partials/Header.vue'
-import Pagination from '../components/Pagination.vue'
-import ModalBasic from '../components/Modal.vue'
+import Sidebar from '@/partials/Sidebar.vue'
+import Header from '@/partials/Header.vue'
+import Pagination from '@/components/Pagination.vue'
+import ModalBasic from '@/components/Modal.vue'
 import CustomersTable from "@/partials/dashboard/users/UsersTable.vue";
 import {ref} from "vue";
 
@@ -295,7 +292,6 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateDemandeData();
             this.modalOpen = false;
@@ -317,7 +313,6 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateDemandeData();
             this.modalOpen = false;
@@ -336,7 +331,7 @@ export default {
                 this.dateError = "Please choose a starting date earlier than the ending date";
             }
 
-            if (this.newDateEnd && this.newDateEnd && this.newDateEnd <= this.newDateEnd) {
+            if (this.newDateStart && this.newDateEnd && this.newDateStart <= this.newDateEnd) {
                 const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
                     method: 'PUT',
                     headers: {
@@ -351,7 +346,6 @@ export default {
                 });
 
                 const response = await request.json();
-                console.log(response);
 
                 await this.updateDemandeData();
                 this.modalOpen = false;
@@ -369,7 +363,6 @@ export default {
                 });
 
                 const response2 = await request2.json();
-                console.log(response2);
             }
         },
         updateDemandeData: async function () {
@@ -393,7 +386,6 @@ export default {
 
             let finalDemandes = [];
             for (let demande of data) {
-                console.log(demande);
                 let date = new Date(demande.createdAt);
                 demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 date = new Date(demande.dateStart);
@@ -401,7 +393,6 @@ export default {
                 date = new Date(demande.dateEnd);
                 demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
-                    console.log("ici")
                     finalDemandes.push(demande);
                 }
                 else if(demande.locataire.email == this.useremail) {
@@ -453,7 +444,6 @@ export default {
 
         let finalDemandes = [];
         for (let demande of data) {
-            console.log(demande);
             let date = new Date(demande.createdAt);
             demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             date = new Date(demande.dateStart);
@@ -461,7 +451,6 @@ export default {
             date = new Date(demande.dateEnd);
             demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
-                console.log("ici")
                 finalDemandes.push(demande);
             }
             else if(demande.locataire.email == this.useremail) {

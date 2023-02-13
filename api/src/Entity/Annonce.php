@@ -88,7 +88,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     deserialize: false,
     name: 'Create Annonce with image upload'
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'description' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'description' => 'ipartial','category' => 'ipartial'])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isPerHour'])]
@@ -98,19 +98,19 @@ class Annonce
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['annonce:read', 'demande:read', 'litige:read'])]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read','user:read'])]
     private ?int $id = null;
 
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Groups(['annonce:read', 'demande:read', 'litige:read'])]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read','user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['annonce:read', 'demande:read', 'litige:read'])]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read','user:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Vich\UploadableField(mapping: "annonce_imageFile", fileNameProperty: "image")]
@@ -126,23 +126,23 @@ class Annonce
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
+    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?float $price = null;
 
     #[ORM\Column(nullable: true, options: ["default" => false])]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?bool $isPerHour = null;
 
     #[ORM\Column]
-    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read'])]
+    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','user:read'])]
     private ?int $status = null;
 
     #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]
@@ -153,6 +153,10 @@ class Annonce
 
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Litige::class)]
     private Collection $litiges;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['annonce:write','user:read','patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','edit_annonce:write'])]
+    private ?string $category = null;
 
     public function __construct()
     {
@@ -391,6 +395,18 @@ class Annonce
                 $litige->setAnnonce(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -84,6 +84,42 @@
                             </div>
                         </div>
                     </div>
+
+                    <div>
+
+
+            <h2 class="text-slate-800 font-semibold mb-2" v-if="isLocataire && demande.isPaid">Recover the article at the address</h2>
+            <div class="bg-white p-4 border border-slate-200 rounded-sm shadow-sm" v-if=" isLocataire && demande.isPaid">
+              <ul class="space-y-3">
+
+                <!-- Item -->
+                <li class="sm:flex sm:items-center sm:justify-between">
+                  <div class="sm:grow flex items-center text-sm">
+                    <!-- Icon -->
+                    <div class="w-8 h-8 rounded-full shrink-0 bg-amber-500 my-2 mr-3 p-0.2">
+                        <svg class="w-8 h-6 mt-1 fill-current text-amber-50 " viewBox="0 0 16 16">
+                            <path d="M8 8.992a2 2 0 1 1-.002-3.998A2 2 0 0 1 8 8.992Zm-.7 6.694c-.1-.1-4.2-3.696-4.2-3.796C1.7 10.69 1 8.892 1 6.994 1 3.097 4.1 0 8 0s7 3.097 7 6.994c0 1.898-.7 3.697-2.1 4.996-.1.1-4.1 3.696-4.2 3.796-.4.3-1 .3-1.4-.1Zm-2.7-4.995L8 13.688l3.4-2.997c1-1 1.6-2.198 1.6-3.597 0-2.798-2.2-4.996-5-4.996S3 4.196 3 6.994c0 1.399.6 2.698 1.6 3.697 0-.1 0-.1 0 0Z" />
+                        </svg>
+                    </div>
+                    <!-- Position -->
+                    <div>
+                      <div class="font-medium text-slate-800">Address : </div>
+                      <div class="flex flex-nowrap items-center space-x-2 whitespace-nowrap">
+                        <div>{{this.annonce.owner.street}}</div>
+                        <div class="text-slate-600">·</div>
+                        <div>{{this.annonce.owner.city}}</div>
+                        <div class="text-slate-600">·</div>
+                        <div>{{this.annonce.owner.postalCode}}</div>
+                        <div class="text-slate-600">·</div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+
                     <div>
                         <router-link to="/dashboard/requests">
                             <button class="btn bg-indigo-500 text-white" style="margin-top: 30px">Go back</button>
@@ -96,9 +132,9 @@
 </template>
 
 <script>
-import Header from '../partials/Header.vue';
-import Sidebar from '../partials/Sidebar.vue';
-import ModalBasic from '../components/Modal.vue';
+import Header from '@/partials/Header.vue';
+import Sidebar from '@/partials/Sidebar.vue';
+import ModalBasic from '@/components/Modal.vue';
 import {StripeCheckout} from "@vue-stripe/vue-stripe";
 
 export default {
@@ -117,6 +153,7 @@ export default {
             demande: null,
             annonce: null,
             src: "",
+            isLocataire:false
         }
     },
     methods: {
@@ -176,6 +213,9 @@ export default {
                 if (this.useremail != res.locataire.email) {
                     this.$router.push('/dashboard/requests');
                 }
+                else{
+                    this.isLocataire=true
+                }
             }
         }
 
@@ -185,7 +225,7 @@ export default {
         res.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
 
         this.demande = res;
-        this.annonce = res.annonce;
+        this.annonce =  res.annonce;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + res.annonce.image;
 
         await this.getStripeSession();

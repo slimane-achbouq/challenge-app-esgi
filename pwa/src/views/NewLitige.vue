@@ -136,7 +136,7 @@
 
 <script>
 import Header from '@/partials/Header.vue'
-import Sidebar from '../partials/Sidebar.vue'
+import Sidebar from '@/partials/Sidebar.vue'
 
 export default {
     name: 'NewLitige',

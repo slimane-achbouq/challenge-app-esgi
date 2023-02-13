@@ -104,10 +104,6 @@
                         </div>
                     </div>
 
-                    <!-- Pagination -->
-                    <div class="mt-8">
-                        <Pagination/>
-                    </div>
 
                 </div>
             </main>
@@ -118,10 +114,10 @@
 </template>
 
 <script>
-import Sidebar from '../partials/Sidebar.vue'
-import Header from '../partials/Header.vue'
-import Pagination from '../components/Pagination.vue'
-import ModalBasic from '../components/Modal.vue'
+import Sidebar from '@/partials/Sidebar.vue'
+import Header from '@/partials/Header.vue'
+import Pagination from '@/components/Pagination.vue'
+import ModalBasic from '@/components/Modal.vue'
 import CustomersTable from "@/partials/dashboard/users/UsersTable.vue";
 import {ref} from "vue";
 
@@ -161,7 +157,6 @@ export default {
 
             let finalDisputes = [];
             for (let litige of data) {
-                console.log(litige);
                 let date = new Date(litige.createdAt);
                 litige.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 date = new Date(litige.dateStart);
@@ -207,7 +202,6 @@ export default {
 
         let res = await response.json();
         let data = res['hydra:member'];
-        console.log(data)
 
         let finalDisputes = [];
         for (let litige of data) {

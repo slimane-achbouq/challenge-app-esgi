@@ -21,6 +21,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\Delete;
+
 
 
 /* TODO
@@ -91,6 +95,7 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     name: 'users_registration',
     processor: UserPostProcessor::class,
 )]
+#[Delete]
 #[Get(
     uriTemplate: '/address/{address}',
     controller: AddressController::class,
@@ -127,14 +132,18 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     write: false,
     name: 'address_search'
 )]
+
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'exact','lastName'=>'exact'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read','user:read:verification_account_token'])]
     private ?int $id = null;
 
     #[Groups(['user:write', 'user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'demande_history:read', 'litige:read'])]
@@ -166,7 +175,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[Groups(['user:read'])]
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class,cascade: ['remove'], orphanRemoval: true)]
     private Collection $annonces;
 
     #[Groups(['user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
@@ -212,18 +221,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
 
-    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class)]
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class,cascade: ['remove'], orphanRemoval: true)]
     #[Groups(['demande_history:read'])]
     private Collection $demandes;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class,cascade: ['remove'], orphanRemoval: true)]
     #[Groups(['demande_history:read', 'demande:read'])]
     private Collection $demandeHistories;
 
-    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class)]
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class,cascade: ['remove'], orphanRemoval: true)]
     private Collection $paiements;
 
-    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Litige::class)]
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Litige::class,cascade: ['remove'], orphanRemoval: true)]
     private Collection $litiges;
 
     public function __construct()
@@ -467,7 +476,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStreet(?string $street): self
     {
         $this->street = $street;
-
         return $this;
     }
 
@@ -477,6 +485,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getDemandes(): Collection
     {
         return $this->demandes;
+        
     }
 
     public function addDemande(Demande $demande): self
@@ -492,12 +501,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCity(): ?string
     {
         return $this->city;
+        
     }
 
     public function setCity(?string $city): self
     {
         $this->city = $city;
-
         return $this;
     }
 

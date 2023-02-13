@@ -13,7 +13,7 @@
                     <div class="icon-circle"></div>
                     <div class="icon-fix"></div>
                 </div>
-            </div>            
+            </div>
             <p class="text-3xl">Congratulation ! your account is activated you can sign in to your account now.</p>
             <router-link :to="{ name: 'login'}" class="px-8 py-3 font-semibold rounded bg-indigo-600 text-gray-50">Sign In</router-link>
         </div>
@@ -47,7 +47,6 @@ export default {
 				body: JSON.stringify(actionPayload)
 			});
             const responseData = await response.json();
-            console.log(responseData);
 			if (response.ok && responseData?.isVerified) {
                 this.isVerified = true;
                 this.isLoading = false;
