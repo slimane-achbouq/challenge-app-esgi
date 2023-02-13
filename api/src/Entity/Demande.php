@@ -66,13 +66,13 @@ class Demande
     #[Groups(['demande:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column]
     #[Groups(['demande:write', 'edit_demande:write', 'demande:read'])]
-    private ?\DateTimeInterface $dateStart = null;
+    private ?\DateTimeImmutable $dateStart = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column]
     #[Groups(['demande:write', 'edit_demande:write', 'demande:read'])]
-    private ?\DateTimeInterface $dateEnd = null;
+    private ?\DateTimeImmutable $dateEnd = null;
 
     #[ORM\ManyToOne(inversedBy: 'demande')]
     #[ORM\JoinColumn(nullable: true)]
@@ -140,24 +140,24 @@ class Demande
         return $this;
     }
 
-    public function getDateStart(): ?\DateTimeInterface
+    public function getDateStart(): ?\DateTimeImmutable
     {
         return $this->dateStart;
     }
 
-    public function setDateStart(\DateTimeInterface $dateStart): self
+    public function setDateStart(\DateTimeImmutable $dateStart): self
     {
         $this->dateStart = $dateStart;
 
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTimeInterface
+    public function getDateEnd(): ?\DateTimeImmutable
     {
         return $this->dateEnd;
     }
 
-    public function setDateEnd(\DateTimeInterface $dateEnd): self
+    public function setDateEnd(\DateTimeImmutable $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
 

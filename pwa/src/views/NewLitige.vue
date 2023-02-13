@@ -164,8 +164,12 @@ export default {
         submitForm: async function () {
             let token = this.$store.getters["auth/token"]
             const formData = new FormData();
-            formData.append('reason', this.reason);
-            formData.append('otherReason', this.otherReason);
+            console.log(this.reason)
+            console.log(this.otherReason)
+            formData.append('reason',"" + this.reason);
+            if (this.otherReason) {
+                formData.append('otherReason', this.otherReason);
+            }
             formData.append('description', this.description);
             formData.append('file', this.file);
             formData.append('annonce', this.annonce.id);
