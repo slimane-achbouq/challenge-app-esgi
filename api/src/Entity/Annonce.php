@@ -145,8 +145,8 @@ class Annonce
     #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','user:read'])]
     private ?int $status = null;
 
-    #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]
-    private ?Demande $demande = null;
+    #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Annonce::class)]
+    private ?Collection $demande = null;
 
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Paiement::class)]
     private Collection $paiements;
@@ -160,6 +160,7 @@ class Annonce
 
     public function __construct()
     {
+        $this->demande = new ArrayCollection();
         $this->paiements = new ArrayCollection();
         $this->litiges = new ArrayCollection();
     }
@@ -322,23 +323,6 @@ class Annonce
         return $this;
     }
 
-    public function getDemande(): ?Demande
-    {
-        return $this->demande;
-    }
-
-    public function setDemande(Demande $demande): self
-    {
-        // set the owning side of the relation if necessary
-        if ($demande->getAnnonce() !== $this) {
-            $demande->setAnnonce($this);
-        }
-
-        $this->demande = $demande;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Paiement>
      */
@@ -407,6 +391,36 @@ class Annonce
     public function setCategory(?string $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Annonce>
+     */
+    public function getDemande(): Collection
+    {
+        return $this->demande;
+    }
+
+    public function addDemande(Annonce $demande): self
+    {
+        if (!$this->demande->contains($demande)) {
+            $this->demande->add($demande);
+            $demande->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemande(Annonce $demande): self
+    {
+        if ($this->demande->removeElement($demande)) {
+            // set the owning side to null (unless already changed)
+            if ($demande->getAnnonce() === $this) {
+                $demande->setAnnonce(null);
+            }
+        }
 
         return $this;
     }
