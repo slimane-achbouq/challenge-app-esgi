@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -12,11 +14,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 #[AsController]
 class CreateAnnonceController extends AbstractController
 {
-    public function __invoke(Request $request, TokenStorageInterface $tokenStorage): Annonce
+    public function __construct(private RequestStack $requestStack)
     {
+    }
+
+    public function __invoke(TokenStorageInterface $tokenStorage): Annonce
+    {
+        $request = $this->requestStack->getCurrentRequest();
         $uploadedFile = $request->files->get('file');
         if (!$uploadedFile) {
-            throw new BadRequestHttpException('"file" is required');
+            throw new BadRequestHttpException('Image file is required');
         }
 
         $annonce = new Annonce();
@@ -26,7 +33,9 @@ class CreateAnnonceController extends AbstractController
         $annonce->setImage($uploadedFile->getClientOriginalName());
         $annonce->setOwner($tokenStorage->getToken()->getUser());
         $annonce->setPrice($request->get('price'));
-        $annonce->setIsPerHour($request->get("isPerHour"));
+        $annonce->setIsPerHour($request->get('isPerHour'));
+        $annonce->setIsAvailable($request->get('isAvailable'));
+        $annonce->setCategory($request->get('category'));
 
         return $annonce;
     }

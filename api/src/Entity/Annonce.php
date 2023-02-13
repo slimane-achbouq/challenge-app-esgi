@@ -20,6 +20,8 @@ use App\Controller\AvailableAnnonceController;
 use App\Controller\CreateAnnonceController;
 use App\Repository\AnnonceRepository;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping as ORM;
@@ -40,11 +42,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 )]
 #[ORM\Entity(repositoryClass: AnnonceRepository::class)]
 #[ORM\Table(name: '`annonce`')]
-//#[Get]
+#[Get]
 #[GetCollection]
-//#[Delete]
+#[Delete]
 #[Patch(
-    denormalizationContext: ['groups' => ['patch_status_annonce:write']]
+    denormalizationContext: ['groups' => ['patch_status_annonce:write']],
+    security: 'is_granted("ROLE_ADMIN")'
 )]
 #[Put(
     denormalizationContext: ['groups' => ['edit_annonce:write']]
@@ -85,26 +88,29 @@ use Symfony\Component\Validator\Constraints as Assert;
     deserialize: false,
     name: 'Create Annonce with image upload'
 )]
-#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'description' => 'ipartial'])]
+#[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'description' => 'ipartial','category' => 'ipartial'])]
 #[ApiFilter(RangeFilter::class, properties: ['price'])]
 #[ApiFilter(DateFilter::class, properties: ['createdAt'])]
 #[ApiFilter(BooleanFilter::class, properties: ['isPerHour'])]
+#[ApiFilter(NumericFilter::class, properties: ['status'])]
 class Annonce
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read','user:read'])]
     private ?int $id = null;
 
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[Groups(['annonce:read'])]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read','user:read'])]
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['annonce:read', 'demande:read', 'litige:read','user:read'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[Vich\UploadableField(mapping: "annonce_imageFile", fileNameProperty: "image")]
@@ -116,28 +122,47 @@ class Annonce
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'annonces')]
-    #[Groups(['annonce:read'])]
+    #[Groups(['annonce:read', 'user:read', 'demande:read', 'litige:read'])]
     private ?User $owner = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['edit_annonce:write', 'annonce:read'])]
+    #[Groups(['edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?float $price = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read'])]
+    #[ORM\Column(nullable: true, options: ["default" => false])]
+    #[Groups(['annonce:write', 'edit_annonce:write', 'annonce:read','patch_status_annonce:write', 'demande:read', 'litige:read','user:read'])]
     private ?bool $isPerHour = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['patch_status_annonce:write'])]
-    private ?string $status = null;
+    #[ORM\Column]
+    #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','user:read'])]
+    private ?int $status = null;
+
+    #[ORM\OneToOne(mappedBy: 'annonce', cascade: ['persist', 'remove'])]
+    private ?Demande $demande = null;
+
+    #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Paiement::class)]
+    private Collection $paiements;
+
+    #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Litige::class)]
+    private Collection $litiges;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['annonce:write','user:read','patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','edit_annonce:write'])]
+    private ?string $category = null;
+
+    public function __construct()
+    {
+        $this->paiements = new ArrayCollection();
+        $this->litiges = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -285,14 +310,103 @@ class Annonce
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDemande(): ?Demande
+    {
+        return $this->demande;
+    }
+
+    public function setDemande(Demande $demande): self
+    {
+        // set the owning side of the relation if necessary
+        if ($demande->getAnnonce() !== $this) {
+            $demande->setAnnonce($this);
+        }
+
+        $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Paiement>
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): self
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements->add($paiement);
+            $paiement->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): self
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getAnnonce() === $this) {
+                $paiement->setAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Litige>
+     */
+    public function getLitiges(): Collection
+    {
+        return $this->litiges;
+    }
+
+    public function addLitige(Litige $litige): self
+    {
+        if (!$this->litiges->contains($litige)) {
+            $this->litiges->add($litige);
+            $litige->setAnnonce($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLitige(Litige $litige): self
+    {
+        if ($this->litiges->removeElement($litige)) {
+            // set the owning side to null (unless already changed)
+            if ($litige->getAnnonce() === $this) {
+                $litige->setAnnonce(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

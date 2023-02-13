@@ -19,6 +19,13 @@ use ApiPlatform\Metadata\Post;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\Delete;
+
+
 
 /* TODO
 Je m'inscris en tant que : (Particulier | Auto-entrepreneur/Indépendant | Entreprise | Association)
@@ -59,6 +66,8 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     name: 'account_verification'
 )]
 #[Get]
+#[GetCollection]
+#[Patch(denormalizationContext: ['groups' => ['user-update:write']])]
 #[Post(
     uriTemplate: '/users',
     controller: RegisterController::class,
@@ -86,15 +95,16 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     name: 'users_registration',
     processor: UserPostProcessor::class,
 )]
+#[Delete]
 #[Get(
     uriTemplate: '/address/{address}',
     controller: AddressController::class,
     openapiContext: [
-        'parameters'=> [[
+        'parameters' => [[
             'name' => 'address',
-            'in'   => 'path',
+            'in' => 'path',
             'description' => 'address to search',
-            'type'  => 'string',
+            'type' => 'string',
             'required' => true,
             'example' => '35 sir waji'
         ]]
@@ -122,27 +132,32 @@ Association => Nom de l'association | adresse postale | mobile | email | mot de 
     write: false,
     name: 'address_search'
 )]
+
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'exact','lastName'=>'exact'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read','user:read:verification_account_token'])]
     private ?int $id = null;
 
-    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:write', 'user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'demande_history:read', 'litige:read'])]
     #[Assert\Email(
         message: 'The email {{ value }} is not a valid email.',
     )]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[Groups(['user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:read', 'user:read:verification_account_token', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column]
     private array $roles = [];
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'annonce:read', 'demande:read', 'litige:read'])]
     private string $role;
 
     #[Groups(['user:write:verification_account_token'])]
@@ -160,56 +175,74 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[Groups(['user:read'])]
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Annonce::class,cascade: ['remove'], orphanRemoval: true)]
     private Collection $annonces;
 
-    #[Groups(['user:read', 'user:read:verification_account_token'])]
+    #[Groups(['user:read', 'user:read:verification_account_token', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(name: 'is_verified', type: Types::BOOLEAN, nullable: true, options: ["default" => false])]
     private ?bool $isVerified = null;
 
     #[ORM\OneToMany(mappedBy: 'utilisateur', targetEntity: ResetPassword::class)]
     private Collection $resetPasswords;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $associationName = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profession = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $commercialName = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstName = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastName = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $street = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $city = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $postalCode = null;
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:read', 'user-update:write', 'annonce:read', 'demande:read', 'litige:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phoneNumber = null;
+
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Demande::class,cascade: ['remove'], orphanRemoval: true)]
+    #[Groups(['demande_history:read'])]
+    private Collection $demandes;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: DemandeHistory::class,cascade: ['remove'], orphanRemoval: true)]
+    #[Groups(['demande_history:read', 'demande:read'])]
+    private Collection $demandeHistories;
+
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Paiement::class,cascade: ['remove'], orphanRemoval: true)]
+    private Collection $paiements;
+
+    #[ORM\OneToMany(mappedBy: 'locataire', targetEntity: Litige::class,cascade: ['remove'], orphanRemoval: true)]
+    private Collection $litiges;
 
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
         $this->resetPasswords = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
+        $this->demandeHistories = new ArrayCollection();
+        $this->paiements = new ArrayCollection();
+        $this->litiges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -443,6 +476,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStreet(?string $street): self
     {
         $this->street = $street;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demande>
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+        
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes->add($demande);
+            $demande->setLocataire($this);
+        }
 
         return $this;
     }
@@ -450,12 +501,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCity(): ?string
     {
         return $this->city;
+        
     }
 
     public function setCity(?string $city): self
     {
         $this->city = $city;
+        return $this;
+    }
 
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            // set the owning side to null (unless already changed)
+            if ($demande->getLocataire() === $this) {
+                $demande->setLocataire(null);
+            }
+        }
         return $this;
     }
 
@@ -467,7 +529,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPostalCode(?string $postalCode): self
     {
         $this->postalCode = $postalCode;
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, DemandeHistory>
+     */
+    public function getDemandeHistories(): Collection
+    {
+        return $this->demandeHistories;
+    }
+
+    public function addDemandeHistory(DemandeHistory $demandeHistory): self
+    {
+        if (!$this->demandeHistories->contains($demandeHistory)) {
+            $this->demandeHistories->add($demandeHistory);
+            $demandeHistory->setOwner($this);
+        }
         return $this;
     }
 
@@ -497,5 +575,77 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRole(string $role): void
     {
         $this->role = $role;
+    }
+
+    public function removeDemandeHistory(DemandeHistory $demandeHistory): self
+    {
+        if ($this->demandeHistories->removeElement($demandeHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($demandeHistory->getOwner() === $this) {
+                $demandeHistory->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Paiement>
+     */
+    public function getPaiements(): Collection
+    {
+        return $this->paiements;
+    }
+
+    public function addPaiement(Paiement $paiement): self
+    {
+        if (!$this->paiements->contains($paiement)) {
+            $this->paiements->add($paiement);
+            $paiement->setLocataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removePaiement(Paiement $paiement): self
+    {
+        if ($this->paiements->removeElement($paiement)) {
+            // set the owning side to null (unless already changed)
+            if ($paiement->getLocataire() === $this) {
+                $paiement->setLocataire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Litige>
+     */
+    public function getLitiges(): Collection
+    {
+        return $this->litiges;
+    }
+
+    public function addLitige(Litige $litige): self
+    {
+        if (!$this->litiges->contains($litige)) {
+            $this->litiges->add($litige);
+            $litige->setLocataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLitige(Litige $litige): self
+    {
+        if ($this->litiges->removeElement($litige)) {
+            // set the owning side to null (unless already changed)
+            if ($litige->getLocataire() === $this) {
+                $litige->setLocataire(null);
+            }
+        }
+
+        return $this;
     }
 }

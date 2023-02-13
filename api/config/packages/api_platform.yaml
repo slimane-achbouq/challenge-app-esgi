@@ -5,7 +5,7 @@ api_platform:
     mapping:
         paths: [ '%kernel.project_dir%/src/Entity' ]
     patch_formats:
-        json: [ 'application/merge-patch+json' ]
+        json: [ 'application/merge-patch+json','application/json' ]
     swagger:
         versions: [ 3 ]
         api_keys:
@@ -19,3 +19,4 @@ api_platform:
         stateless: true
         cache_headers:
             vary: [ 'Content-Type', 'Authorization', 'Origin' ]
+        pagination_items_per_page: 5

@@ -21,7 +21,6 @@ export default {
 
             localStorage.setItem('esgi-ws-token', responseData.token);
             const userInfos = VueJwtDecode.decode(responseData.token);
-            console.log(userInfos);
             context.commit('setUser', {
                 token: responseData.token,
                 firstName: userInfos.firstName,
@@ -33,7 +32,7 @@ export default {
         } catch (ex) {
             const error = new Error(ex || 'Failed to authenticate. Check your login data.');
             throw error;
-        }   
+        }
 
     },
     tryLogin(context) {
@@ -45,7 +44,7 @@ export default {
                 firstName: userInfos.firstName,
                 lastName: userInfos.lastName,
                 email: userInfos.email,
-                role: userInfos.role,
+                roles: userInfos.roles,
                 id: userInfos.id
             });
         }
