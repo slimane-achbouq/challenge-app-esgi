@@ -109,16 +109,23 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           envs: PHP_IMAGE_NAME,CADDY_IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},GITHUB_SHA,SERVER_NAME,APP_SECRET,POSTGRES_PASSWORD,CADDY_MERCURE_JWT_SECRET
           script: |
+            cd challenge-app-esgi
+
+            # Maj base code
+            git pull origin main
+            
             # Stop running container
             docker stop challenge-app-esgi-caddy-1 challenge-app-esgi-php-1
 
             # Remove old container
             docker rm challenge-app-esgi-caddy-1 challenge-app-esgi-php-1
-
-            cd challenge-app-esgi
             
+            # Build php & caddy containers from latest pushed images to our DockerHub
             SERVER_NAME=$(echo $SERVER_NAME) \
             APP_SECRET=$(echo $APP_SECRET) \
             POSTGRES_PASSWORD=$(echo $POSTGRES_PASSWORD) \
             CADDY_MERCURE_JWT_SECRET=$(echo $CADDY_MERCURE_JWT_SECRET) \
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+            
+            
+            
