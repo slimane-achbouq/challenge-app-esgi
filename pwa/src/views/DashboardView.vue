@@ -87,7 +87,7 @@
           </div>
           <!-- Link -->
           <div>
-            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/dashboard/announces">Explore -&gt;</router-link>
+            <router-link class="text-sm font-medium text-indigo-500 hover:text-indigo-600" to="/userannounces/myannouncement">Explore -&gt;</router-link>
           </div>
         </div>
       </div>

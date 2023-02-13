@@ -66,9 +66,9 @@
                                     <div class="text-sm text-slate-800 font-semibold mb-3">Price Range</div>
                                     <label class="sr-only">Price</label>
                                     <select class="form-select w-full" @change="handleChange($event)" >
-                                        <option value="0..20">Less than $20</option>
-                                        <option value="20..40">$20 - $40</option>
-                                        <option value="40..80">$40 - $80</option>
+                                        <option value="0..20">Less than €20</option>
+                                        <option value="20..40">€20 - €40</option>
+                                        <option value="40..80">€40 - €80</option>
                                         <option value="gt">More than $80</option>
                                     </select>
                                 </div>
