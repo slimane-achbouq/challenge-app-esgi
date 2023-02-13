@@ -15,7 +15,7 @@ router.beforeEach((to,from)=>{
     if (to.fullPath!="/signout"){
         return
     }
-    let token = token1 
+    let token = token1
     token =store.state.auth.token
     if (!token){
         if (to.fullPath!="/login") router.push('login')
@@ -23,11 +23,10 @@ router.beforeEach((to,from)=>{
 
     else {
 
-        console.log("3")
         if (!routes.some(element => to.fullPath.startsWith(element))){
             router.push('/pagnotfound')
             return;
-        
+
         }
         const role = store.state.auth.roles[0]
 
@@ -39,7 +38,7 @@ router.beforeEach((to,from)=>{
         else if ((to.fullPath=="/userannounces/myannouncement" || to.fullPath=="/announces/new") && role=="ROLE_ADMIN"){
             router.push('dashboard')
         }
-        
+
     }
     return true
 })

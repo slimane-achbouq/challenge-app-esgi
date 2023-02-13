@@ -32,11 +32,11 @@
                             </div>
                             <Banner type="success" class="mb-4"  :open="true" v-if="updated">
                                     Announce information updated successfully.
-                            </Banner> 
+                            </Banner>
 
                             <Banner type="success" class="mb-4"  :open="true" v-if="deleted">
                                     Announce deleted successfully.
-                            </Banner> 
+                            </Banner>
                             <div v-else-if="status == 2"
                                  class="bg-red-500 text-center flex items-center justify-center mb-5"
                                  style="border-radius: 10px; height: 50px">
@@ -363,10 +363,10 @@
                             </div>
                           </div>
                           <!-- Modal footer -->
-                          
+
                         </div>
 
-                        
+
                       </div>
 
                       <div class="flex flex-wrap justify-end space-x-2 m-6">
@@ -457,7 +457,6 @@ export default {
                 });
 
                 const response = await request.json();
-                console.log(response);
 
                 this.isBeingOrdered = false;
                 this.validOrder = true;
@@ -508,7 +507,6 @@ export default {
             const demandes = res['hydra:member'];
             let finalDemandes = [];
             for (let demande of demandes) {
-                console.log(demande)
                 if (demande.annonce.id === parseInt(id)) {
                     finalDemandes.push(demande);
                     let date = new Date(demande.createdAt);
@@ -519,10 +517,9 @@ export default {
                     this.canOrder = false;
                 }
             }
-            console.log(finalDemandes);
             this.demandes = finalDemandes;
         },
-        
+
         handleValidAnnounce: async function () {
             let token = localStorage.getItem('esgi-ws-token');
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
@@ -539,7 +536,6 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateData();
 
@@ -560,14 +556,13 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateData();
         },
 
         onModaDeletelOpen(){
         this.modaDeletelOpen=true
-        
+
         },
 
         async deleteItem(){
@@ -588,14 +583,14 @@ export default {
           let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
           this.$router.replace(redirectUrl);
         }
-          
+
 
         },
         onOpenModal() {
             this.modalOpen = true
         },
         async updateAnnounce() {
-            
+
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
             const data = {
                 title: this.title,
@@ -610,7 +605,7 @@ export default {
             })
             this.updated=true
             this.modalOpen = false
-            
+
         },
     },
     setup() {
@@ -642,7 +637,6 @@ export default {
         }
 
         let data = await response.json();
-        console.log(response.status)
         if (this.role != "Admin") {
             if (this.useremail != data.owner.email && data.status != 1) {
                 this.$router.push('/dashboard/announces');
@@ -657,11 +651,9 @@ export default {
         this.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
         this.price = data.price;
         this.status = data.status;
-        console.log(data.owner)
         this.owner = data.owner;
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + data.image;
         this.isOwner = this.useremail === data.owner.email;
-        console.log(this.isOwner)
 
         const response2 = await fetch(`${import.meta.env.VITE_API_URL}/demandes`, {
             method: 'GET',
@@ -673,10 +665,8 @@ export default {
 
         const res = await response2.json();
         const demandes = res['hydra:member'];
-        console.log(res)
         let finalDemandes = [];
         for (let demande of demandes) {
-            console.log(demande)
             if (demande.annonce.id === parseInt(id)) {
                 let date = new Date(demande.createdAt);
                 demande.createdAt = date.toLocaleDateString();
@@ -687,7 +677,6 @@ export default {
                 this.canOrder = false;
             }
         }
-        console.log(finalDemandes);
         this.demandes = finalDemandes;
     }
 }

@@ -161,7 +161,7 @@
             <!-- Icon -->
             <div class="inline-flex w-12 h-12 rounded-full bg-indigo-400">
               <svg class="w-12 h-12" viewBox="0 -6 25 40" xmlns="http://www.w3.org/2000/svg">
-                <defs>                   
+                <defs>
 
                   <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="icon5-a">
                     <stop stop-color="#FFF" offset="0%" />
@@ -170,7 +170,7 @@
                 </defs>
                 <g fill-rule="nonzero" fill="none">
                     <path class="fill-current text-slate-400" :class=" 'text-indigo-500'" d="M18.974 8H22a2 2 0 012 2v6h-2v5a1 1 0 01-1 1h-2a1 1 0 01-1-1v-5h-2v-6a2 2 0 012-2h.974zM20 7a2 2 0 11-.001-3.999A2 2 0 0120 7zM2.974 8H6a2 2 0 012 2v6H6v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5H0v-6a2 2 0 012-2h.974zM4 7a2 2 0 11-.001-3.999A2 2 0 014 7z" />
-                    <path class="fill-current text-slate-200" :class=" 'text-indigo-300'" d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z" />                    
+                    <path class="fill-current text-slate-200" :class=" 'text-indigo-300'" d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z" />
                 </g>
               </svg>
             </div>
@@ -281,12 +281,11 @@ export default {
     },
     data() {
       this.role = this.$store.getters["auth/role"]
-      console.log(this.role);
     return {
       role:null,
       user:{id:1},
       }
-    },  
+    },
     setup() {
 
         const sidebarOpen = ref(false)
@@ -308,7 +307,7 @@ export default {
       let data = await response.json();
       if(data["hydra:member"]){
         this.user = await data["hydra:member"][0];
-      }        
+      }
   }
 }
 </script>

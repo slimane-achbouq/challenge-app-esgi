@@ -1,7 +1,7 @@
 <template>
- 
+
     <tr>
-      
+
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
         <div class="flex items-center">
           <label class="inline-flex">
@@ -13,7 +13,7 @@
       <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
         <router-link :to="{ name: 'user-profile', params: { id: customer.id }}">
         <div class="flex items-center">
-          
+
           <div class="font-medium text-slate-800">{{customer.firstName}} {{customer.lastName}}</div>
         </div>
       </router-link>
@@ -46,25 +46,24 @@
           </svg>
         </button>
       </td>
-    
-    </tr>  
-  
+
+    </tr>
+
   </template>
-  
+
   <script>
   import { computed } from 'vue'
-  
+
   export default {
     name: 'UsersTableItem',
     props: ['customer', 'value', 'selected'],
     setup(props, context) {
-      console.log(props.selected)
       const checked = computed(() => props.selected.includes(props.value))
 
       function edit(){
         context.emit('edit', props.customer)
       }
-  
+
       function check() {
         let updatedSelected = [...props.selected]
         if (this.checked) {
@@ -72,10 +71,9 @@
         } else {
           updatedSelected.push(props.value)
         }
-        console.log(updatedSelected)
         context.emit('update:selected', updatedSelected)
       }
-  
+
       return {
         check,
         checked,

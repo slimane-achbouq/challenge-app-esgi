@@ -1,55 +1,55 @@
 <template>
     <div class="flex h-screen overflow-hidden">
-  
+
       <!-- Sidebar -->
       <Sidebar :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
-  
+
       <!-- Content area -->
       <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-        
+
         <!-- Site header -->
         <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
-  
-        <main>
-            
-          <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-            
 
-            
+        <main>
+
+          <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+
+
             <!-- Page header -->
             <div class="sm:flex sm:justify-between sm:items-center mb-8">
-                
-             
+
+
               <!-- Left: Title -->
               <div class="mb-4 sm:mb-0">
                 <h1 class="text-2xl md:text-3xl text-slate-800 font-bold">Users ✨</h1>
               </div>
-              
-              
-              
+
+
+
 
               <!-- Right: Actions  -->
               <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-              
+
                 <!-- Delete button -->
-                <DeleteButton :selectedItems="selectedItems" @click="onModaDeletelOpen"/>       
+                <DeleteButton :selectedItems="selectedItems" @click="onModaDeletelOpen"/>
               </div>
-  
+
             </div>
-            
+
             <Banner type="success" class="mb-4"  :open="true" v-if="updated">
                     User information updated successfully.
-              </Banner> 
+              </Banner>
 
               <Banner type="success" class="mb-4"  :open="true" v-if="deleted">
                     User deleted successfully.
-              </Banner> 
+              </Banner>
             <!-- Table -->
             <CustomersTable @change-selection="updateSelectedItems($event)" @edit="onOpenModal"/>
-            
+
             <ModalBasic id="feedback-modal" :modalOpen="modalOpen" @close-modal="onModalClose" title="Edit User">
 
-              
+
                       <!-- Modal content -->
                       <div class="px-5 py-4">
                         <div class="space-y-3 ">
@@ -64,7 +64,7 @@
                          <div class="grid grid-cols-2 gap-4" >
 
 
-                          
+
                           <div class="col-span-1">
                             <label class="block text-sm font-medium mb-1" for="name">First Name<span class="text-rose-500">*</span></label>
                             <input v-model="selectedItems.firstName" id="name" class="form-input w-full px-2 py-1" type="text" required />
@@ -139,10 +139,10 @@
                             </div>
                           </div>
                           <!-- Modal footer -->
-                          
+
                         </div>
 
-                        
+
                       </div>
 
                       <div class="flex flex-wrap justify-end space-x-2 m-6">
@@ -150,22 +150,22 @@
                             <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white" @click="deleteItem">Yes, Delete it</button>
                       </div>
                     </ModalBasic>
-      
+
           </div>
         </main>
-  
-      </div> 
-  
+
+      </div>
+
     </div>
   </template>
-  
+
 <script>
   import { ref } from 'vue'
   import Sidebar from '@/partials/Sidebar.vue'
   import Header from '@/partials/Header.vue'
   import DeleteButton from '@/components/DeleteButton.vue'
   import CustomersTable from '@/partials/dashboard/users/UsersTable.vue'
-  
+
   import ModalBasic from '@/components/Modal.vue'
   import axios from 'axios'
   import Banner from "@/components/Banner.vue"
@@ -174,10 +174,10 @@
     phoneValidation,
     passwordValidation,
     emailValidation,
-    
+
   } from "@/utils/utils-common-function";
 
-  
+
   export default {
     name: 'UserList',
     components: {
@@ -189,7 +189,7 @@
       Banner
     },
     setup() {
-  
+
       const sidebarOpen = ref(false)
       const selectedItems = ref([])
       const modalOpen = ref(false)
@@ -198,40 +198,35 @@
       const  errors=ref({ name: "",
                           familyName: "",
                           phoneNumber: "",
-                          email: "",}) 
+                          email: "",})
 
       const error=ref(null)
       const emailExist=ref(false)
       const loading=ref(false)
       const updated=ref(false)
       const deleted=ref(false)
-  
-                         
-  
+
+
+
       const updateSelectedItems = (selected) => {
         selectedItems.value = selected
       }
-      
+
       function onOpenModal (selected){
         modalOpen.value=true
         selectedItems.value = selected
-        console.log(selectedItems.value)
       }
 
       function onModaDeletelOpen(selected){
-        
-                
 
-        console.log(redirectUrl)
-        console.log(selected)
+
+
         modaDeletelOpen.value=true
-        console.log(selectedItems.value)
       }
 
       async function deleteItem(){
-        
 
-        console.log(this.selectedItems)
+
         try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}` , {
               headers: {
                   'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
@@ -244,7 +239,7 @@
           modaDeletelOpen.value=false
           deleted.value=true
         }
-        
+
       }
 
       async function updateUser(){
@@ -261,26 +256,23 @@
             }
 
           if (!emailValidation(this.selectedItems.email)) {
-              console.log("email not")
               errors.value.email = "Veuillez revérifier votre email s'il est valide";
               return;
           }
 
           if (!phoneValidation(this.selectedItems.phoneNumber)) {
-            console.log("phone not")
             error.value =
               "Veuillez revérifier votre numéro de téléphone s'il est valide";
             return;
           }
 
           loading.value = true
-          const data = { 
+          const data = {
             email: this.selectedItems.email,
             firstName: this.selectedItems.firstName,
             lastName: this.selectedItems.lastName,
             isVerified: this.selectedItems.isVerified ? true:false,
             phoneNumber: this.selectedItems.phoneNumber  }
-          console.log(data)
 
           try {
           const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}`,  data , {
@@ -290,23 +282,22 @@
           })
         }
         catch (error) {
-        console.log(error.message);
         if(error.message="Request failed with status code 500") emailExist.value=true
         return
       }
       loading.value = false
       updated.value=true
       modalOpen.value = false
-      
-          
+
+
       } catch (error) {
           console.log(error)
       }
-          
-      
+
+
   }
 
-  
+
       return {
         sidebarOpen,
         selectedItems,
@@ -324,7 +315,7 @@
         deleteItem,
         deleted,
         onModaDeletelOpen
-      }  
+      }
     }
   }
   </script>

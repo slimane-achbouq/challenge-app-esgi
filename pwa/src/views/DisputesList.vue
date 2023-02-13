@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    
+
                 </div>
             </main>
 
@@ -157,7 +157,6 @@ export default {
 
             let finalDisputes = [];
             for (let litige of data) {
-                console.log(litige);
                 let date = new Date(litige.createdAt);
                 litige.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 date = new Date(litige.dateStart);
@@ -203,7 +202,6 @@ export default {
 
         let res = await response.json();
         let data = res['hydra:member'];
-        console.log(data)
 
         let finalDisputes = [];
         for (let litige of data) {

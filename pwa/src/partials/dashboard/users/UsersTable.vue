@@ -30,7 +30,7 @@
         <h2 class="font-semibold text-slate-800">All Users <span class="text-slate-400 font-medium"></span></h2>
       </header>
       <div>
-  
+
         <!-- Table -->
         <div class="overflow-x-auto">
           <table class="table-auto w-full">
@@ -74,7 +74,7 @@
             <!-- Table body -->
             <tbody class="text-sm divide-y divide-slate-200">
 
-              
+
               <Customer
                 v-for="customer in customers"
                 :key="customer.id"
@@ -85,12 +85,12 @@
               />
             </tbody>
           </table>
-  
+
         </div>
-        
+
       </div>
 
-      
+
     </div>
 
     <div class="mt-8">
@@ -113,7 +113,7 @@
 
   </div>
   </template>
-  
+
 <script>
   import { ref, watch,onMounted } from 'vue'
   import Customer from './UsersTableItem.vue'
@@ -121,22 +121,22 @@
   import { mapGetters } from 'vuex';
   import axios from 'axios'
   import Pagination from '@/components/Pagination.vue'
-  
-  
-  
+
+
+
   export default {
     name: 'UsersTable',
     components: {
       Customer,
       Pagination
-    },  
+    },
     props: ['selectedItems'],
 
     data() {
         return {
             users: [],
-            
-            
+
+
         }
     },
 
@@ -147,7 +147,7 @@
 
       const store = useStore();
       const  token = localStorage.getItem('esgi-ws-token')
-    
+
       const selectAll = ref(false)
       const selected = ref([])
       const customers = ref([])
@@ -158,7 +158,7 @@
       const page = ref(1)
       const searchTerm = ref([])
       const loading=ref(true)
-  
+
       const checkAll = () => {
         selected.value = []
         if (!selectAll.value) {
@@ -169,11 +169,11 @@
       const onEdit =(user)=>{
         emit('edit', user)
       }
-      
+
       watch(selected, () => {
         selectAll.value = customers.value.length === selected.value.length ? true : false
         emit('change-selection', selected.value)
-      })    
+      })
 
       const fetchUsers = async() => {
       try {
@@ -186,16 +186,14 @@
         if(response.data["hydra:member"]){
           customers.value = await response.data["hydra:member"];
         }
-        
+
         customersList.value= await customers.value
         totalResult.value=await response.data["hydra:totalItems"];
-        console.log(response.data)
         if(response.data["hydra:view"]){
           lastPage.value=await response.data["hydra:view"]["hydra:last"].split("page=")[1];;
         }
         loading.value = false
       } catch (error) {
-        console.error(error)
       }
     }
 
@@ -210,22 +208,22 @@
         if(page.value < lastPage.value){
           page.value++
           fetchUsers()
-        } 
+        }
       }
     function prevPage() {
         if (page.value >0 ){
           page.value--
           fetchUsers()
-        } 
+        }
     }
 
-    
 
-  
-      
+
+
+
     onMounted(fetchUsers)
-      
-  
+
+
       return {
         selectAll,
         selected,
@@ -244,6 +242,6 @@
       }
     }
 
-    
+
   }
   </script>

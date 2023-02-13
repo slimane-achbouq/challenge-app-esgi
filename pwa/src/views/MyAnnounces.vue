@@ -135,7 +135,6 @@ export default {
     async created() {
 
         let lastname = document.URL.substring(document.URL.lastIndexOf('/') + 1);
-        console.log(lastname)
         if (!this.$store.getters["auth/isAuthenticated"]) {
             this.$router.push('/');
         }

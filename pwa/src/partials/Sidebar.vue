@@ -237,7 +237,7 @@ export default {
     data() {
     return {
       role: null,
-     
+
   }
   },
     setup(props, { emit }) {
@@ -296,8 +296,7 @@ export default {
 
     async created() {
         this.role = this.$store.getters["auth/role"]
-        console.log(this.role)
-        
+
     }
 }
 </script>

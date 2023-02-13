@@ -117,7 +117,6 @@ export default {
         let data = res.demandeHistories
         let finalDemandesHistory = [];
         for (let demandeHistory of data) {
-            console.log(demandeHistory)
             let date = new Date(demandeHistory.createdAt);
             demandeHistory.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             finalDemandesHistory.push(demandeHistory);

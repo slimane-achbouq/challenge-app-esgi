@@ -192,11 +192,9 @@ export default {
     },
     methods: {
         handleFile(event) {
-            console.log("1")
             this.file = event.target.files[0];
             this.previewSrc = URL.createObjectURL(event.target.files[0]);
             this.hideImageField = true;
-            console.log("2")
         },
         submitForm: async function () {
             const formData = new FormData();
@@ -220,10 +218,8 @@ export default {
                 });
 
                 const responseData = await response.json();
-                let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
-                this.$router.replace(redirectUrl);
+                this.$router.replace('/announces/' + responseData.id);
             } catch (e) {
-                console.log(e.message)
             }
         }
     },

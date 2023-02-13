@@ -292,7 +292,6 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateDemandeData();
             this.modalOpen = false;
@@ -314,7 +313,6 @@ export default {
             });
 
             const response = await request.json();
-            console.log(response);
 
             await this.updateDemandeData();
             this.modalOpen = false;
@@ -348,7 +346,6 @@ export default {
                 });
 
                 const response = await request.json();
-                console.log(response);
 
                 await this.updateDemandeData();
                 this.modalOpen = false;
@@ -366,7 +363,6 @@ export default {
                 });
 
                 const response2 = await request2.json();
-                console.log(response2);
             }
         },
         updateDemandeData: async function () {
@@ -390,7 +386,6 @@ export default {
 
             let finalDemandes = [];
             for (let demande of data) {
-                console.log(demande);
                 let date = new Date(demande.createdAt);
                 demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 date = new Date(demande.dateStart);
@@ -398,7 +393,6 @@ export default {
                 date = new Date(demande.dateEnd);
                 demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
-                    console.log("ici")
                     finalDemandes.push(demande);
                 }
                 else if(demande.locataire.email == this.useremail) {
@@ -450,7 +444,6 @@ export default {
 
         let finalDemandes = [];
         for (let demande of data) {
-            console.log(demande);
             let date = new Date(demande.createdAt);
             demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             date = new Date(demande.dateStart);
@@ -458,7 +451,6 @@ export default {
             date = new Date(demande.dateEnd);
             demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
-                console.log("ici")
                 finalDemandes.push(demande);
             }
             else if(demande.locataire.email == this.useremail) {

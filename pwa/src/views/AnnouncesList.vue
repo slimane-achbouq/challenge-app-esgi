@@ -360,7 +360,6 @@ export default {
             this.page=1
             let token = this.$store.getters["auth/token"]
             let urlFetch = import.meta.env.VITE_API_URL + "/annonces?title=" + this.searchTerm+"&page="+ this.page;
-            console.log(urlFetch)
             this.basedURL=import.meta.env.VITE_API_URL + "/annonces?title=" + this.searchTerm+"&page="
             const response = await axios.get(urlFetch, {
             method: 'GET',
@@ -378,7 +377,6 @@ export default {
             }
             if(response.data["hydra:view"]){
             this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
-            console.log(this.lastPage)
             }
 
         },
@@ -396,7 +394,6 @@ export default {
             this.basedURL=urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&status=1"
         }
 
-            console.log(urlFetch)
             const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
@@ -413,7 +410,6 @@ export default {
                 }
                 if(response.data["hydra:view"]){
                 this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
-                console.log(this.lastPage)
                 }
         },
 
@@ -421,7 +417,6 @@ export default {
         this.page=1
         let token = this.$store.getters["auth/token"]
         let currentRole = this.$store.getters["auth/role"]
-        console.log("ok")
         var selectedValue = event.target.value;
         let urlFetch
 
@@ -460,7 +455,6 @@ export default {
             }
             if(response.data["hydra:view"]){
             this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
-            console.log(this.lastPage)
             }
         return ;
 
@@ -476,7 +470,6 @@ export default {
         var fullDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
 
 
-        console.log(fullDate)
         let token = this.$store.getters["auth/token"]
 
         let urlFetch
@@ -505,7 +498,6 @@ export default {
         }
             if(response.data["hydra:view"]){
             this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
-            console.log(this.lastPage)
         }
 
 
@@ -543,7 +535,6 @@ export default {
         }
         if(response.data["hydra:view"]){
             this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
-            console.log(this.lastPage)
         }
 
              return ;
@@ -584,7 +575,6 @@ export default {
         }
         if(response.data["hydra:view"]){
           this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
-          console.log(this.lastPage)
         }
 
         this.url = import.meta.env.VITE_API_URL;
@@ -614,7 +604,6 @@ export default {
             },
         });
 
-        console.log(response.data)
         if(response.data["hydra:member"]){
 
             let data = await response.data;
@@ -625,7 +614,6 @@ export default {
             if (response.data["hydra:view"]["hydra:last"]) {
                 this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
             }
-            console.log(this.lastPage)
         }
 
         this.url = import.meta.env.VITE_API_URL;

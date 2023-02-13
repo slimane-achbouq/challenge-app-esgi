@@ -1,19 +1,19 @@
 <template>
     <div class="flex h-screen overflow-hidden">
-  
+
       <!-- Sidebar -->
       <Sidebar :sidebarOpen="sidebarOpen" @close-sidebar="sidebarOpen = false" />
-  
+
       <!-- Content area -->
       <div class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white">
-        
+
         <!-- Site header -->
         <Header :sidebarOpen="sidebarOpen" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
-  
-        
+
+
         <main>
-         
-        <div class="lg:relative lg:flex">  
+
+        <div class="lg:relative lg:flex">
           <!-- Content -->
           <div class="px-4 sm:px-6 lg:px-8 py-8 lg:grow lg:pr-8 xl:pr-16 2xl:ml-[80px]">
             <div class="lg:mx-auto">
@@ -27,7 +27,7 @@
             </div>
               <Banner type="success" :open="true" v-if="updated">
                     User information updated successfully.
-              </Banner> 
+              </Banner>
 
               <!-- Cart items -->
               <div class="mb-6 lg:mb-0">
@@ -43,7 +43,7 @@
                       <a class="text-slate-800 font-semibold mb-4">See all announces</a>
                     </router-link>
                   </div>
-                  
+
                   <form>
                     <div class="space-y-4">
                       <!-- 1st row -->
@@ -88,12 +88,12 @@
                         <div class="flex-1" v-if="user.associationName">
                           <label class="block text-sm font-medium mb-1" for="card-state">Association name</label>
                           <input id="card-state" class="form-input w-full" type="text"  v-model="user.associationName"/>
-                        </div>  
+                        </div>
                         <div class="flex-1" v-if="user.commercialName">
                           <label class="block text-sm font-medium mb-1" for="card-country">Commercial name: <span class="text-rose-500">*</span></label>
                           <input id="card-state" class="form-input w-full" type="text"  v-model="user.commercialName"/>
                         </div>
-       
+
                       </div>
                       <!-- Divider -->
                       <hr class="my-2 border-t border-slate-200" />
@@ -118,7 +118,7 @@
                           <path d="M8 16a7.928 7.928 0 01-3.428-.77l.857-1.807A6.006 6.006 0 0014 8c0-3.309-2.691-6-6-6a6.006 6.006 0 00-5.422 8.572l-1.806.859A7.929 7.929 0 010 8c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" />
                       </svg>
                   </div>
-                            
+
                   <div v-else-if="searchedAddresses" v-for="searchedAddress in searchedAddresses" :key="searchedAddress.properties.id">
                     <div class="text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                       <button @click="setAddress(searchedAddress)" type="button" class="relative inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200 rounded-t-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
@@ -140,10 +140,10 @@
                         </div>
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="card-postcode">Postcode</label>
-                          
+
                           <input id="card-postcode" class="form-input w-full cursor-not-allowed" type="text"  v-model="user.postalCode" disabled/>
                         </div>
-                        
+
                       </div>
 
                       <div class="text-right">
@@ -154,8 +154,8 @@
                 </div>
                 <!-- Divider -->
                 <hr class="my-6 border-t border-slate-200" />
-                
-            
+
+
               </div>
 
             </div>
@@ -163,12 +163,12 @@
 
         </div>
       </main>
-  
-      </div> 
-  
+
+      </div>
+
     </div>
   </template>
-  
+
   <script>
   import { ref } from 'vue'
   import Sidebar from '@/partials/Sidebar.vue'
@@ -179,17 +179,17 @@
     phoneValidation,
     passwordValidation,
     emailValidation,
-    
+
   } from "@/utils/utils-common-function";
-  
+
   export default {
     name: 'UserProfile',
     components: {
       Sidebar,
       Header,
       Banner,
-      
-    }, 
+
+    },
     data() {
     return {
       searchedAddresses: [],
@@ -230,8 +230,7 @@
   },
   methods:{
     async updateUser(){
-        
-        console.log(this.user.firstName)
+
         if (!this.user.firstName) {
           this.errors.name = "Veuillez revérifier votre nom";
           return;
@@ -242,13 +241,11 @@
         }
 
       if (!emailValidation(this.user.email)) {
-        console.log("email not")
         this.errors.email = "Veuillez revérifier votre email s'il est valide";
         return;
       }
 
       if (!phoneValidation(this.user.phoneNumber)) {
-        console.log("phone not")
         this.error =
           "Veuillez revérifier votre numéro de téléphone s'il est valide";
         return;
@@ -267,8 +264,7 @@
               street:this.user.street,
               profession:this.user.profession,
                 }
-          console.log(userInformations)
-          
+
 
 
           const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.user.id}`,userInformations , {
@@ -277,21 +273,21 @@
               }
           })
           this.updated=true
-          
+
           } catch (error) {
               console.error(error)
           }
 
           if(this.basedEmail != this.user.email){
-      
+
             await localStorage.clear();
              this.$router.replace("/login");
- 
+
            }
-          
+
           this.loading=false
-              
-      
+
+
   },
   async searchStreet (event) {
     this.isAddressLoading = true;
@@ -303,14 +299,12 @@
         const response = await fetch(`https://localhost/address/` + new URLSearchParams(street));
 
         if (response.ok) {
-            console.log(response)
             const data = await response.json();
             const parsedData = await JSON.parse(data);
             this.searchedAddresses = parsedData.features;
-            console.log(this.searchedAddresses)
 		    }
       } catch (error) {
-        this.error = error.message 
+        this.error = error.message
       }
 
       this.isAddressLoading = false;
@@ -328,12 +322,10 @@
         this.loading=true
         let token = this.$store.getters["auth/token"]
         this.role = this.$store.getters["auth/role"]
-        console.log(this.$store.getters["auth/id"])
         this.useremail = this.$store.getters["auth/email"]
         this.basedEmail=this.useremail
 
         let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
-        console.log(id)
         const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${id}`, {
             method: 'GET',
             headers: {

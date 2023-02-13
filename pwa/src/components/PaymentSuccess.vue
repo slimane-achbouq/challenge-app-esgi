@@ -103,7 +103,6 @@ export default {
         });
 
         let resp2 = await req.json();
-        console.log(resp2);
     }
 }
 </script>
