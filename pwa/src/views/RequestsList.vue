@@ -236,10 +236,7 @@
                         </div>
                     </ModalBasic>
 
-                    <!-- Pagination -->
-                    <div class="mt-8">
-                        <Pagination/>
-                    </div>
+                    
 
                 </div>
             </main>

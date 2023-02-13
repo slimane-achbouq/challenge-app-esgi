@@ -212,7 +212,7 @@
                             </div>
 
 
-                            <div class="text-sm text-slate-500 italic mb-4">67.975 Items</div>
+                            
 
                             <div class="mb-5">
                                 <!-- Start -->
@@ -249,10 +249,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-6">
-                                <Pagination @increasePage="handleNextPagination"
-                                            @decreasePage="handlePreviousPagination" :page="page"/>
+                            <div class="mt-8">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                            <nav class="mb-4 sm:mb-0 sm:order-1" role="navigation" aria-label="Navigation">
+                                <ul class="flex justify-center">
+                                <li class="ml-3 first:ml-0">
+                                    <a class="btn bg-white border-slate-200 " :class="{ 'text-slate-300 cursor-not-allowed': page === 1,'hover:border-slate-300 text-indigo-500': page != 1}"  @click.prevent="handlePreviousPagination">&lt;- Previous</a>
+                                </li>
+                                <li class="ml-3 first:ml-0">
+                                    <a class="btn bg-white border-slate-200 " :class="{ 'text-slate-300 cursor-not-allowed': page >= lastPage,'hover:border-slate-300 text-indigo-500': page < lastPage}"  @click.prevent="handleNextPagination">Next -&gt;</a>
+                                </li>
+                                </ul>
+                            </nav>
+                            <div class="text-sm text-slate-500 text-center sm:text-left">
+                                Showing <span class="font-medium text-slate-600">{{ page }}</span> to <span class="font-medium text-slate-600">{{lastPage}}</span> of <span class="font-medium text-slate-600">{{totalResult}}</span> results
                             </div>
+                            </div>
+                        </div>
 
                         </div>
 
@@ -273,6 +286,7 @@ import Header from '@/partials/Header.vue'
 import AnnonceSidebar from '@/partials/dashboard/annonce/AnnonceSidebar.vue'
 import AnnonceCards from '@/partials/dashboard/annonce/AnnonceCards.vue'
 import Pagination from '@/components/Pagination.vue'
+import axios from 'axios'
 
 export default {
     name: 'AnnouncesList',
@@ -289,7 +303,11 @@ export default {
             url: "",
             page: 1,
             currentRole: null,
-            searchTerm:""
+            searchTerm:"",
+            perPage:5,
+            lastPage:0,
+            totalResult:0,
+            basedURL:null
         }
     },
     setup() {
@@ -302,16 +320,16 @@ export default {
     },
     methods: {
         handleNextPagination(n) {
-            this.page += n;
-            this.updateData();
-            provide('pageChange', this.page)
+            if(this.page < this.lastPage){
+                this.page++
+                this.fetchData()
+            } 
         },
         handlePreviousPagination(n) {
-            if (this.page > 1) {
-                this.page -= n;
-                this.updateData();
-                provide('pageChange', this.page)
-            }
+            if (this.page >0 ){
+                this.page--
+                this.fetchData()
+            } 
         },
         async updateData() {
             let token = this.$store.getters["auth/token"]
@@ -323,6 +341,7 @@ export default {
             } else {
                 urlFetch = import.meta.env.VITE_API_URL + "/annonces?page=" + this.page + "&itemsPerPage=5&status=1";
             }
+            this.basedURL=urlFetch
             const response = await fetch(urlFetch, {
                 method: 'GET',
                 headers: {
@@ -338,10 +357,12 @@ export default {
         },
 
         async searchCustomers () {
+            this.page=1
             let token = this.$store.getters["auth/token"]
-            let urlFetch = import.meta.env.VITE_API_URL + "/annonces?title=" + this.searchTerm;
+            let urlFetch = import.meta.env.VITE_API_URL + "/annonces?title=" + this.searchTerm+"&page="+ this.page;
             console.log(urlFetch)
-            const response = await fetch(urlFetch, {
+            this.basedURL=import.meta.env.VITE_API_URL + "/annonces?title=" + this.searchTerm+"&page="
+            const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -349,26 +370,34 @@ export default {
             },
         });
 
-        let data = await response.json()
-        this.announces=data['hydra:member']
-        console.log(data['hydra:member'])
-             return ;
+        if(response.data["hydra:member"]){
+
+            let data = await response.data;
+            this.announces = data['hydra:member'];
+            this.totalResult=await response.data["hydra:totalItems"];
+            }
+            if(response.data["hydra:view"]){
+            this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+            console.log(this.lastPage)
+            }
             
         },
         async filterTerm(term){
+            this.page=1
             let token = this.$store.getters["auth/token"]
             let currentRole = this.$store.getters["auth/role"]
             let urlFetch
-
+            
             if (currentRole == "Admin") {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term;
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&page="+ this.page;
+            this.basedURL=import.meta.env.VITE_API_URL + "/annonces?category=" + term
         } else {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&status=1";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&status=1"+"&page="+ this.page;
+            this.basedURL=urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&status=1"
         }
             
-
             console.log(urlFetch)
-            const response = await fetch(urlFetch, {
+            const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -376,13 +405,20 @@ export default {
             },
         });
 
-        let data = await response.json()
-        this.announces=data['hydra:member']
-        console.log(data['hydra:member'])
-             return ;
+        if(response.data["hydra:member"]){
+
+                let data = await response.data;
+                this.announces = data['hydra:member'];
+                this.totalResult=await response.data["hydra:totalItems"];
+                }
+                if(response.data["hydra:view"]){
+                this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+                console.log(this.lastPage)
+                }
         },
 
-        async handleChange(event) {
+    async handleChange(event) {
+        this.page=1
         let token = this.$store.getters["auth/token"]
         let currentRole = this.$store.getters["auth/role"]
         console.log("ok")
@@ -392,21 +428,23 @@ export default {
         if (selectedValue != "gt"){
 
         if (currentRole == "Admin") {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[between]=" + selectedValue;
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[between]=" + selectedValue+"&page="+ this.page;
         } else {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[between]=" + selectedValue+"&status=1";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[between]=" + selectedValue+"&status=1"+"&page="+ this.page;
         }
 
         }
         else {
             if (currentRole == "Admin") {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[gt]=80";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[gt]=80"+"&page="+ this.page;
         } else {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[gt]=80"+"&status=1";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?price[gt]=80"+"&status=1"+"&page="+ this.page;
         }
 
         }
-        const response = await fetch(urlFetch, {
+
+        
+        const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -414,14 +452,22 @@ export default {
             },
         });
 
-        let data = await response.json()
-        this.announces=data['hydra:member']
-        console.log(data['hydra:member'])
-             return ;
+        if(response.data["hydra:member"]){
+
+            let data = await response.data;
+            this.announces = data['hydra:member'];
+            this.totalResult=await response.data["hydra:totalItems"];
+            }
+            if(response.data["hydra:view"]){
+            this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+            console.log(this.lastPage)
+            }
+        return ;
         
     },
 
     async onNewest(){
+        this.page=1
         let currentRole = this.$store.getters["auth/role"]
         var date = new Date();
 
@@ -436,13 +482,14 @@ export default {
         let urlFetch
         
         if (currentRole == "Admin") {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate+"&page="+ this.page
+            this.basedURL=import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate
         } else {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate+"&status=1";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate+"&status=1"+"&page="+ this.page;
+            this.basedURL=import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate+"&status=1"
         }
 
-        console.log(urlFetch)
-        const response = await fetch(urlFetch, {
+        const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -450,24 +497,37 @@ export default {
             },
         });
 
-        let data = await response.json()
-        this.announces=data['hydra:member']
-        console.log(data['hydra:member'])
+        if(response.data["hydra:member"]){
+
+            let data = await response.data;
+            this.announces = data['hydra:member'];
+            this.totalResult=await response.data["hydra:totalItems"];
+        }
+            if(response.data["hydra:view"]){
+            this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+            console.log(this.lastPage)
+        }
+
+
              return ;
     },
 
     async onPrice(status){
 
+        this.page=1
         let currentRole = this.$store.getters["auth/role"]
         let token = this.$store.getters["auth/token"]
         let urlFetch;
     
         if (currentRole == "Admin") {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status+"&page="+ this.page
+            this.basedURL=import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status+"&page="
         } else {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status+"&status=1";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status+"&status=1" +"&page="+ this.page;
+            this.basedURL=import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status+"&status=1" +"&page="
         }
-        const response = await fetch(urlFetch, {
+
+        const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -475,10 +535,61 @@ export default {
             },
         });
 
-        let data = await response.json()
-        this.announces=data['hydra:member']
-        console.log(data['hydra:member'])
+        if(response.data["hydra:member"]){
+
+            let data = await response.data;
+            this.announces = data['hydra:member'];
+            this.totalResult=await response.data["hydra:totalItems"];
+        }
+        if(response.data["hydra:view"]){
+            this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+            console.log(this.lastPage)
+        }
+
              return ;
+    },
+
+    async fetchData(){
+        if (!this.$store.getters["auth/isAuthenticated"]) {
+            this.$router.push('/');
+        }
+
+        let token = this.$store.getters["auth/token"]
+        let currentRole = this.$store.getters["auth/role"]
+
+        let urlFetch = "";
+
+        if (currentRole == "Admin") {
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?page="+ this.page
+        } else {
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?status=1&page="+ this.page;
+        }
+
+
+        if(this.basedURL) this.basedURL= this.basedURL +"&page="+ this.page
+        else this.basedURL= urlFetch
+        const response = await axios.get(this.basedURL, {
+            method: 'GET',
+            headers: {
+                // 'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+
+        if(response.data["hydra:member"]){
+
+            let data = await response.data;
+            this.announces = data['hydra:member'];
+            this.totalResult=await response.data["hydra:totalItems"];
+        }
+        if(response.data["hydra:view"]){
+          this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+          console.log(this.lastPage)
+        }
+        
+        this.url = import.meta.env.VITE_API_URL;
+        this.currentRole = currentRole;
+
     }
 
     },
@@ -491,11 +602,11 @@ export default {
         let urlFetch = "";
 
         if (currentRole == "Admin") {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?page=" + this.page + "&itemsPerPage=5";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces";
         } else {
-            urlFetch = import.meta.env.VITE_API_URL + "/annonces?page=" + this.page + "&itemsPerPage=5&status=1";
+            urlFetch = import.meta.env.VITE_API_URL + "/annonces?status=1";
         }
-        const response = await fetch(urlFetch, {
+        const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
                 // 'Content-Type': 'multipart/form-data',
@@ -503,8 +614,18 @@ export default {
             },
         });
 
-        let data = await response.json();
-        this.announces = data['hydra:member'];
+        console.log(response.data)
+        if(response.data["hydra:member"]){
+
+            let data = await response.data;
+            this.announces = data['hydra:member'];
+            this.totalResult=await response.data["hydra:totalItems"];
+        }
+        if(response.data["hydra:view"]){
+            this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+            console.log(this.lastPage)
+        }
+
         this.url = import.meta.env.VITE_API_URL;
         this.currentRole = currentRole;
     }

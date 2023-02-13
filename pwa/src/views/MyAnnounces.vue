@@ -49,10 +49,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-6">
-                                <Pagination @increasePage="handleNextPagination"
-                                            @decreasePage="handlePreviousPagination" :page="page"/>
-                            </div>
 
                         </div>
 
