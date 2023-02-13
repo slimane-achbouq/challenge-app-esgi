@@ -2,11 +2,10 @@ name: CI
 
 on:
   push:
-#    branches:
-#      - main
-  pull_request: ~
-  workflow_dispatch: ~
-
+    branches:
+      - main
+    paths:
+      - 'api/**'
 jobs:
   tests:
     name: Tests
@@ -87,7 +86,7 @@ jobs:
           push: true
           tags: slimane2/challenge-app-esgi-caddy:latest, slimane2/challenge-app-esgi-caddy:${{ github.run_number }}
 
-  deploy:
+  deploy-api:
     runs-on: ubuntu-latest
     needs: build-and-push
     env:
