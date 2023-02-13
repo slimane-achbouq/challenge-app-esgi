@@ -57,33 +57,33 @@
     <!-- Name and FamilyName Code -->
     <div class="flex space-x-4" v-if="state == 'individual'">
       <div class="flex-1">
-        <label class="block text-sm font-medium mb-1" for="name"
+        <label class="block text-sm font-medium mb-1" for="firstName"
           >Name: <span class="text-rose-500">*</span></label
         >
         <input
-          id="name"
+          id="firstName"
           class="form-input w-full"
           type="text"
-          v-model.trim="name"
+          v-model.trim="firstName"
           required
         />
-        <div v-if="errors.name" class="text-xs mt-1 text-rose-500">
-          {{ errors.name }}
+        <div v-if="errors.firstName" class="text-xs mt-1 text-rose-500">
+          {{ errors.firstName }}
         </div>
       </div>
       <div class="flex-1">
-        <label class="block text-sm font-medium mb-1" for="familyName"
+        <label class="block text-sm font-medium mb-1" for="lastName"
           >Family Name: <span class="text-rose-500">*</span></label
         >
         <input
-          id="familyName"
+          id="lastName"
           class="form-input w-full"
           type="text"
-          v-model.trim="familyName"
+          v-model.trim="lastName"
           required
         />
-        <div v-if="errors.familyName" class="text-xs mt-1 text-rose-500">
-          {{ errors.familyName }}
+        <div v-if="errors.lastName" class="text-xs mt-1 text-rose-500">
+          {{ errors.lastName }}
         </div>
       </div>
     </div>
@@ -233,8 +233,8 @@ export default {
       associationName: "",
       profession: "",
       comercialName: "",
-      name: "",
-      familyName: "",
+      firstName: "",
+      lastName: "",
       street: "",
       city: "",
       postalCode: "",
@@ -248,8 +248,8 @@ export default {
         associationName: "",
         profession: "",
         comercialName: "",
-        name: "",
-        familyName: "",
+        firstName: "",
+        lastName: "",
         street: "",
         city: "",
         postalCode: "",
@@ -297,14 +297,14 @@ export default {
       Object.keys(this.errors).forEach((key) => (this.errors[key] = ""));
 
       if (this.state == "individual") {
-        if (this.name.length < 2) {
+        if (this.firstName.length < 2) {
           this.formValid = false;
-          this.errors.name = "Please check your name";
+          this.errors.firstName = "Please check your name";
           return;
         }
-        if (this.familyName.length < 2) {
+        if (this.lastName.length < 2) {
           this.formValid = false;
-          this.errors.familyName = "Please check your first name";
+          this.errors.lastName = "Please check your last name";
           return;
         }
       }
@@ -377,8 +377,8 @@ export default {
         associationName: this.associationName,
         profession: this.profession,
         comercialName: this.comercialName,
-        firstName: this.name,
-        lastName: this.familyName,
+        firstName: this.firstName,
+        lastName: this.lastName,
         street: this.street,
         city: this.city,
         postalCode: this.postalCode,
@@ -387,6 +387,7 @@ export default {
         password: this.password,
       };
       this.isLoading = true;
+      console.log(this.dataPayload);
 
       try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
