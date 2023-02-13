@@ -267,11 +267,12 @@
           }
 
           loading.value = true
+          console.log(this.selectedItems.isVerified)
           const data = {
             email: this.selectedItems.email,
             firstName: this.selectedItems.firstName,
             lastName: this.selectedItems.lastName,
-            isVerified: this.selectedItems.isVerified ? true:false,
+            isVerified: this.selectedItems.isVerified=="true" ? true:false,
             phoneNumber: this.selectedItems.phoneNumber  }
 
           try {
