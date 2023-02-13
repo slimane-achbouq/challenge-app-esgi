@@ -33,28 +33,10 @@
 
                     </div>
 
-                    <!-- Search form -->
-                    <div class="max-w-xl mb-5">
-                        <form class="relative">
-                            <label for="app-search" class="sr-only">Search</label>
-                            <input id="app-search" class="form-input w-full pl-9 py-3 focus:border-slate-300"
-                                   type="search" placeholder="Search…"/>
-                            <button class="absolute inset-0 right-auto group" type="submit" aria-label="Search">
-                                <svg
-                                    class="w-4 h-4 shrink-0 fill-current text-slate-400 group-hover:text-slate-500 ml-3 mr-2"
-                                    viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z"/>
-                                    <path
-                                        d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
                     <!-- Table -->
                     <div class="bg-white shadow-lg rounded-sm border border-slate-200 relative">
                         <header class="px-5 py-4">
-                            <h2 class="font-semibold text-slate-800">Requests <span class="text-slate-400 font-medium">248</span>
+                            <h2 class="font-semibold text-slate-800">Requests <span class="text-slate-400 font-medium" v-if="nbDemandes">{{ nbDemandes }}</span>
                             </h2>
                         </header>
                         <div>
@@ -274,6 +256,7 @@ export default {
             newDateStart: null,
             newDateEnd: null,
             dateError: null,
+            nbDemandes: 0,
         }
     },
     methods: {
@@ -385,6 +368,7 @@ export default {
             this.demandeHistories = data.demandeHistories;
 
             let finalDemandes = [];
+            let count = 0;
             for (let demande of data) {
                 let date = new Date(demande.createdAt);
                 demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
@@ -394,12 +378,15 @@ export default {
                 demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
                 if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
                     finalDemandes.push(demande);
+                    count++;
                 }
                 else if(demande.locataire.email == this.useremail) {
                     finalDemandes.push(demande);
+                    count++;
                 }
             }
             this.demandes = finalDemandes;
+            this.nbDemandes = count;
         }
     },
     setup() {
@@ -443,6 +430,7 @@ export default {
         this.demandeHistories = data.demandeHistories;
 
         let finalDemandes = [];
+        let count = 0;
         for (let demande of data) {
             let date = new Date(demande.createdAt);
             demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
@@ -452,12 +440,15 @@ export default {
             demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             if (demande.annonce.owner.email === this.useremail || this.role == "Admin") {
                 finalDemandes.push(demande);
+                count++;
             }
             else if(demande.locataire.email == this.useremail) {
                 finalDemandes.push(demande);
+                count++;
             }
         }
         this.demandes = finalDemandes;
+        this.nbDemandes = count;
     }
 }
 </script>

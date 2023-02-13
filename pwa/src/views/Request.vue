@@ -56,7 +56,13 @@
 
                                     <br><br>
 
-                                    Total price : <span class="text-blue-500">{{ annonce.price }}€</span>
+                                    Total price :
+                                    <span v-if="annonce.isPerHour" class="text-blue-500">
+                                        {{ pricePerHour }}€
+                                    </span>
+                                    <span v-else class="text-blue-500">
+                                        {{ annonce.price }}€
+                                    </span>
                                 </p>
 
                                 <div v-if="sessionId && !demande.isPaid">
@@ -153,7 +159,8 @@ export default {
             demande: null,
             annonce: null,
             src: "",
-            isLocataire:false
+            isLocataire:false,
+            pricePerHour:null,
         }
     },
     methods: {
@@ -163,7 +170,12 @@ export default {
 
             const formData = new FormData();
             formData.append('title', this.annonce.title);
-            formData.append('price', this.annonce.price);
+            if (this.annonce.isPerHour) {
+                formData.append('price', this.pricePerHour);
+            }
+            else {
+                formData.append('price', this.annonce.price);
+            }
             formData.append('image', this.annonce.image);
             formData.append('token', token);
             formData.append('request_id', id);
@@ -221,8 +233,14 @@ export default {
 
         let date = new Date(res.dateStart);
         res.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
-        date = new Date(res.dateEnd);
-        res.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+        let date2 = new Date(res.dateEnd);
+        res.dateEnd = date2.toLocaleDateString() + " at " + date2.toLocaleTimeString();
+
+        if (res.annonce.isPerHour) {
+            let diff =(date2.getTime() - date.getTime()) / 1000;
+            diff /= (60 * 60);
+            this.pricePerHour = diff;
+        }
 
         this.demande = res;
         this.annonce =  res.annonce;

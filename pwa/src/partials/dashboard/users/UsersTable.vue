@@ -64,7 +64,7 @@
                   <div class="font-semibold text-left">profession</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div class="font-semibold">Nassociation Name</div>
+                  <div class="font-semibold">Association Name</div>
                 </th>
                 <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                   <span class="sr-only">Menu</span>
