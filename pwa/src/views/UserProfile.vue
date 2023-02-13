@@ -39,15 +39,15 @@
                 <div>
                   <div class="mb-4 flex justify-between" >
                     <div class="text-slate-800 font-semibold mb-4">Edit Information</div>
-                    <router-link :to="{ name: 'userannounces', params: { lastName: user.lastName }}">
+<!--                    <router-link :to="{ name: 'userannounces', params: { lastName: user.lastName }}">
                       <a class="text-slate-800 font-semibold mb-4">See all announces</a>
-                    </router-link>
+                    </router-link>-->
                   </div>
 
                   <form>
                     <div class="space-y-4">
                       <!-- 1st row -->
-                      <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
+                      <div class="md:flex space-y-4 md:space-y-0 md:space-x-4" v-if="user.roles && user.roles.includes('ROLE_INDIVIDUAL')">
                         <div class="flex-1">
                           <label class="block text-sm font-medium mb-1" for="firstname">First Name</label>
                           <input id="firstname" class="form-input w-full" type="text"  v-model="user.firstName" />
@@ -64,6 +64,8 @@
                           </div>
                                         </div>
                       </div>
+                        <div class="md:flex space-y-4 md:space-y-0 md:space-x-4" v-eles-if="user.roles && user.roles.includes('ROLE_SELF_EMPLOYED')">
+                        </div>
                       <!-- 2nd row -->
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
                         <div class="flex-1">
@@ -195,7 +197,7 @@
       searchedAddresses: [],
       user: {
         firstName: "",
-        lastName: "myannouncement",
+        lastName: "",
         email: "",
         phoneNumber: "",
         street: "",
@@ -231,13 +233,15 @@
   methods:{
     async updateUser(){
 
-        if (!this.user.firstName) {
-          this.errors.name = "Veuillez revérifier votre nom";
-          return;
-        }
-        if (!this.user.lastName) {
-          this.errors.familyName = "Veuillez revérifier votre prénom";
-          return;
+        if (this.user.roles.includes("ROLE_INDIVIDUAL")) {
+            if (!this.user.firstName) {
+                this.errors.name = "Veuillez revérifier votre nom";
+                return;
+            }
+            if (!this.user.lastName) {
+                this.errors.familyName = "Veuillez revérifier votre prénom";
+                return;
+            }
         }
 
       if (!emailValidation(this.user.email)) {
@@ -336,6 +340,7 @@
 
         let data = await response.json();
         this.user = await data
+      console.log(data.roles)
         this.loading=false
     }
 }
