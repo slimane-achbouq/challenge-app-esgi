@@ -93,7 +93,7 @@
                 </div>
 
                 <ModalBasic id="feedback-modal" :modalOpen="modalOpen" @close-modal="onModalClose"
-                            title="Edit Announce">
+                            title="Edit dispute">
                     <!-- Modal content -->
                     <div class="px-5 py-4">
                         <div class="space-y-3 ">

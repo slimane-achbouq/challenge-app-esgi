@@ -549,7 +549,7 @@ export default {
             this.modalOpen = true
         },
         async updateAnnounce() {
-
+            let token = this.$store.getters["auth/token"]
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
             const data = {
                 title: this.title,
@@ -557,11 +557,19 @@ export default {
                 price: this.price,
                 isPerHour: this.isPerHour === true ? true : false
             }
-            const response = await axios.patch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, data, {
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
-                }
-            })
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            let res = await response.json();
+            console.log(res);
+
             this.updated = true
             this.modalOpen = false
 
