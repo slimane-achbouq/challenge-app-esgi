@@ -110,7 +110,7 @@ export default {
         },
         async updateData() {
             let token = this.$store.getters["auth/token"]
-            let currentRole = this.$store.getters["auth/role"] 
+            let currentRole = this.$store.getters["auth/role"]
             let urlFetch = "";
 
             if (currentRole == "Admin") {
@@ -135,7 +135,7 @@ export default {
     async created() {
 
         let lastname = document.URL.substring(document.URL.lastIndexOf('/') + 1);
-        console.log(lastname)       
+        console.log(lastname)
         if (!this.$store.getters["auth/isAuthenticated"]) {
             this.$router.push('/');
         }
@@ -144,6 +144,7 @@ export default {
         let currentRole = this.$store.getters["auth/role"]
         this.currentRole=currentRole
         let urlFetch = "";
+        this.url = import.meta.env.VITE_API_URL;
 
         let response
         if(lastname==="myannouncement"){

@@ -212,7 +212,7 @@
                             </div>
 
 
-                            
+
 
                             <div class="mb-5">
                                 <!-- Start -->
@@ -323,13 +323,13 @@ export default {
             if(this.page < this.lastPage){
                 this.page++
                 this.fetchData()
-            } 
+            }
         },
         handlePreviousPagination(n) {
             if (this.page >0 ){
                 this.page--
                 this.fetchData()
-            } 
+            }
         },
         async updateData() {
             let token = this.$store.getters["auth/token"]
@@ -380,14 +380,14 @@ export default {
             this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
             console.log(this.lastPage)
             }
-            
+
         },
         async filterTerm(term){
             this.page=1
             let token = this.$store.getters["auth/token"]
             let currentRole = this.$store.getters["auth/role"]
             let urlFetch
-            
+
             if (currentRole == "Admin") {
             urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&page="+ this.page;
             this.basedURL=import.meta.env.VITE_API_URL + "/annonces?category=" + term
@@ -395,7 +395,7 @@ export default {
             urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&status=1"+"&page="+ this.page;
             this.basedURL=urlFetch = import.meta.env.VITE_API_URL + "/annonces?category=" + term+"&status=1"
         }
-            
+
             console.log(urlFetch)
             const response = await axios.get(urlFetch, {
             method: 'GET',
@@ -424,7 +424,7 @@ export default {
         console.log("ok")
         var selectedValue = event.target.value;
         let urlFetch
-        
+
         if (selectedValue != "gt"){
 
         if (currentRole == "Admin") {
@@ -443,7 +443,7 @@ export default {
 
         }
 
-        
+
         const response = await axios.get(urlFetch, {
             method: 'GET',
             headers: {
@@ -463,7 +463,7 @@ export default {
             console.log(this.lastPage)
             }
         return ;
-        
+
     },
 
     async onNewest(){
@@ -480,7 +480,7 @@ export default {
         let token = this.$store.getters["auth/token"]
 
         let urlFetch
-        
+
         if (currentRole == "Admin") {
             urlFetch = import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate+"&page="+ this.page
             this.basedURL=import.meta.env.VITE_API_URL + "/annonces?createdAt[after]=" + fullDate
@@ -518,7 +518,7 @@ export default {
         let currentRole = this.$store.getters["auth/role"]
         let token = this.$store.getters["auth/token"]
         let urlFetch;
-    
+
         if (currentRole == "Admin") {
             urlFetch = import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status+"&page="+ this.page
             this.basedURL=import.meta.env.VITE_API_URL + "/annonces?isPerHour=" + status+"&page="
@@ -586,7 +586,7 @@ export default {
           this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
           console.log(this.lastPage)
         }
-        
+
         this.url = import.meta.env.VITE_API_URL;
         this.currentRole = currentRole;
 
@@ -622,7 +622,9 @@ export default {
             this.totalResult=await response.data["hydra:totalItems"];
         }
         if(response.data["hydra:view"]){
-            this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+            if (response.data["hydra:view"]["hydra:last"]) {
+                this.lastPage=await response.data["hydra:view"]["hydra:last"].split("page=")[1];
+            }
             console.log(this.lastPage)
         }
 
