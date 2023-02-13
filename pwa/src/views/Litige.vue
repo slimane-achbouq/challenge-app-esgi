@@ -73,7 +73,7 @@
                                 <h2 class="text-xl leading-snug text-slate-800 font-bold mb-2">Final decision</h2>
                                 <span v-if="dispute.status == 0">Wait for an admin to take a decision.</span>
                                 <span v-else class="text-indigo-500">{{ dispute.decision }}</span>
-                                <p>
+                                <p v-if="dispute.status != 0">
                                     Further explanation given :
                                     <span v-if="dispute.decisionExplanation" class="text-indigo-500">{{ dispute.decisionExplanation }}</span>
                                     <span v-else class="text-indigo-500">None.</span>
@@ -93,7 +93,7 @@
                 </div>
 
                 <ModalBasic id="feedback-modal" :modalOpen="modalOpen" @close-modal="onModalClose"
-                            title="Edit Announce">
+                            title="Edit dispute">
                     <!-- Modal content -->
                     <div class="px-5 py-4">
                         <div class="space-y-3 ">
@@ -264,6 +264,7 @@ export default {
         res.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
 
         this.dispute = res;
+        console.log(res)
         this.src = import.meta.env.VITE_API_URL + '/uploads/images_annonces/' + res.annonce.image;
         this.disputeSrc = import.meta.env.VITE_API_URL + '/uploads/images_litiges/' + res.image;
     }

@@ -10,8 +10,14 @@
                 </div>
             </div>
             <h1 class="text-3xl text-slate-800 font-bold mb-8">Payment successful !</h1>
-            <p>
-                Total amount : <span class="text-indigo-500" v-if="annonce">{{ annonce.price }}€</span>
+            <p v-if="annonce">
+                Total amount :
+                <span class="text-indigo-500" v-if="annonce.isPerHour">
+                {{ pricePerHour }}€
+            </span>
+                <span class="text-indigo-500" v-else>
+                {{ annonce.price }}€
+            </span>
             </p>
             <router-link class="btn bg-indigo-500 hover:bg-indigo-600 text-white" style="margin-top: 50px"
                          to="/dashboard">
@@ -42,7 +48,8 @@ export default {
             token: null,
             userTokenCheck: null,
             user: null,
-            id: null
+            id: null,
+            pricePerHour: null
         }
     },
     methods: {},
@@ -75,9 +82,22 @@ export default {
         let res = await response.json();
         this.demande = res;
         this.annonce = res.annonce;
+
+        let date = new Date(res.dateStart);
+        let date2 = new Date(res.dateEnd);
+
+        if (res.annonce.isPerHour) {
+            let diff = (date2.getTime() - date.getTime()) / 1000;
+            diff /= (60 * 60);
+            this.pricePerHour = Math.round(diff * this.annonce.price);
+        }
         const data = new FormData();
         data.append('annonce', this.annonce.id);
-        data.append('montant', this.annonce.price);
+        if (this.annonce.isPerHour) {
+            data.append('montant', this.pricePerHour);
+        } else {
+            data.append('montant', this.annonce.price);
+        }
         data.append('locataire', this.useremail);
         data.append('idDemande', this.demande.id);
         const request = await fetch(`${import.meta.env.VITE_API_URL}/paiements`, {

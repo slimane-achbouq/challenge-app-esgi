@@ -229,7 +229,7 @@
 
         try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}` , {
               headers: {
-                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+                  'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
               }
           })
         modaDeletelOpen.value=false
@@ -267,11 +267,12 @@
           }
 
           loading.value = true
+          console.log(this.selectedItems.isVerified)
           const data = {
             email: this.selectedItems.email,
             firstName: this.selectedItems.firstName,
             lastName: this.selectedItems.lastName,
-            isVerified: this.selectedItems.isVerified ? true:false,
+            isVerified: this.selectedItems.isVerified=="true" ? true:false,
             phoneNumber: this.selectedItems.phoneNumber  }
 
           try {

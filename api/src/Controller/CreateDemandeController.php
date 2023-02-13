@@ -25,8 +25,8 @@ class CreateDemandeController extends AbstractController
 
         $demande = new Demande();
         $demande->setAnnonce($annonce);
-        $demande->setDateStart(new \DateTime($request->get('dateStart')));
-        $demande->setDateEnd(new \DateTime($request->get('dateEnd')));
+        $demande->setDateStart(new \DateTimeImmutable($request->get('dateStart')));
+        $demande->setDateEnd(new \DateTimeImmutable($request->get('dateEnd')));
         $demande->setLocataire($locataire);
 
         return $demande;

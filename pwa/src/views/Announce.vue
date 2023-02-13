@@ -16,9 +16,9 @@
                         <!-- Content -->
                         <div>
                             <div v-if="status == 0">
-                            <BannerTwo type="warning" :open="banner2WarningOpen" v-if="role != 'Admin'">
-                                The announce is being verified by an administrator. Thank you for waiting.
-                            </BannerTwo>
+                                <BannerTwo type="warning" :open="banner2WarningOpen" v-if="role != 'Admin'">
+                                    The announce is being verified by an administrator. Thank you for waiting.
+                                </BannerTwo>
                                 <div class="flex justify-evenly" v-if="role==='Admin'">
                                     <button class="btn bg-emerald-500 hover:bg-emerald-600 text-white"
                                             @click="handleValidAnnounce">
@@ -30,12 +30,12 @@
                                     </button>
                                 </div>
                             </div>
-                            <Banner type="success" class="mb-4"  :open="true" v-if="updated">
-                                    Announce information updated successfully.
+                            <Banner type="success" class="mb-4" :open="true" v-if="updated">
+                                Announce information updated successfully.
                             </Banner>
 
-                            <Banner type="success" class="mb-4"  :open="true" v-if="deleted">
-                                    Announce deleted successfully.
+                            <Banner type="success" class="mb-4" :open="true" v-if="deleted">
+                                Announce deleted successfully.
                             </Banner>
                             <div v-else-if="status == 2"
                                  class="bg-red-500 text-center flex items-center justify-center mb-5"
@@ -104,52 +104,6 @@
                                 </div>
 
                                 <!-- Right side -->
-                                <div class="flex flex-wrap items-center sm:justify-end space-x-4">
-
-                                    <!-- Rating -->
-                                    <div class="flex items-center space-x-2 mr-2">
-                                        <!-- Stars -->
-                                        <div class="flex space-x-1">
-                                            <button>
-                                                <span class="sr-only">1 star</span>
-                                                <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                                </svg>
-                                            </button>
-                                            <button>
-                                                <span class="sr-only">2 stars</span>
-                                                <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                                </svg>
-                                            </button>
-                                            <button>
-                                                <span class="sr-only">3 stars</span>
-                                                <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                                </svg>
-                                            </button>
-                                            <button>
-                                                <span class="sr-only">4 stars</span>
-                                                <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                                </svg>
-                                            </button>
-                                            <button>
-                                                <span class="sr-only">5 stars</span>
-                                                <svg class="w-4 h-4 fill-current text-slate-300" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <!-- Rate -->
-                                        <div class="inline-flex text-sm font-medium text-amber-600">4.2</div>
-                                    </div>
-                                </div>
 
                             </div>
 
@@ -342,38 +296,43 @@
                     </div>
                 </ModalBasic>
 
-                <ModalBasic id="danger-modal" :modalOpen="modaDeletelOpen" >
-                      <div class="p-5 flex w-full space-x-4">
+                <ModalBasic id="danger-modal" :modalOpen="modaDeletelOpen">
+                    <div class="p-5 flex w-full space-x-4">
                         <!-- Icon -->
                         <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-rose-100">
-                          <svg class="w-4 h-4 shrink-0 fill-current text-rose-500" viewBox="0 0 16 16">
-                            <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z" />
-                          </svg>
+                            <svg class="w-4 h-4 shrink-0 fill-current text-rose-500" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 12c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm1-3H7V4h2v5z"/>
+                            </svg>
                         </div>
                         <!-- Content -->
                         <div>
-                          <!-- Modal header -->
-                          <div class="mb-2">
-                            <div class="text-lg font-semibold text-slate-800">Delete 1 announce?</div>
-                          </div>
-                          <!-- Modal content -->
-                          <div class="text-sm mb-10">
-                            <div class="">
-                              <p>Are you sure you want to delete this announce ?</p>
+                            <!-- Modal header -->
+                            <div class="mb-2">
+                                <div class="text-lg font-semibold text-slate-800">Delete 1 announce?</div>
                             </div>
-                          </div>
-                          <!-- Modal footer -->
+                            <!-- Modal content -->
+                            <div class="text-sm mb-10">
+                                <div class="">
+                                    <p>Are you sure you want to delete this announce ?</p>
+                                </div>
+                            </div>
+                            <!-- Modal footer -->
 
                         </div>
 
 
-                      </div>
+                    </div>
 
-                      <div class="flex flex-wrap justify-end space-x-2 m-6">
-                            <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600" @click.stop="modaDeletelOpen=false">Cancel</button>
-                            <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white" @click="deleteItem">Yes, Delete it</button>
-                      </div>
-                    </ModalBasic>
+                    <div class="flex flex-wrap justify-end space-x-2 m-6">
+                        <button class="btn-sm border-slate-200 hover:border-slate-300 text-slate-600"
+                                @click.stop="modaDeletelOpen=false">Cancel
+                        </button>
+                        <button class="btn-sm bg-rose-500 hover:bg-rose-600 text-white" @click="deleteItem">Yes, Delete
+                            it
+                        </button>
+                    </div>
+                </ModalBasic>
 
             </main>
 
@@ -383,7 +342,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import {ref} from 'vue'
 import Header from '@/partials/Header.vue'
 import ModalBasic from '@/components/Modal.vue'
 import axios from 'axios'
@@ -423,14 +382,14 @@ export default {
             isAlreadyOrdered: false,
             demandes: null,
             canOrder: true,
-            modaDeletelOpen:false,
-            updated:false,
-            deleted:false
+            modaDeletelOpen: false,
+            updated: false,
+            deleted: false
         }
     },
     methods: {
         submitDemandeForm: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             this.dateError = null;
@@ -464,7 +423,7 @@ export default {
             }
         },
         updateData: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
@@ -475,7 +434,7 @@ export default {
                 },
             });
 
-            if(response.status == 404) {
+            if (response.status == 404) {
                 this.$router.push('/dashboard/announces');
             }
 
@@ -521,13 +480,13 @@ export default {
         },
 
         handleValidAnnounce: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/merge-patch+json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
@@ -541,13 +500,13 @@ export default {
 
         },
         handleRefuseAnnounce: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/merge-patch+json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
@@ -560,29 +519,29 @@ export default {
             await this.updateData();
         },
 
-        onModaDeletelOpen(){
-        this.modaDeletelOpen=true
+        onModaDeletelOpen() {
+            this.modaDeletelOpen = true
 
         },
 
-        async deleteItem(){
+        async deleteItem() {
 
-        try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/annonces/${this.id}` , {
-              headers: {
-                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
-              }
-          })
-          this.deleted=true
-          this.modaDeletelOpen=false
-          let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
-          this.$router.replace(redirectUrl);
-        }
-        catch(e){
-          this.deleted=true
-          this.modaDeletelOpen=false
-          let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
-          this.$router.replace(redirectUrl);
-        }
+            try {
+                const response = await axios.delete(`${import.meta.env.VITE_API_URL}/annonces/${this.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
+                    }
+                })
+                this.deleted = true
+                this.modaDeletelOpen = false
+                let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
+                this.$router.replace(redirectUrl);
+            } catch (e) {
+                this.deleted = true
+                this.modaDeletelOpen = false
+                let redirectUrl = '/' + (this.$route.query.redirect || 'dashboard/announces');
+                this.$router.replace(redirectUrl);
+            }
 
 
         },
@@ -590,7 +549,7 @@ export default {
             this.modalOpen = true
         },
         async updateAnnounce() {
-
+            let token = this.$store.getters["auth/token"]
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
             const data = {
                 title: this.title,
@@ -598,12 +557,20 @@ export default {
                 price: this.price,
                 isPerHour: this.isPerHour === true ? true : false
             }
-            const response = await axios.patch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, data, {
+
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
+                method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
-                }
-            })
-            this.updated=true
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            let res = await response.json();
+            console.log(res);
+
+            this.updated = true
             this.modalOpen = false
 
         },
@@ -632,7 +599,7 @@ export default {
             },
         });
 
-        if(response.status == 404) {
+        if (response.status == 404) {
             this.$router.push('/dashboard/announces');
         }
 

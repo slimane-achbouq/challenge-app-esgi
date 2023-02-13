@@ -1,9 +1,9 @@
 <template>
     <!-- Card 1 -->
-        <div
-            class="col-span-full md:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200 overflow-hidden">
-            <div class="flex flex-col h-full">
-                <router-link :to="{ name: 'announce', params: { id: id }}">
+    <div
+        class="col-span-full md:col-span-6 xl:col-span-4 bg-white shadow-lg rounded-sm border border-slate-200 overflow-hidden">
+        <div class="flex flex-col h-full">
+            <router-link :to="{ name: 'announce', params: { id: id }}">
 
                 <!-- Image -->
                 <div class="relative">
@@ -36,63 +36,16 @@
                             <div class="text-sm">{{ description }}</div>
                         </header>
                     </div>
-                    <!-- Rating and price -->
-                    <div class="flex flex-wrap justify-between items-center">
-                        <!-- Rating -->
-                        <div class="flex items-center space-x-2 mr-2">
-                            <!-- Stars -->
-                            <div class="flex space-x-1">
-                                <button>
-                                    <span class="sr-only">1 star</span>
-                                    <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                    </svg>
-                                </button>
-                                <button>
-                                    <span class="sr-only">2 stars</span>
-                                    <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                    </svg>
-                                </button>
-                                <button>
-                                    <span class="sr-only">3 stars</span>
-                                    <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                    </svg>
-                                </button>
-                                <button>
-                                    <span class="sr-only">4 stars</span>
-                                    <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                    </svg>
-                                </button>
-                                <button>
-                                    <span class="sr-only">5 stars</span>
-                                    <svg class="w-4 h-4 fill-current text-slate-300" viewBox="0 0 16 16">
-                                        <path
-                                            d="M10 5.934L8 0 6 5.934H0l4.89 3.954L2.968 16 8 12.223 13.032 16 11.11 9.888 16 5.934z"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <!-- Rate -->
-                            <div class="inline-flex text-sm font-medium text-amber-600">4.7</div>
-                        </div>
-                        <!-- Price -->
-                        <div>
-                            <div
-                                class="inline-flex text-sm font-medium bg-rose-100 text-rose-600 rounded-full text-center px-2 py-0.5">
-                                {{ price }} €
-                            </div>
+                    <div>
+                        <div
+                            class="inline-flex float-right text-sm font-medium bg-rose-100 text-rose-600 rounded-full text-center px-2 py-0.5">
+                            {{ price }} €
                         </div>
                     </div>
                 </div>
-                </router-link>
-            </div>
+            </router-link>
         </div>
+    </div>
 
 </template>
 

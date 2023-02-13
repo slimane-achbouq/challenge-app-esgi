@@ -4,8 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -24,6 +22,10 @@ class CreateAnnonceController extends AbstractController
         $uploadedFile = $request->files->get('file');
         if (!$uploadedFile) {
             throw new BadRequestHttpException('Image file is required');
+        }
+
+        if ($request->getContent()) {
+            $request->request->add(json_decode($request->getContent(), true));
         }
 
         $annonce = new Annonce();
