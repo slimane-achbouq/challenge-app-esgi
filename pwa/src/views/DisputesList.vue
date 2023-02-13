@@ -36,7 +36,7 @@
                     <!-- Table -->
                     <div class="bg-white shadow-lg rounded-sm border border-slate-200 relative">
                         <header class="px-5 py-4">
-                            <h2 class="font-semibold text-slate-800">Disputes <span class="text-slate-400 font-medium">248</span>
+                            <h2 class="font-semibold text-slate-800">Disputes
                             </h2>
                         </header>
                         <div>

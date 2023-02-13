@@ -238,8 +238,9 @@ export default {
 
         if (res.annonce.isPerHour) {
             let diff =(date2.getTime() - date.getTime()) / 1000;
-            diff /= (60 * 60);
-            this.pricePerHour = diff;
+            // diff /= (60 * 60);
+            diff = Math.abs(date - date2) / 36e5;
+            this.pricePerHour = Math.round(diff * res.annonce.price);
         }
 
         this.demande = res;

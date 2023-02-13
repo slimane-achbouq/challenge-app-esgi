@@ -89,11 +89,15 @@ export default {
         if (res.annonce.isPerHour) {
             let diff = (date2.getTime() - date.getTime()) / 1000;
             diff /= (60 * 60);
-            this.pricePerHour = diff;
+            this.pricePerHour = Math.round(diff * this.annonce.price);
         }
         const data = new FormData();
         data.append('annonce', this.annonce.id);
-        data.append('montant', this.annonce.price);
+        if (this.annonce.isPerHour) {
+            data.append('montant', this.pricePerHour);
+        } else {
+            data.append('montant', this.annonce.price);
+        }
         data.append('locataire', this.useremail);
         data.append('idDemande', this.demande.id);
         const request = await fetch(`${import.meta.env.VITE_API_URL}/paiements`, {

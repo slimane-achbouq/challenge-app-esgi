@@ -424,6 +424,7 @@ export default {
         });
 
         let res = await response.json();
+        console.log(res)
         let data = res['hydra:member'];
         this.annonce = data.annonce;
         this.locataire = data.locataire;
@@ -435,6 +436,7 @@ export default {
             let date = new Date(demande.createdAt);
             demande.createdAt = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             date = new Date(demande.dateStart);
+            console.log(demande)
             demande.dateStart = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
             date = new Date(demande.dateEnd);
             demande.dateEnd = date.toLocaleDateString() + " at " + date.toLocaleTimeString();
