@@ -62,7 +62,7 @@
                           <div v-if="errors.familyName" class="text-xs mt-1 text-rose-500">
                           {{ errors.familyName }}
                           </div>
-                                        </div>
+                        </div>
                       </div>
                       <!-- 2nd row -->
                       <div class="md:flex space-y-4 md:space-y-0 md:space-x-4">
@@ -177,7 +177,6 @@
   import axios from 'axios'
   import {
     phoneValidation,
-    passwordValidation,
     emailValidation,
 
   } from "@/utils/utils-common-function";
@@ -195,7 +194,7 @@
       searchedAddresses: [],
       user: {
         firstName: "",
-        lastName: "myannouncement",
+        lastName: "",
         email: "",
         phoneNumber: "",
         street: "",
@@ -232,22 +231,22 @@
     async updateUser(){
 
         if (!this.user.firstName) {
-          this.errors.name = "Veuillez revérifier votre nom";
+          this.errors.name = "Please check your name";
           return;
         }
         if (!this.user.lastName) {
-          this.errors.familyName = "Veuillez revérifier votre prénom";
+          this.errors.familyName = "Please check your first name";
           return;
         }
 
       if (!emailValidation(this.user.email)) {
-        this.errors.email = "Veuillez revérifier votre email s'il est valide";
+        this.errors.email = "Please check your email if it is valid";
         return;
       }
 
       if (!phoneValidation(this.user.phoneNumber)) {
         this.error =
-          "Veuillez revérifier votre numéro de téléphone s'il est valide";
+          "Please check your phone number if it is valid";
         return;
       }
 

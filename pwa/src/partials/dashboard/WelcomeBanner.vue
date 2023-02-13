@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-indigo-200 p-4 sm:p-6 rounded-sm overflow-hidden mb-8">
+  <div class="relative bg-indigo-200 p-4 sm:p-6 rounded-sm overflow-hidden mb-8" v-if="role == 'ROLE_INDIVIDUAL'">
 
     <!-- Background illustration -->
     <div class="absolute right-0 top-0 -mt-4 mr-16 pointer-events-none hidden xl:block" aria-hidden="true">
@@ -63,19 +63,20 @@ export default {
     }
   },
   async created() {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${this.$store.getters["auth/email"]}`, {
-            method: 'GET',
-            headers: {
-                // 'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
-            },
-        });
+    this.role = this.$store.getters["auth/role"]
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/users?email=${this.$store.getters["auth/email"]}`, {
+        method: 'GET',
+        headers: {
+            // 'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
+        },
+    });
 
-        let data = await response.json();
-        if(data["hydra:member"]){
-          this.user = await data["hydra:member"][0];
-          this.name = this.user['firstName'];
-        }        
+    let data = await response.json();
+    if(data["hydra:member"]){
+      this.user = await data["hydra:member"][0];
+      this.name = this.user['firstName'];
+    }        
   }
 }
 </script>
