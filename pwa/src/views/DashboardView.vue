@@ -284,7 +284,7 @@ export default {
       console.log(this.role);
     return {
       role:null,
-      user:{id:null},
+      user:{id:1},
       }
     },  
     setup() {
