@@ -7,15 +7,6 @@ on:
   pull_request: ~
   workflow_dispatch: ~
 
-env:
-  PHP_IMAGE_NAME: "challenge-app-esgi-php"
-  CADDY_IMAGE_NAME: "challenge-app-esgi-caddy"
-  DIGITALOCEAN_REGISTRY: ${{ secrets.DIGITALOCEAN_REGISTRY }}
-  SERVER_NAME: ${{ secrets.SERVER_NAME }}
-  APP_SECRET: ${{ secrets.APP_SECRET }}
-  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-  CADDY_MERCURE_JWT_SECRET: ${{ secrets.CADDY_MERCURE_JWT_SECRET }}
-
 jobs:
   tests:
     name: Tests
@@ -99,6 +90,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-push
+    env:
+      PHP_IMAGE_NAME: "challenge-app-esgi-php"
+      CADDY_IMAGE_NAME: "challenge-app-esgi-caddy"
+      DIGITALOCEAN_REGISTRY: ${{ secrets.DIGITALOCEAN_REGISTRY }}
+      SERVER_NAME: ${{ secrets.SERVER_NAME }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      CADDY_MERCURE_JWT_SECRET: ${{ secrets.CADDY_MERCURE_JWT_SECRET }}
 
     steps:
       - name: Deploy to DigitalOcean droplet via SSH action
