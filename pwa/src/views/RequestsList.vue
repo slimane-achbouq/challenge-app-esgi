@@ -236,7 +236,7 @@
                         </div>
                     </ModalBasic>
 
-                    
+
 
                 </div>
             </main>
@@ -333,7 +333,7 @@ export default {
                 this.dateError = "Please choose a starting date earlier than the ending date";
             }
 
-            if (this.newDateEnd && this.newDateEnd && this.newDateEnd <= this.newDateEnd) {
+            if (this.newDateStart && this.newDateEnd && this.newDateStart <= this.newDateEnd) {
                 const request = await fetch(`${import.meta.env.VITE_API_URL}/demandes/${id}`, {
                     method: 'PUT',
                     headers: {
