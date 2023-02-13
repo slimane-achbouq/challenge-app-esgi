@@ -145,7 +145,7 @@ class Annonce
     #[Groups(['patch_status_annonce:write', 'annonce:read', 'demande:read', 'litige:read','user:read'])]
     private ?int $status = null;
 
-    #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Annonce::class)]
+    #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Demande::class)]
     private ?Collection $demande = null;
 
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Paiement::class)]
