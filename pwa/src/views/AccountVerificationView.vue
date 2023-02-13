@@ -39,7 +39,7 @@ export default {
             const actionPayload = {
                 verifyAccountToken: this.$route.params.token
             };
-			const response = await fetch(`https://localhost/users/${userId}/account-verification`, {
+			const response = await fetch(`https://api.zaidalaahazim.fr/users/${userId}/account-verification`, {
 				method: 'POST',
 				headers: {
 					'Content-type': 'application/json'

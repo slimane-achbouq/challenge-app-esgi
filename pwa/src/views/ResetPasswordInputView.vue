@@ -1,15 +1,15 @@
 <template>
     <main class="bg-white">
-  
+
       <div class="relative flex" v-if="!isSuccess">
-  
+
         <!-- Content -->
         <div class="w-full md:w-1/2">
-  
+
           <div class="min-h-screen h-full flex flex-col after:flex-1">
-  
+
             <div class="flex-1">
-  
+
               <!-- Header -->
               <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
                 <!-- Logo -->
@@ -34,7 +34,7 @@
               </div>
 
             </div>
-  
+
             <div class="px-4 py-8">
               <div class="max-w-md mx-auto">
                 <div class="max-w-sm mx-auto px-4 py-8">
@@ -67,23 +67,23 @@
             </div>
               </div>
             </div>
-  
+
           </div>
-  
+
         </div>
-  
+
         <!-- Image -->
         <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
             <img class="object-cover object-center w-full h-full" src="../images/reset-password-background.jpg" width="760" height="1024" alt="Authentication" />
         </div>
-  
+
       </div>
       <div v-if="isSuccess">
           <successMessageView :message='successMesage'></successMessageView>
       </div>
     </main>
 </template>
-  
+
 <script>
 import Banner from '@/components/Banner.vue';
 import successMessageView from './successMessageView.vue';
@@ -124,7 +124,7 @@ export default {
             }
 
             try {
-              await fetch(`https://localhost/update/password/${this.$route.params.token}`, {
+              await fetch(`https://api.zaidalaahazim.fr/update/password/${this.$route.params.token}`, {
                   headers: {
                       'Content-Type': 'application/json',
                   },
