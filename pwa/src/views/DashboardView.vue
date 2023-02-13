@@ -287,7 +287,7 @@ export default {
     },
     mounted (){
       (function(d, m){
-          var kommunicateSettings = {"appId":"3a909ff33ce0deab616101d01dac149ea","popupWidget":true,"automaticChatOpenOnNavigation":true};
+          var kommunicateSettings = {"appId":"baaec9a0d21915f14e08ffbf4651a3a6","popupWidget":true,"automaticChatOpenOnNavigation":true};
           var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
           s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
           var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
