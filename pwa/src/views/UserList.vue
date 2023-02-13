@@ -229,7 +229,7 @@
 
         try {const response = await axios.delete(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}` , {
               headers: {
-                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+                  'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
               }
           })
         modaDeletelOpen.value=false
@@ -275,9 +275,9 @@
             phoneNumber: this.selectedItems.phoneNumber  }
 
           try {
-          const response = await axios.patch(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}`,  data , {
+          const response = await axios.put(`${import.meta.env.VITE_API_URL}/users/${this.selectedItems.id}`,  data , {
               headers: {
-                  'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+                  'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
               }
           })
         }

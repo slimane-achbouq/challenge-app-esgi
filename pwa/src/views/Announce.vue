@@ -389,7 +389,7 @@ export default {
     },
     methods: {
         submitDemandeForm: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             this.dateError = null;
@@ -423,7 +423,7 @@ export default {
             }
         },
         updateData: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const response = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
@@ -480,13 +480,13 @@ export default {
         },
 
         handleValidAnnounce: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/merge-patch+json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
@@ -500,13 +500,13 @@ export default {
 
         },
         handleRefuseAnnounce: async function () {
-            let token = localStorage.getItem('esgi-ws-token');
+            let token = this.$store.getters["auth/token"];
             let id = document.URL.substring(document.URL.lastIndexOf('/') + 1);
 
             const request = await fetch(`${import.meta.env.VITE_API_URL}/annonces/${id}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/merge-patch+json',
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
@@ -529,7 +529,7 @@ export default {
             try {
                 const response = await axios.delete(`${import.meta.env.VITE_API_URL}/annonces/${this.id}`, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('esgi-ws-token')}`
+                        'Authorization': `Bearer ${this.$store.getters["auth/token"]}`
                     }
                 })
                 this.deleted = true
