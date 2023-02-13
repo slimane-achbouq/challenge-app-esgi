@@ -281,7 +281,7 @@ export default {
           return;
         }
         const response = await fetch(`https://api.zaidalaahazim.fr/address/` + new URLSearchParams(street));
-        console.log('hello');
+
         if (response.ok) {
             const data = await response.json();
             const parsedData = await JSON.parse(data);
