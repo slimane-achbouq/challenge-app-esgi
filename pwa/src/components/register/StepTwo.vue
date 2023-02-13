@@ -280,7 +280,7 @@ export default {
         if (street.length <= 3) {
           return;
         }
-        const response = await fetch(`https://localhost/address/` + new URLSearchParams(street));
+        const response = await fetch(`https://api.zaidalaahazim.fr/address/` + new URLSearchParams(street));
 
         if (response.ok) {
             const data = await response.json();
